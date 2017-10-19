@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">SaltStack at Home, Initial Thoughs</h1>
+      <p class="post-meta">May 21, 2017</p>
+    </header>
+
+    <section>
+      <p><em>“Cloud servers are cattle, not pets!”</em></p>
+
+<p>So I have been working with configuration management for a while, recently I have been switching between Ansilble and Salt Stack. After creating a Salt Stack for a previous employer in AWS (see below diagram), I have fallen for this configuration management system. As you may have noted, I am using Python based, YAML configured systems because this is where I am comfortable. These systems are easily extendable, the configuration files are easy to read for anyone and they are both awesome. Salt, ultimately, has won over purely based on requirements to support my previous employer’s legacy applications. I’ve become very familiar with it and I am sticking with what I am comfortable with.</p>
+
+<p>Why do we use configuration management? The main answers in my mind are automation, repeatability and accountability. If I need to create a new machine (either because a previous one has failed or I need extra compute capacity), I don’t have to do a lot. I bootstrap, Config Management does the rest. I can do this to one machine or a hundred machines and the resulting output will always be the same. I can track all configuration changes in version control systems such as git, so there is a level of accountability for change.</p>
+
+<p>Another final point to mention is that configuration management is idempotent. What does <em>idempotent</em> mean? An example of an idempotent process is washing your dog, wash him once or wash him twice, the outcome is the same: a clean dog. The opposite of an idempotent process is an incremental process, I feed the dog once he is healthy, feed him twice and he gets fat. I can apply a configuration once or a hundred times and the output is always the same. This isn’t always the case with custom shell scripts used for provisioning, these are often written to be run once.</p>
+
+<h2 id="roles-based-on-hostname">Roles based on hostname</h2>
+
+<p><img src="/images/2017/05/SaltTargeting.png" alt="Salt Targeting" /></p>
+
+<p>My previous employers legacy cloud applications used to be configured with CFEngine3. Arguably not the easiest system to work with, but it was one of the first configuration management systems available. As our main cloud environment hosted multiple customers, each host with a different role, a convenient way of tracking the role and cost centre for each VM was vital. This needs to be machine readable and human readable due to the sheer scale of VMs in use. With CFEngine3 it was identified the best way of assigning a role to a VM was via the hostname - this was useful for us human SysAdmins/Developers too because we could easily find what we needed. Moving to AWS, it made sense to keep this convention but find a way of applying it into SaltStack.</p>
+
+<p>From our naming convention, we had the ability to automatically set up grains to help in targeting our systems for configuration.</p>
+
+<p>When a minion connects to our Salt Master, the machine is seen as a ‘base’ configuration - the <em>initial</em> highstate run is to perform the following:</p>
+
+<ol>
+  <li>Set the grains of the minion based on hostname</li>
+  <li>Add the host to a pool</li>
+  <li>Install base packages and configuration that apply to ALL hosts</li>
+  <li>Set up a cron job to check for configuration updates hourly</li>
+  <li>Set up an <code class="highlighter-rouge">at</code> task to perform the next highstate run.</li>
+</ol>
+
+<p>Now that the initial highstate has been called, the minion will have it’s configuration applied from one of the 3 pools (dev/staging/prod).</p>
+
+<p>Below is a partial extract of the configuration showing <code class="highlighter-rouge">base</code> (which was our initial configuration before grains had been established from hostname), and our <code class="highlighter-rouge">prod</code> with a few sample roles within our infrastructure.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">base</span><span class="pi">:</span>
+    <span class="s1">'</span><span class="s">*'</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">defaults</span>
+        <span class="pi">-</span> <span class="s">defaults.at</span>
+        <span class="pi">-</span> <span class="s">defaults.cron</span>
+        <span class="pi">-</span> <span class="s">defaults.grains</span>
+
+<span class="na">prod</span><span class="pi">:</span>
+    <span class="s1">'</span><span class="s">*'</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">defaults</span>
+        <span class="pi">-</span> <span class="s">defaults.cron</span>
+        <span class="pi">-</span> <span class="s">defaults.grains</span>
+        <span class="pi">-</span> <span class="s">defaults.ntp</span>
+    <span class="s1">'</span><span class="s">G@g_client:infra</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">G@g_role:fileserver'</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">fileserver.nginx</span>
+    <span class="s1">'</span><span class="s">G@g_client:infra</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">G@g_role:blogs'</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">defaults.ssl</span>
+        <span class="pi">-</span> <span class="s">blog.users</span>
+        <span class="pi">-</span> <span class="s">blog.nginx</span>
+        <span class="pi">-</span> <span class="s">blog.docker</span>
+    <span class="s1">'</span><span class="s">G@g_client:infra</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">G@g_role:automation'</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">defaults.ssl</span>
+        <span class="pi">-</span> <span class="s">automation.docker</span>
+        <span class="pi">-</span> <span class="s">automation.docker.api</span>
+        <span class="pi">-</span> <span class="s">automation.docker.codereviewbot</span>
+    <span class="s1">'</span><span class="s">G@g_client:infra</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">G@g_role:pypirepo'</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">defaults.ssl</span>
+        <span class="pi">-</span> <span class="s">pypi.users</span>
+        <span class="pi">-</span> <span class="s">pypi.nginx</span>
+        <span class="pi">-</span> <span class="s">pypi.docker</span>
+<span class="pi">[</span><span class="nv">...</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<p>Let’s say we have the host <code class="highlighter-rouge">euw01-infra-prodautomation001.aws.domain.co.uk</code> - following the initial salt highstate run, we now have a host that will be configured from <code class="highlighter-rouge">prod: 'G@g_client:infra and G@g_role:automation</code>. The following states will be applied:</p>
+
+<ol>
+  <li>defaults.ssl (our SSL configuration including access to SSL repository)</li>
+  <li>automation.docker (Installation of docker for automation servers)</li>
+  <li>automation.docker.api (Our API for CLI tools to interact with AWS during deployment).</li>
+  <li>automation.docker.codereviewbot (Our bot for issuing code review requests)</li>
+</ol>
+
+<p>And just like that, within 10 minutes of spinning up an EC2 in AWS it can be configured precisely as needed based purely on the hostname of the server.</p>
+
+<h2 id="home-use">Home Use</h2>
+
+<h3 id="motivation">Motivation</h3>
+
+<p>Having invested a lot of time in Salt I decided that I should probably continue to practice what I preach. Having previously experienced data loss at home first hand, having to restore from backups and needing to install all my applications all over again, I thought it was time I actually used this great tool for keeping my own systems configured.</p>
+
+<p>I also (on the odd occasion) forget to apply the odd security update. <em>Who doesn’t</em>. My Salt configuration will ensure that key security updates are done on time.</p>
+
+<p>Another key motivator is to continue that pets vs. cattle mentality to my own infrastructure, where I should be able to re-create my desktop environment, or my Raspberry Pi Bastion fairly quickly if it fails for whatever reason.</p>
+
+<p>I would like to note that you can run Salt decentralized, however I have chosen to keep it centralized so that the configuration is always at the same version across all machines.</p>
+
+<h3 id="result">Result</h3>
+
+<p><img src="/images/2017/05/HomeSaltStack.png" alt="Home Salt" /></p>
+
+<p>Over the space of 2 months (a couple of hours every weekend), I’ve created a Salt configuration that describes the main devices in my personal infrastructure:</p>
+
+<ol>
+  <li>Desktop computer</li>
+  <li>Raspberry Pi Bastion/VPN Server</li>
+  <li>Webserver (running Ghost on Docker)</li>
+  <li>Bastion in the public subnet of my AWS lab.</li>
+</ol>
+
+<p>All of the above is described in a Vagrantfile that can be spun up and trashed as a development environment for testing before deploying to production.</p>
+
+<p>I do not have a naming scheme for hostnames that can be programmatically dealt with, so I have had to create a map that takes hostname and applies the appropriate grains to that minion. These grains then dictate what the configuration of the minion will be. I am still using the same definitions as before: region, cloud, pool, role, etc.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># hosts.map</span>
+<span class="p">{</span><span class="o">%</span> <span class="nb">set</span> <span class="n">host_id</span> <span class="o">=</span> <span class="n">salt</span><span class="p">[</span><span class="s">'grains.filter_by'</span><span class="p">]({</span>
+  <span class="s">'helios'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">'region'</span><span class="p">:</span> <span class="s">'euw02'</span><span class="p">,</span>
+    <span class="s">'cloud'</span><span class="p">:</span> <span class="s">'aws'</span><span class="p">,</span>
+    <span class="s">'pool'</span><span class="p">:</span> <span class="s">'prod'</span><span class="p">,</span>
+    <span class="s">'role'</span><span class="p">:</span> <span class="s">'bastion'</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="s">'icarus'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">'region'</span><span class="p">:</span> <span class="s">'local'</span><span class="p">,</span>
+    <span class="s">'cloud'</span><span class="p">:</span> <span class="s">'lan'</span><span class="p">,</span>
+    <span class="s">'pool'</span><span class="p">:</span> <span class="s">'prod'</span><span class="p">,</span>
+    <span class="s">'role'</span><span class="p">:</span> <span class="s">'bastion'</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="s">'daedalus'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">'region'</span><span class="p">:</span> <span class="s">'local'</span><span class="p">,</span>
+    <span class="s">'cloud'</span><span class="p">:</span> <span class="s">'lan'</span><span class="p">,</span>
+    <span class="s">'pool'</span><span class="p">:</span> <span class="s">'prod'</span><span class="p">,</span>
+    <span class="s">'role'</span><span class="p">:</span> <span class="s">'desktop'</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="s">'morpheus'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">'region'</span><span class="p">:</span> <span class="s">'lon'</span><span class="p">,</span>
+    <span class="s">'cloud'</span><span class="p">:</span> <span class="s">'digitalocean'</span><span class="p">,</span>
+    <span class="s">'pool'</span><span class="p">:</span> <span class="s">'prod'</span><span class="p">,</span>
+    <span class="s">'role'</span><span class="p">:</span> <span class="s">'webserver'</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="s">'unknown'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">'region'</span><span class="p">:</span> <span class="s">'unknown'</span><span class="p">,</span>
+    <span class="s">'cloud'</span><span class="p">:</span> <span class="s">'unknown'</span><span class="p">,</span>
+    <span class="s">'pool'</span><span class="p">:</span> <span class="s">'base'</span><span class="p">,</span>
+    <span class="s">'role'</span><span class="p">:</span> <span class="s">'generic'</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">},</span> <span class="n">grain</span><span class="o">=</span><span class="s">'hostname'</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">'unknown'</span><span class="p">)</span> <span class="o">%</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="problems-lessons-learnt">Problems, lessons learnt</h3>
+
+<p>This is my initial attempt at configuration management at home. Upon reflection I have discovered the following issues that will affect my decisions going forward:</p>
+
+<ol>
+  <li>A 512 MB RAM Rasberry Pi Model B is underpowered for running Salt-minion and a VPN at the same time.</li>
+  <li>A Salt Master ideally needs at least 1 GB RAM.</li>
+  <li>Vagrant is OK for testing, but you cannot test a Rasbperry Pi’s performance in VirtualBox.</li>
+  <li>Pillars are vital, and once Salt becomes more friendly with HashiCorp’s Vault this will become much better for storing secrets - especially when backed with something like S3 storage. I am currently using GPG2 encrypted pillars which is slow and manual to manage.</li>
+  <li>Configuration management tools are aimed at server markets, desktop environments require a lot more work to configure to your liking. Often it is easier to create a base config and further config (wallpapers, GNOME plugins) can be done to user taste.</li>
+  <li>Salt has got some limits on minion OS support. openSUSE doesn’t seem to work fantastically for the latest release.</li>
+</ol>
+
+<p>I will continue to work with Salt and see where I can make performance improvements and tighten my configuration, but I might resort to adopting Ansible for reasons I will explain at a later date.</p>
+
+<p>Going forward I can test the effectiveness of my configuration management by performing some infrastructure changes and restructuring. The changes I am going to test will involve:</p>
+
+<ol>
+  <li>Changing my Raspberry Pi bastion to run OpenBSD/FreeBSD, it will be interesting to see how Salt handles either of these OS.</li>
+  <li>Re-creating my web server with the exact configuration I have in configuration management.</li>
+  <li>Updating my Debian 8 desktop to Debian 9 or moving to Ubuntu once GNOME is mainstream (or just going for UbuntuGNOME 16.04).</li>
+</ol>
+
+<p>At a later date (once my configuration is more “stable”) I shall release the source code to GitHub.</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2017/04/03/silence.html">Silence</a></h2>
+          </header>
+          <section>
+            <p>Back soon, just escaped a sticky situation…</p>
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/04/03/silence.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2017/05/22/azure-an-aws-guy-dipping-his-toes.html">Azure, an AWS guy dipping his toes.</a></h2>
+          </header>
+          <section>
+            <p>I am not going to lie, I am a big fan of AWS. I have been using AWS on and off for nearly 2 years now. I’ve done the training for both the AWS Solutions Architect Associate and SysOps Associate (although not got a certification <em>yet</em>). Shout out to <a href="https://acloud.guru/">acloud.guru</a>.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/05/22/azure-an-aws-guy-dipping-his-toes.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

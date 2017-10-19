@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Re-architecting a Global Data Object store</h1>
+      <p class="post-meta">Aug 19, 2016</p>
+    </header>
+
+    <section>
+      <p>In a recent project I have had the opportunity to work with MongoDB, admittedly this is the first real attempt to do so in any real capacity.</p>
+
+<p>For this project we created a number of Drupal websites with a centralised Data Object Store, referred to simply as the “GDO” (Global Data Object Store).</p>
+
+<p>The main concept of the GDO is that data objects (in the form of JSON documents) can be stored centrally and accessed by every site/server within the AWS VPC (Virtual Private Cloud). These objects are delivered through a RESTful API sitting in front of the MongoDB.</p>
+
+<h2 id="the-problem">The Problem</h2>
+
+<p>During the initial development of the GDO we were working on a Single EC2 instance, this was both the API and the MongoDB. During development this is fine however in production this becomes a single point of failure.</p>
+
+<h2 id="the-solution">The Solution</h2>
+
+<p>The first, key point to address was to make sure that the MongoDB is replicated. As this is a production environment some form of fault tolerance is required to deliver a good uptime. Budget in this project was a bit tight so we went for the absolute bare essentials to deliver better fault tolerance.</p>
+
+<p>MongoDB’s minimum solution for this is to have 1 PRIMARY and 1 SECONDARY as part of a replica set, each in different Availability Zones. As we had an even number of nodes in our replica set cluster it is necessary for there to be an ARBITER else no quorum would be met.</p>
+
+<p><img src="/images/2016/08/replica-set-primary-with-secondary-and-arbiter.png" alt="Replication" />
+<em>Source:</em> <a href="https://docs.mongodb.com/manual/replication/">MongoDB.org</a></p>
+
+<p>In a nutshell the replica set is <a href="https://docs.mongodb.com/manual/tutorial/deploy-replica-set/">easy to set up</a> - simply start up the primary and secondary nodes with the following added to the <code class="highlighter-rouge">mongod.conf</code> file:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">replication</span><span class="pi">:</span>
+  <span class="na">replSet</span><span class="pi">:</span> <span class="s">rs0</span>
+</code></pre></div></div>
+
+<p>Once you have started the MongoDB servers up, on your first node simply log in to the database server and run:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">rs</span><span class="p">.</span><span class="nx">initiate</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Then proceed to add the remaining nodes with:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">rs</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">"server.ip.or.url:27017"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>If you have an even number of nodes then you will need to sort out <a href="https://docs.mongodb.com/manual/tutorial/add-replica-set-arbiter/">creating an arbiter</a>. This is merely a small EC2 instance that elects the primary in the cluster.</p>
+
+<p>After addressing the issue of the replica set the next stage was to look at the API to interact with the MongoDB. This needed separating from the MongoDB server as it would need to connect to the replica set and interact with the elected Primary. The API also needed some resilience adding so we created two new EC2s sitting in different Availability Zones.</p>
+
+<p>All traffic to the GDO APIs is over HTTPS (TLS) and internal to the VPC. For this Amazon provides a fantastic Load Balancing service called “Elastic Load Balancer” (ELB). The ELB provides health checks and lets us seamlessly balance the load between the two API nodes. We can also very quickly scale up to include more nodes as time goes on with no huge changes to the infrastructure.</p>
+
+<p>So, what did we end up with?</p>
+
+<p><img src="/images/2016/08/mongoscalingBlank.png" alt="GDO" /></p>
+
+<p>On the left we have the original, initial GDO store - a single (huge) monolithic EC2 instance. As you can see it was a single point of failure in itself. What we have on the right is a load balanced, cross availability zone Global Data Object Store that is a lot more fault tolerant with room to scale up and/or out.</p>
+
+<p>What is more is that the only major change we had to make to the codebase for the GDO APIs is the connection string, we had to tell PHP that we are connecting to a Replica Set. A sample configuration is as below:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="cm">/*
+ * Sample MongoClient object for MongoDB Replica Set
+ */</span>
+
+<span class="nv">$m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MongoClient</span><span class="p">(</span><span class="s2">"mongodb://db1.example.com:27017,mongodb://db2.example.com:27017"</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'replicaSet'</span> <span class="o">=&gt;</span> <span class="s1">'rs0'</span><span class="p">,</span> <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'someuser'</span><span class="p">,</span> <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'sTr0Ngp4ss!'</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h2 id="future-considerations">Future Considerations</h2>
+
+<p>In a perfect world where money was no object we would have gone for a sharded replica set to improve performance. Ideally with RAID 10 Elastic Block Storage (EBS) volumes with provisioned IOPS on each node (see below diagram). This would work even better cross-region so short that short of Amazon Web Services completely being wiped of the map or the end of society itself, the GDO would be almost bulletproof. Perhaps one day the opportunity will arrive for something along those lines.</p>
+
+<p><img src="/images/2016/08/sharding-simpleoverview.png" alt="Sharded Replica" />
+<em>Source:</em> <a href="https://mongodb-documentation.readthedocs.io/en/latest/ecosystem/tutorial/install-mongodb-on-amazon-ec2.html">MongoDB Docs</a></p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2016/07/28/quick-security-tip-docker-containers-and-ufw.html">Quick security tip! Docker containers and ufw.</a></h2>
+          </header>
+          <section>
+            <p>I recently discovered that the Docker daemon ‘out of the box’ (as it where) will run with the option <code class="highlighter-rouge">--iptables=true</code>.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/07/28/quick-security-tip-docker-containers-and-ufw.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2016/08/28/setting-up-a-ghost-blog-with-nginx-certbot-and-docker.html">Setting Up a Ghost Blog with nginx, Certbot and Docker.</a></h2>
+          </header>
+          <section>
+            <p>I thought I would write up my experiences with setting up Ghost served over HTTPS as it’s quite a good way of jumping into Docker and using nginx as a reverse proxy to route traffic between Docker applications.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/08/28/setting-up-a-ghost-blog-with-nginx-certbot-and-docker.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

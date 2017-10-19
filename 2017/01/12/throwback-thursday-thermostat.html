@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Throwback Thursday: Thermostat</h1>
+      <p class="post-meta">Jan 12, 2017</p>
+    </header>
+
+    <section>
+      <p>I’ve decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.</p>
+
+<p>Today I am writing about a project I created to fix a problem with a misbehaving version of our CRM software (to remain nameless).</p>
+
+<h2 id="backstory">Backstory</h2>
+
+<p>So this tale begins when I worked as first line technical support at an internet service provider (ISP). Our ticketing system had been migrated over to our new CRM, however the version we were using had a small flaw. It caused high load to one CPU core when open, with most of the tech support desk using solo core processors. This made life <em>unbearable</em>, especially as we had to do a lot of work on JavaScript heavy webpages outside of the CRM software.</p>
+
+<p><img src="/images/2017/01/100pc_Usage.PNG" alt="100% CPU Usage" /></p>
+
+<h2 id="solution">Solution</h2>
+
+<p>Our workflow was interrupted by the slow and unresponsive ticketing system, there was no ETA for an update but work had to continue. In a little under a week I decided to write a small Visual C# application that would throttle the CRM process to allow the computer to do other work. We obviously only wanted this to happen when not working in the CRM software, so we had two distinct behaviors:</p>
+
+<p><strong>When CRM is not focused (idle)</strong></p>
+
+<ul>
+  <li>Set’s CPU affinity to core0. (does this once, multi-core machines only)</li>
+  <li>Deprioritise CPU Threads. (sets priority to LOW, allowing other processes to use CPU)</li>
+  <li>Throttles CPU usage. (when throttling is enabled)</li>
+  <li>Monitors CRM to make sure is responsive. (when Throttling)</li>
+</ul>
+
+<p><strong>When CRM is focused</strong></p>
+
+<ul>
+  <li>Prioritize CPU threads.</li>
+  <li>Monitor CRM to make sure responsive. (when Throttling)</li>
+</ul>
+
+<h2 id="the-result">The Result</h2>
+
+<p>When active, Thermostat would take average load down from 100% to ~38%.</p>
+
+<p><img src="/images/2017/01/Throttled_Usage.PNG" alt="Better CPU usage" /></p>
+
+<h2 id="side-effects-of-throttling">Side effects of throttling</h2>
+
+<p>Throttling was done by using the standard Windows <code class="highlighter-rouge">SuspendThread()</code> method in kernel32.dll. One of the side effects of throttling the process was that occasionally the application would become completely unresponsive.</p>
+
+<p>To overcome this, a built in health monitor within the application would attempt to send several calls to <code class="highlighter-rouge">ResumeThread()</code> to try bring it online. To keep the user informed of the changes to the state of the CRM system, Thermostat would notify the user via a Balloon Tip.</p>
+
+<p><strong>Recovered CRM process:</strong></p>
+
+<p><img src="/images/2017/01/Warning.PNG" alt="CRM Recovered" /></p>
+
+<p><strong>Dead CRM Process:</strong></p>
+
+<p><img src="/images/2017/01/flatline.PNG" alt="CRM Flatlined" /></p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html">Chmod 0777; when permissions go bad and using the Sticky bit!</a></h2>
+          </header>
+          <section>
+            <p>I recently got tested on an important piece of Linux file permissions trivia and must admit I fumbled the answer a bit.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2017/01/19/saltstack-lab-in-vagrant.html">SaltStack Lab in Vagrant</a></h2>
+          </header>
+          <section>
+            <p>Today I have published a really simplistic <a href="https://saltstack.com/">SaltStack</a> lab for Vagrant to GitHub:</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/01/19/saltstack-lab-in-vagrant.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

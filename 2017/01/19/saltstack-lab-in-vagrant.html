@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">SaltStack Lab in Vagrant</h1>
+      <p class="post-meta">Jan 19, 2017</p>
+    </header>
+
+    <section>
+      <p>Today I have published a really simplistic <a href="https://saltstack.com/">SaltStack</a> lab for Vagrant to GitHub:</p>
+
+<p><a href="https://github.com/xanmanning/vagrant-salt-example">https://github.com/xanmanning/vagrant-salt-example</a></p>
+
+<p>Since being subjected to CFEngine (<em>shudder</em>), I have been very keen to try out other configuration management offerings. I had previously tried <a href="https://xan-manning.co.uk/building-an-ansible-2-lab/">Ansible</a>, that’s great and all, however there are advantages to agent based systems, particularly the scalability.</p>
+
+<p>Salt stands out for me, because like Ansible, configuration is done in YAML - this is fantastically easy to use! Also, Salt can be easily extended with custom modules! It’s standard stuff: Python, Fabric and Jinja2. It’s quick, scalable and flexible. It’s simple.</p>
+
+<h2 id="using-vagrant">Using Vagrant</h2>
+
+<p>Salt is actually quite easy to get running in Vagrant, if your Vagrantfile defines Salt as the provisioning method then Vagrant will go off and install the Salt Master and Salt Minions to whichever VM you define. Unlike Ansible, you don’t need Salt on your host machine.</p>
+
+<p>A master configuration would likely look like the below in your Vagrantfile:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">master</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">provision</span> <span class="ss">:salt</span> <span class="k">do</span> <span class="o">|</span><span class="n">salt</span><span class="o">|</span>
+    <span class="n">salt</span><span class="p">.</span><span class="nf">install_master</span> <span class="o">=</span> <span class="kp">true</span>
+    <span class="n">salt</span><span class="p">.</span><span class="nf">install_type</span> <span class="o">=</span> <span class="s2">"stable"</span>
+    <span class="n">salt</span><span class="p">.</span><span class="nf">master_config</span> <span class="o">=</span> <span class="s2">"salt/master"</span>
+    <span class="n">salt</span><span class="p">.</span><span class="nf">minion_config</span> <span class="o">=</span> <span class="s2">"salt/minion"</span>
+    <span class="n">salt</span><span class="p">.</span><span class="nf">masterless</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Where <code class="highlighter-rouge">master_config</code> and <code class="highlighter-rouge">minion_config</code> point to the configurations in your Vagrant directory.</p>
+
+<h2 id="example-configuration">Example Configuration</h2>
+
+<p>The above <a href="https://github.com/xanmanning/vagrant-salt-example">repository</a> includes a simple configuration of 1 master and 2 minions. One minion will be configured as an App server (running SQLBuddy), the other as a Db server (Running MySQL Server).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    +---------+     +--------+
+    |   App   | --&gt; |   Db   |
+    +---------+     +--------+
+         ^               ^
+         |               |
+         +---------------+
+                 |
+                 |
+             +--------+
+             | Master |
+             +--------+
+</code></pre></div></div>
+
+<h2 id="fire-it-up">Fire it up!</h2>
+
+<p>To get started with my example, simply run:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone https://github.com/xanmanning/vagrant-salt-example &amp;&amp; cd ./vagrant-salt-example
+</code></pre></div></div>
+
+<p>Then:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vagrant up
+</code></pre></div></div>
+
+<p>Wait for the VMs to finish provisioning, you will get output similar to the below:</p>
+
+<p><img src="/images/2017/01/SaltProvision.png" alt="Salt Provision" /></p>
+
+<p>Once you are done, you can visit your app server: http://10.10.8.3/ and login to the database with the below details:</p>
+
+<ul>
+  <li>Host: db.salt.local</li>
+  <li>User: salt</li>
+  <li>Pass: s4ltm4$t3r!</li>
+</ul>
+
+<p><img src="/images/2017/01/SaltSQLBuddy.png" alt="SQLBuddy managed with Salt" /></p>
+
+<h2 id="play">Play</h2>
+
+<p>If you want to play about with Salt, a good way to get your hands dirty is to SSH into the master and start editing the salt state files:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vagrant ssh master
+</code></pre></div></div>
+
+<p>From here, you can find all the states in <code class="highlighter-rouge">/srv/salt/base</code>, with some tweaking you can make some awesome changes!</p>
+
+<p><img src="/images/2017/01/VimLatest.png" alt="Vim Editor" /></p>
+
+<p>Then push these changes out by running:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo salt '*' state.highstate
+</code></pre></div></div>
+
+<p>This will (by default) present you with the output of your salt states:</p>
+
+<p><img src="/images/2017/01/HighState.png" alt="Highstate" /></p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2017/01/12/throwback-thursday-thermostat.html">Throwback Thursday: Thermostat</a></h2>
+          </header>
+          <section>
+            <p>I’ve decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/01/12/throwback-thursday-thermostat.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2017/01/26/throwback-thursday-hacktrix.html">Throwback Thursday: Hacktrix*</a></h2>
+          </header>
+          <section>
+            <p>It’s Thursday again, and I’m looking back on another project from days gone by.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/01/26/throwback-thursday-hacktrix.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

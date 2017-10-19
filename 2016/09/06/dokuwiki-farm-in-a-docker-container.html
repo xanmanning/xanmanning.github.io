@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Dokuwiki Farm in a (Docker) Container</h1>
+      <p class="post-meta">Sep 6, 2016</p>
+    </header>
+
+    <section>
+      <p>Today I released my <a href="https://hub.docker.com/r/xanmanning/dokuwiki-farm/">Dokuwiki Farm container image on Docker Hub</a>.</p>
+
+<p>It is perhaps a little clunky and experimental, but it is the first image that I have published but it’s a fairly simple solution to hosting Dokuwiki.</p>
+
+<p>It can run in single wiki mode, or it can run as an entire wiki farm with the option of shared logins between farm animals.</p>
+
+<h2 id="the-base-image">The base image</h2>
+
+<p>For this we are taking the <em>nginx:mainline-alpine</em> image as it is very small and has the basic Nginx setup. We then install <em>php5-fpm</em>, <em>git</em> and <em>supervisord</em>.</p>
+
+<p>Nginx does an fcgi proxy pass to PHP-FPM for serving our Dokuwiki, we pre-configure the container to accept all domains and serve pages as per the <a href="https://www.nginx.com/resources/wiki/start/topics/recipes/dokuwiki/">prescribed configuration</a>. The real ‘magic’ is to configure the farm in the container using the equivalent of the <a href="https://www.dokuwiki.org/farms">‘vhost’ method</a> of setup.</p>
+
+<h2 id="grabbing-the-image">Grabbing the image</h2>
+
+<p>To grab a copy of this container image, simply run:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull xanmanning/dokuwiki-farm
+</code></pre></div></div>
+
+<h2 id="farm-animals">Farm Animals</h2>
+
+<p>On running this image in your own container you can mount the <code class="highlighter-rouge">/var/www/farm</code> directory to your Docker host. Inside this directory you will find another directory called <code class="highlighter-rouge">_animal</code> - this is the base template for creating new animals in your farm.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -a ./farm
+.  ..  .gitignore  _animal
+</code></pre></div></div>
+
+<p>To create a new animal simply copy (or rsync) the <code class="highlighter-rouge">_animal</code> directory to the URL you will provide your wiki, eg:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cp -r ./farm/_animal ./farm/{wiki,wiki2}.xan-manning.co.uk
+</code></pre></div></div>
+
+<p>This will make a new wiki available to ‘wiki.xan-manning.co.uk’ and ‘wiki2.xan-manning.co.uk’.</p>
+
+<p><img src="/images/2016/09/NewAnimals.png" alt="Wiki Animals" /></p>
+
+<h2 id="example-docker-composeyml-and-nginx-vhost">Example docker-compose.yml and Nginx vhost</h2>
+
+<p>If you want to run this on your system behind an Nginx reverse proxy I have provided an example configuration.</p>
+
+<h3 id="nginx-vhost">Nginx vhost</h3>
+
+<p>The below configuration will set up a vhost listening to all the wiki URLs provided and route the traffic towards the container. The way the container is set up it will automatically select the correct animal (as long as the directory exists).</p>
+
+<p>In my example I have two server names:</p>
+
+<ol>
+  <li>wiki.xan-manning.co.uk</li>
+  <li>wiki2.xan-manning.co.uk</li>
+</ol>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span>                        <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">listen</span>                        <span class="s">[::]:80</span><span class="p">;</span>
+    <span class="kn">client_max_body_size</span>          <span class="mi">20M</span><span class="p">;</span>
+
+    <span class="c1"># Add each wiki URL to your server_name.
+</span>    <span class="c1"># The container will select the correct animal.
+</span>
+    <span class="kn">server_name</span>                   <span class="s">wiki.xan-manning.co.uk</span> <span class="s">wiki2.xan-manning.co.uk</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">proxy_set_header</span>          <span class="s">Host</span>              <span class="nv">$host</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>          <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>          <span class="s">X-Real-IP</span>         <span class="nv">$remote_addr</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>          <span class="s">X-Forwarded-For</span>   <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>          <span class="s">Proxy</span>             <span class="s">""</span><span class="p">;</span>
+
+        <span class="kn">proxy_pass</span>                <span class="s">http://localhost:8088</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="docker-composeyml">docker-compose.yml</h3>
+
+<p>This file is set up to mount the volumes to your current working directory. It will also do a <code class="highlighter-rouge">git pull</code> each time the container is re-started ont he <em>stable</em> branch.</p>
+
+<p>We are also going to share users between Wiki farm animals.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">farm</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">xanmanning/dokuwiki-farm:latest</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">8088:80</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">./conf:/var/www/dokuwiki/conf"</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">./data:/var/www/dokuwiki/data"</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">./inc:/var/www/dokuwiki/inc"</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">./farm:/var/www/farm"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">DW_SSO=1</span>
+        <span class="pi">-</span> <span class="s">DW_GIT_PULL=1</span>
+</code></pre></div></div>
+
+<p>Running <code class="highlighter-rouge">docker-compose up -d</code> will start the container, once done visit the installer for the main wiki (not in the farm) http://ip.or.host.name:8088/install.php - once installed you can visit your new farm animals!</p>
+
+<p><img src="/images/2016/09/Wiki1.png" alt="Wiki1" /></p>
+
+<p><img src="/images/2016/09/Wiki2.png" alt="Wiki2" /></p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2016/09/02/so-this-happened.html">So this happened...</a></h2>
+          </header>
+          <section>
+            <p>I may have geeked out my car. <strong>#tuxftw!</strong></p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/09/02/so-this-happened.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2016/09/07/two-underrated-bash-aliases.html">Two underrated Bash aliases</a></h2>
+          </header>
+          <section>
+            <p>Digital Ocean recently <a href="http://do.co/aliases">posted an article</a> on must have Bash aliases.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/09/07/two-underrated-bash-aliases.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

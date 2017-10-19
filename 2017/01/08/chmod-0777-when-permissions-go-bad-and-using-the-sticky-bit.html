@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Chmod 0777; when permissions go bad and using the Sticky bit!</h1>
+      <p class="post-meta">Jan 8, 2017</p>
+    </header>
+
+    <section>
+      <p>I recently got tested on an important piece of Linux file permissions trivia and must admit I fumbled the answer a bit.</p>
+
+<p>My main reasons for not instantly getting the question right probably stems from my own personal mantra, “DO NOT 0777 ALL THE THINGS!”. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my <small><del>dictatorship</del></small> employment as a (junior) Linux SysAdmin.</p>
+
+<h2 id="lets-stop-chmod-0777">Let’s stop chmod 0777!</h2>
+
+<p>Now, the main reasons why I have been quite cruel about a persons choice of file permissions has been for the following reasons:</p>
+
+<ul>
+  <li>Not everybody needs permissions to read/write the file or directory.</li>
+  <li>It’s often unwise to be able to let someone else execute your code if they don’t know what it does.</li>
+  <li>Files that are executable (that don’t need to be) can lead to the file being hijacked for malicious code to run.</li>
+</ul>
+
+<p><img src="/images/2017/01/chmod-777-all-the-files.jpeg" alt="CHMOD 777 ALL THE THINGS!" /></p>
+
+<p>However these reasons focus primarily on file permissions and only lightly touches on the implications for directories.</p>
+
+<h2 id="directories-of-doom">Directories of doom!</h2>
+
+<p>In this example I was asked to explain what would be the result of the following:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ manningx@example:~/testdir ] $ ls -lah
+total 8.0K
+drwxrwxrwx  2 root     root     4.0K Jan  8 15:18 ./
+drwxr-xr-x 16 manningx manningx 4.0K Jan  8 15:17 ../
+-rw-------  1 root     root        0 Jan  8 15:18 filetodelete
+[ manningx@example:~/testdir ] $ rm filetodelete
+</code></pre></div></div>
+
+<p>Feeling quite confident, I said: “The file <code class="highlighter-rouge">filetodelete</code> will fail to delete.”</p>
+
+<p>This isn’t a bad first assumption, <code class="highlighter-rouge">filetodelete</code> is only read-writable for the root user, there are no permissions for group or others… surely it should fail if my user, manningx, tries to delete it.</p>
+
+<p><strong>Wrong</strong>.</p>
+
+<p>I didn’t fully take in all the information and forgot one key piece of information. The result was the following:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ manningx@example:~/testdir ] $ ls -lah
+total 8.0K
+drwxrwxrwx  2 root     root     4.0K Jan  8 15:18 ./
+drwxr-xr-x 16 manningx manningx 4.0K Jan  8 15:17 ../
+-rw-------  1 root     root        0 Jan  8 15:18 filetodelete
+[ manningx@example:~/testdir ] $ rm filetodelete
+rm: remove write-protected regular empty file ‘filetodelete’? y
+[ manningx@example:~/testdir ] $ ls -lah
+total 8.0K
+drwxrwxrwx  2 root     root     4.0K Jan  8 15:37 ./
+drwxr-xr-x 16 manningx manningx 4.0K Jan  8 15:17 ../
+</code></pre></div></div>
+
+<p>Oh dear. The file has been removed! How did this happen?!</p>
+
+<p>This relates to the one key piece of information I missed and did not fully comprehend. <code class="highlighter-rouge">~/testdir</code> is owned by root, but has read-write-executable permissions for everyone! This directory has been chmod’d 0777!</p>
+
+<p>The one rule to remember here is that files permissions are affected by the containing directories permissions. Sure, I can’t read, write nor execute the file, but I can delete it!</p>
+
+<p>So here is another great example of <strong>why you should not chmod 0777 all the things!</strong></p>
+
+<h2 id="what-about-when-everyone-needs-access-to-a-directory">What about when everyone needs access to a directory?</h2>
+
+<p>OK, so sometimes there are times when you need to have read-write-executable permissions for everyone on the system. A fantastic example is the <code class="highlighter-rouge">/tmp</code> directory. How do we work around that?</p>
+
+<p>You might now be asking, “Hang on, how come I can’t delete another user’s files in <code class="highlighter-rouge">/tmp</code>?”. Well, this is what I am alluding too.</p>
+
+<p>You may have noticed that instead of writing <code class="highlighter-rouge">chmod 777</code>, I have been writing <code class="highlighter-rouge">chmod 0777</code>, the full octal notation. This is purposely done because there are a series of values that can be set before the 777, called special permissions. Namely, setuid (4), setgid (2), and the <em>Sticky bit</em> (1).</p>
+
+<p>The special permissions on <code class="highlighter-rouge">/tmp</code> are important to consider as these provide other permissions based functions such as stopping you from deleting other user’s directories and files.</p>
+
+<h3 id="what-does-the-sticky-bit-look-like">What does the sticky bit look like?</h3>
+
+<p>Below are the permissions for <code class="highlighter-rouge">/tmp</code> that show that the sticky bit is enabled:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ manningx@example:/ ] $ ls -lahd tmp
+drwxrwxrwt 13 root root 4.0K Jan  8 15:56 tmp/
+</code></pre></div></div>
+
+<p>Notice the <code class="highlighter-rouge">t</code> on the end of the directories permissions. This directory has the following permissions applied to it:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># chmod 1777 /tmp
+</code></pre></div></div>
+
+<p>or:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># chmod +t /tmp
+</code></pre></div></div>
+
+<p>Let’s try this on our previous example to see it in action. First, I am going to add the sticky bit to the <code class="highlighter-rouge">~/testdir</code> directory.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ manningx@example:~/testdir ] $ sudo chmod +t ../testdir/
+</code></pre></div></div>
+
+<p>Now, let’s try to delete that file:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ manningx@example:~/testdir ] $ ls -lah
+total 8.0K
+drwxrwxrwt  2 root     root     4.0K Jan  8 15:52 ./
+drwxr-xr-x 16 manningx manningx 4.0K Jan  8 15:17 ../
+-rw-------  1 root     root        0 Jan  8 15:52 filetodelete
+</code></pre></div></div>
+
+<p>As you can see, the sticky bit (<code class="highlighter-rouge">t</code>) is applied to <code class="highlighter-rouge">~/testdir</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ manningx@example:~/testdir ] $ rm filetodelete
+rm: remove write-protected regular empty file ‘filetodelete’? y
+rm: cannot remove ‘filetodelete’: Operation not permitted
+[ manningx@example:~/testdir ] $ ls -lah
+total 8.0K
+drwxrwxrwt  2 root     root     4.0K Jan  8 15:52 ./
+drwxr-xr-x 16 manningx manningx 4.0K Jan  8 15:17 ../
+-rw-------  1 root     root        0 Jan  8 15:52 filetodelete
+[ manningx@example:~/testdir ] $
+</code></pre></div></div>
+
+<p>By Jove! I can’t delete <code class="highlighter-rouge">filetodelete</code>, it’s still there!</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2016/12/23/openbsd-6-0-simple-nat-with-pf.html">OpenBSD 6.0: Simple NAT with pf</a></h2>
+          </header>
+          <section>
+            <p>This post is more of a “note to self”, but this is a summary of a simple NAT setup between an “Internal” interface and an “External” interface on our OpenBSD server or router.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/12/23/openbsd-6-0-simple-nat-with-pf.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2017/01/12/throwback-thursday-thermostat.html">Throwback Thursday: Thermostat</a></h2>
+          </header>
+          <section>
+            <p>I’ve decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/01/12/throwback-thursday-thermostat.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

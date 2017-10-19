@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Creating a Guest Wireless Network on a MikroTik running RouterOS 6 with Winbox</h1>
+      <p class="post-meta">Dec 5, 2015</p>
+    </header>
+
+    <section>
+      <p>I revived a brand new MikroTik routerboard through the post recently; an RB2011U series router to be specific. My goal for using this router is to better manage my home network, VPN connections and the guests who come into our home. The last point is fairly important to me as I want to create a guest WiFi network to isolate visitors from the rest of the network, BYOD is the acronym for “Bring Your Own Disaster” after all.</p>
+
+<p>This small walkthrough is perhaps a bit uncharacteristic of the way I work as I am utilizing the Winbox GUI application rather than configuring the MikroTik over SSH. Other tutorials may be done over SSH as this is my favourite way of working.</p>
+
+<p>Let’s begin with outlining what the Guest Wireless network needs to do.</p>
+
+<ol>
+  <li>Be the WiFi AP given out to guests.</li>
+  <li>Provide guests with access to the internet.</li>
+  <li>Place guests on a different subnet to residents</li>
+  <li>Isolate guest devices from resident devices (such as the NAS).</li>
+</ol>
+
+<p>This guide assumes there is a pre-existing configuration on the router. On my router we have 10.0.0.0/16 as our resident network - WAN comes in on ether1-gateway. Wlan1 is configured as our main wireless access point - the SSID is hidden so that the guest network is the only visible wireless network.</p>
+
+<p>So let’s start. First up, load up winbox.exe. Here I am using Debian Linux, winbox.exe run’s AOK in Wine. Connect to your router. First thing’s first, put the router into safe mode (just in case we do something stupid and lose connection to the router).</p>
+
+<p><img src="/images/2016/07/001-WinBox.png" alt="WinBox" /></p>
+
+<p>Let’s kick off the configuration with setting up a new bridge. This will be used for connecting our isolated guest network to the correct ethernet port on the router.</p>
+
+<p>Go to Interfaces: Add &gt; Bridge.</p>
+
+<p>Name your bridge something appropriate. Click OK.</p>
+
+<p><img src="/images/2016/07/002-add-bridge.png" alt="Add Bridge" /></p>
+
+<p>Now we need to set up our Virtual Access Point for our guest network. We first need a securtity profile (basically the authentication settings for our WiFi).</p>
+
+<p>Go to Wireless &gt; Security Profiles &gt; Add.</p>
+
+<p>Name your security profile something appropriate, use WPA2-PSK using AES. Set the Pre-Shared Key to the desired password for your Guest Network WiFi. Click OK.</p>
+
+<p><img src="/images/2016/07/004-guest-security-profile.png" alt="Guest Security Profile" /></p>
+
+<p>Now, create your Virtual Access Point Interface.</p>
+
+<p>Go to Interfaces &gt; Add &gt; VirtualAP &gt; General Tab</p>
+
+<p>Name the interface something sensible, eg. “Guest-AP”. Proceed to the Wireless Tab.</p>
+
+<p><img src="/images/2016/07/005-guestnetwork-vAP.png" alt="Guest Network AP" /></p>
+
+<p>Under the Wireless Tab, set the SSID, Master Interface (wlan1) and associate your Security Profile that you created above.</p>
+
+<p>Proceed to the WDS tab.</p>
+
+<p><img src="/images/2016/07/006-guestnetwork-ssid-securityprofile.png" alt="Guest Network SSID" /></p>
+
+<p>Under the WDS tab, select your guest bridge created earlier. Click OK.</p>
+
+<p><img src="/images/2016/07/007-WDS-bridge.png" alt="WDS Bridge" /></p>
+
+<p>Let’s continue on to create a bridge port. Think of this as associating the virtual AP interface with the guest bridge we created.</p>
+
+<p>Go to IP &gt; Bridge &gt; Ports &gt; Add</p>
+
+<p>Select your virtual AP interface and your guest bridge. Click OK.</p>
+
+<p><img src="/images/2016/07/008-add-bridge-port.png" alt="Add Bridge Port" /></p>
+
+<p>We now need to associate a list of IP addresses to our guest bridge.</p>
+
+<p>Go to IP &gt; Addresses &gt; Add</p>
+
+<p>Enter your address subnet that you will associate with your guest bridge. In my example I am using CIDR 10.1.0.1/24 for my guest network. For this my network is set to 10.1.0.0 and my interface is the guest bridge.</p>
+
+<p>Click OK</p>
+
+<p><img src="/images/2016/07/009-new-ip-address.png" alt="New IP Address" /></p>
+
+<p>We now want to pool these IP addresses for a DHCP server in our guest network.</p>
+
+<p>Go to: IP &gt; Pool &gt; Add</p>
+
+<p>Name your pool and enter the range of addresses. Eg. 10.1.0.10-10.1.0.254</p>
+
+<p>Click OK</p>
+
+<p><img src="/images/2016/07/010-guest-pool.png" alt="Guest IP Pool" /></p>
+
+<p>Now to create our DHCP server to assign these IP addresses to our connected devices.</p>
+
+<p>Go to: IP &gt; DHCP Server &gt; Add</p>
+
+<p>Name your DHCP Server, associate your guest brige interface to the DHCP server then select your guest IP pool to the server. Click OK.</p>
+
+<p><img src="/images/2016/07/011-GuestDHCPServer.png" alt="Guest DHCP Server" /></p>
+
+<p>Under the Network tab of the DHCP Server configuration screen, click Add. This part is what is sent to devices connecting to our guest network.</p>
+
+<p>Add our address CIDR: 10.1.0.0/24, set the gateway to 10.1.0.1 with a netmask of 24. Our DNS server sits on our router, 10.1.0.1. Click OK.</p>
+
+<p><img src="/images/2016/07/012-DHCP-Networks.png" alt="DHCP Servers" /></p>
+
+<p>Coming to the end now, we need to set up NAT rule for our guest network.</p>
+
+<p>Go to: IP &gt; Firewall &gt; NAT</p>
+
+<p>Under the General tab set the source address to the CIDR of our guest network (eg. 10.1.0.0/24) - Set the Out Interface to ether1-gateway (our WAN port).</p>
+
+<p><img src="/images/2016/07/013a-Firewall-NAT.png" alt="Firewall: NAT" /></p>
+
+<p>Under the Extra tab, set Action to masquerade.</p>
+
+<p><img src="/images/2016/07/013b-FirewallNAT.png" alt="Firewall: NAT Masquerade" /></p>
+
+<p>Finally, we are going to isolate the guest network from the rest of the network.</p>
+
+<p>Go to: IP &gt; Firewall &gt; Add</p>
+
+<p>Under the General tab set Chain to “forward” - Set your In. Interface to your guest bridge. In the Out. Interface, tick the “Not” box to negate the interface - set this interface to ether1-gateway. (Basically, Out Interface Not Equal to ether1-gateway).</p>
+
+<p><img src="/images/2016/07/014a-FirewallIsolateGuest.png" alt="Firewall: Guest Network" /></p>
+
+<p>Lastly, proceed to the Action tab and set the action to Drop. Click OK.</p>
+
+<p><img src="/images/2016/07/014b-FirewallIsolateGuest.png" alt="Firewall: Drop Guest" /></p>
+
+<p>… and we are done.</p>
+
+<p>Don’t forget to unselect Safe Mode and save. Enjoy your new guest network.</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+
+      
+        <article class="6u 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2015/12/09/d8-on-lemph.html">Drupal 8 on nginx HHVM and PHP5-FPM fallback.</a></h2>
+          </header>
+          <section>
+            <p>It is, without a doubt, an exciting time for everyone working with Drupal and PHP in general - a great way to round of 2015. We’ve seen two major releases of our favourite open source projects, Drupal 8 and PHP 7. Whilst the performance boost of PHP7 over PHP5.6 is beyond anecdotal - it is proven - the performance of Drupal 8 on PHP7 vs. PHP5.6 isn’t as great when compared to other open source projects (see <a href="https://kinsta.com/blog/the-definitive-php-7-final-version-hhvm-benchmark/">Kinsta.com</a> benchmarking).</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2015/12/09/d8-on-lemph.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

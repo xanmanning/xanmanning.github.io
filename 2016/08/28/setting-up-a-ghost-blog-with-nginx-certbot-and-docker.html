@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Setting Up a Ghost Blog with nginx, Certbot and Docker.</h1>
+      <p class="post-meta">Aug 28, 2016</p>
+    </header>
+
+    <section>
+      <p>I thought I would write up my experiences with setting up Ghost served over HTTPS as it’s quite a good way of jumping into Docker and using nginx as a reverse proxy to route traffic between Docker applications.</p>
+
+<p>In this tutorial we will use the following applications:</p>
+
+<ul>
+  <li>Debian (or other Linux)</li>
+  <li>nginx (Web Server, Reverse Proxy and Load Balancer)</li>
+  <li>Certbot (client for Let’s Encrypt certificates)</li>
+  <li>Docker (containerization software)</li>
+  <li>Docker-Compose (tool for defining multi-container environments, useful for single containers too!)</li>
+  <li>Ghost (a nice weblog tool written in node.js).</li>
+</ul>
+
+<p>Eventually we will have something like the below:</p>
+
+<p><img src="/images/2016/08/DockerGhostProposedSetup.png" alt="Proposed Setup" /></p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>I’m assuming you already have a Linux machine, be it a dedicated server, a VM, an EC2 or a <a href="https://m.do.co/c/adaa5ab1a3b4">Droplet</a>.</p>
+
+<p>Your first step is to go grab <a href="https://docs.docker.com/engine/installation/linux/">Docker and install it</a>.</p>
+
+<p>Make sure you also have a cup of coffee, you may need a reboot.</p>
+
+<p>Also, install docker-compose. If you run Python and have pip installed then do the following:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install docker-compose
+</code></pre></div></div>
+
+<p>Also, don’t forget to have your regular user as a Docker user, that way we aren’t running as root:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>usermod -aG docker [username]
+</code></pre></div></div>
+
+<p>You can check your install with the <code class="highlighter-rouge">hello-world</code> image by running:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run hello-world
+</code></pre></div></div>
+
+<p>You will see the following on successful installation.</p>
+
+<p><img src="/images/2016/08/DockerHelloWorld.png" alt="Docker Hello World" /></p>
+
+<p>When you are done with Docker, I would install nginx. In this tutorial we are running this from the package manger. On Debian/Ubuntu:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install nginx
+</code></pre></div></div>
+
+<p>Check nginx is installed and running by visiting http://your.ip.or.hostname/ - you should get a stock “Welcome to Nginx” page:</p>
+
+<p><img src="/images/2016/08/nginxWelcome.png" alt="nginx Welcome page" /></p>
+
+<h2 id="set-up-our-project">Set up our project</h2>
+
+<p>Create a new directory, this will host our Ghost project in Docker. We basically need somewhere to store our config files, our environment files and somewhere we can basically backup to somewhere like S3.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir -p /var/www/docker/ghostblog/config/
+cd /var/www/docker/ghostblog/
+</code></pre></div></div>
+
+<h2 id="creating-a-docker-compose-file">Creating a Docker-Compose file.</h2>
+
+<p>As mentioned we are using <em>Docker-Compose</em> to organise our Docker containers. In order to use Docker-Compose we need a file called <code class="highlighter-rouge">docker-compose.yml</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim docker-compose.yml
+</code></pre></div></div>
+
+<p>Below is an example that I feel works well.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">ghost</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">ghost:latest</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">2368:2368</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">./config:/var/lib/ghost"</span>
+    <span class="na">env_file</span><span class="pi">:</span> <span class="s">./config/site.env</span>
+</code></pre></div></div>
+
+<p>So, let’s walk through the YAML. We have defined our first container (by name) as <code class="highlighter-rouge">ghost:</code>, this is pulling the <code class="highlighter-rouge">image:</code> <em>ghost:latest</em> from <a href="https://hub.docker.com">hub.docker.com</a>. This is basically like pulling from a git repository. Just like pulling from a git repository you can also pull tags, however, in order to get the latest security updates for Ghost we are going to pull from ‘latest’.</p>
+
+<p>We also want the container to <code class="highlighter-rouge">restart: always</code> whenever the node.js process dies. This helps us recover from any fatal errors as best we can - bascially the container should only stop when we tell it to.</p>
+
+<p>Next we are setting up the networking. This defines which ports we want open and how they map onto the container’s ports. This is done using <code class="highlighter-rouge">ports:</code> and for each item in the list we use <code class="highlighter-rouge">- host:container</code> as the format. Reading the documentation on the Ghost container I know that port 2368 is used as the listening port. For the sake of this configuration I am going to open the same port up on the host.</p>
+
+<p><strong>Just a reminder</strong> to anyone using UFW, remember that Docker is (by default) allowed to manage iptables and these changes will not show in UFW. This can be fixed by changing the startup options of your Docker Daemon. <a href="https://xan-manning.co.uk/quick-security-tip-docker-containers-and-ufw/">Guide here</a>.</p>
+
+<p>Next, <code class="highlighter-rouge">volumes:</code> helps us to mount a directory on the host to a directory within the container. Only certain directories (defined in the original Dockerfile) can be mounted on the host, in the Ghost container this is <code class="highlighter-rouge">/var/lib/ghost</code> which is our configuration directory. To mount a volume, again it is a list item in the config that is formatted like so: <code class="highlighter-rouge">- /path/on/host:/path/in/container</code>. In this case we want to map a directory with the relative path <code class="highlighter-rouge">./config</code></p>
+
+<p>Finally, we are going to pass environmental values in a file (<code class="highlighter-rouge">env_file:</code>) called <code class="highlighter-rouge">./config/site.env</code>.</p>
+
+<p>And we are done with Docker for now.</p>
+
+<h2 id="creating-the-env-file">Creating the .env file</h2>
+
+<p>The .env file in our config directory will control the environment we are working in. In node.js you can run in a production environment or a development environment - these mean separate databases so you don’t contaminate your blog during development.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim config/site.env
+</code></pre></div></div>
+
+<p>Our file is going to start off like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Environmental Variables
+# NODE_ENV=production
+</code></pre></div></div>
+
+<p>We have commented out <code class="highlighter-rouge">NODE_ENV=production</code> for now so that when Ghost first starts up it is in Development mode.</p>
+
+<h2 id="lets-fire-up-the-container">Let’s fire up the container.</h2>
+
+<p>To start the container, run:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up
+</code></pre></div></div>
+
+<p>This will load up the container and you will see firstly a pull of the Ghost image from Docker Hub:</p>
+
+<p><img src="/images/2016/08/ghostPull.png" alt="Ghost Docker Pull" /></p>
+
+<p>Then the output from the Ghost container:</p>
+
+<p><img src="/images/2016/08/ghost_run.png" alt="Ghost First Run" /></p>
+
+<p>You can now go visit your blog by browsing to http://your.ip.or.hostname:2368/ You should see the welcome blog page:</p>
+
+<p><img src="/images/2016/08/ghostFirstRun.png" alt="Ghost Welcome Post" /></p>
+
+<p>Next, use Ctrl+C to stop the Ghost container.</p>
+
+<h2 id="configure-your-ghost-blog">Configure your Ghost Blog</h2>
+
+<p>If you now change directory to the <code class="highlighter-rouge">./config</code> directory, you will notice that it has a lot more files and directories in there. These have been created by the Ghost Docker container. In this directory is a new file called <code class="highlighter-rouge">config.js</code> - this file is used for configuring your Ghost blog. Here we are going to define development and production environment configurations.</p>
+
+<p><img src="/images/2016/08/ghostConfigDir.png" alt="Config Directory" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim config/config.js
+</code></pre></div></div>
+
+<p>Firstly we shall configure the production environment. In the <code class="highlighter-rouge">config = {}</code> object we have a section <code class="highlighter-rouge">production: {},</code> - here there is a variable called <code class="highlighter-rouge">url:</code>, you need to change this to the production URL that you will access your blog on. By default this is set to ‘http://my-ghost-blog.com’.</p>
+
+<p>We will be setting this to be served over HTTPS so we need to set it accordingly:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">url</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://xan-manning.co.uk'</span><span class="err">,</span>
+</code></pre></div></div>
+
+<p>There is also a slight bug in the production config that will cause you some problems later on, so best patch this now. After the <code class="highlighter-rouge">server: {},</code> section, paste the following:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">paths</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nl">contentPath</span><span class="p">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">GHOST_CONTENT</span><span class="p">,</span> <span class="s1">'/'</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><strong>Make sure you have a <code class="highlighter-rouge">,</code> (comma) after the last <code class="highlighter-rouge">}</code> in for the <code class="highlighter-rouge">server:</code> section</strong>.</p>
+
+<p>Mine looks like this:</p>
+
+<p><img src="/images/2016/08/ghostConfigJs.png" alt="Ghost JS Config" /></p>
+
+<p>Now let’s get ready to go live. Edit the <code class="highlighter-rouge">site.env</code> file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim config/site.env
+</code></pre></div></div>
+
+<p>We now want to uncomment the production environmental variable as below:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Environmental Variables
+NODE_ENV=production
+</code></pre></div></div>
+
+<h2 id="setting-up-nginx-with-https-using-certbot">Setting up nginx with HTTPS using Certbot</h2>
+
+<p>For best practice we are going to serve our site over HTTPS. To do this we are going to use <a href="https://certbot.eff.org/">Certbot provided by the Electronic Frontier Foundation</a> (EFF). This is a simple, Python based client created to issue certificates from Let’s Encrypt.</p>
+
+<h3 id="installing-certbot">Installing Certbot</h3>
+
+<p>Visit the <a href="https://certbot.eff.org/">Certbot website</a> and choose your installation. Remember you are using nginx in this configuration.</p>
+
+<p><img src="/images/2016/08/cerbot.png" alt="Certbot Selection" /></p>
+
+<h3 id="setting-up-nginx">Setting up nginx</h3>
+
+<p>First off, let’s make our Diffie-Hellmann param file:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl dhparam -out /etc/nginx/dh.pem 8192
+</code></pre></div></div>
+
+<p>Grab another coffee, this takes a while.</p>
+
+<p><img src="/images/2016/08/diffieHellman.png" alt="DHParam" /></p>
+
+<p>We’re now going to add the following to our <code class="highlighter-rouge">default</code> vhost. This will allow us to create our first certificate.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/nginx/sites-available/default
+</code></pre></div></div>
+
+<p>Under the <code class="highlighter-rouge">location / {}</code> block insert the following:</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">location</span> <span class="p">~</span> <span class="sr">/\.well-known\/acme-challenge</span> <span class="p">{</span>
+        <span class="kn">root</span> <span class="n">/var/www/html</span><span class="p">;</span>
+        <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Restart nginx</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart nginx
+</code></pre></div></div>
+
+<p>Now we’re going to create a vhost to serve our Ghost blog. In <code class="highlighter-rouge">/etc/nginx/sites-available</code> create your new config file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/nginx/sites-available/xan-manning.co.uk
+</code></pre></div></div>
+
+<p>In here we need to define two blocks. The first will define our HTTP server running on port 80 and our second block running HTTPS on port 443. We won’t be doing proxy pass on port 80, merely serving a 301 redirect to the HTTPS.</p>
+
+<p>Below is a simple config, <strong>remember to edit with your own URLs</strong>.</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+        <span class="kn">listen</span>                    <span class="mi">80</span><span class="p">;</span>
+        <span class="kn">listen</span>                    <span class="s">[::]:80</span><span class="p">;</span>
+        <span class="kn">server_name</span>               <span class="s">xan-manning.co.uk</span> <span class="s">www.xan-manning.co.uk</span><span class="p">;</span>
+
+        <span class="kn">location</span> <span class="p">~</span> <span class="sr">/\.well-known\/acme-challenge</span> <span class="p">{</span>
+            <span class="kn">root</span> <span class="n">/var/www/html</span><span class="p">;</span>
+            <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+            <span class="kn">return</span>                <span class="mi">301</span> <span class="s">https://</span><span class="nv">$server_name$request_uri</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span>                        <span class="mi">443</span> <span class="s">ssl</span> <span class="s">spdy</span><span class="p">;</span>
+    <span class="kn">listen</span>                        <span class="s">[::]:443</span> <span class="s">ssl</span> <span class="s">spdy</span><span class="p">;</span>
+    <span class="kn">client_max_body_size</span>          <span class="mi">20M</span><span class="p">;</span>
+
+
+    <span class="kn">ssl_certificate</span>               <span class="n">/etc/letsencrypt/live/xan-manning.co.uk/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span>           <span class="n">/etc/letsencrypt/live/xan-manning.co.uk/privkey.pem</span><span class="p">;</span>
+
+    <span class="kn">ssl_protocols</span>                 <span class="s">TLSv1</span> <span class="s">TLSv1.1</span> <span class="s">TLSv1.2</span><span class="p">;</span>
+    <span class="kn">ssl_ciphers</span>                   <span class="s">"ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"</span><span class="p">;</span> <span class="c1">#Disables all weak ciphers
+</span>
+    <span class="kn">ssl_dhparam</span>                   <span class="n">/etc/nginx/dh.pem</span><span class="p">;</span>
+    <span class="kn">ssl_prefer_server_ciphers</span>     <span class="no">on</span><span class="p">;</span>
+    <span class="kn">ssl_session_timeout</span>           <span class="mi">30m</span><span class="p">;</span>
+    <span class="kn">ssl_session_cache</span>             <span class="s">shared:SSL:10m</span><span class="p">;</span>
+
+    <span class="kn">ssl_stapling</span>                  <span class="no">on</span><span class="p">;</span>
+    <span class="kn">resolver</span>                      <span class="mi">8</span><span class="s">.8.8.8</span><span class="p">;</span>
+    <span class="kn">ssl_stapling_verify</span>           <span class="no">on</span><span class="p">;</span>
+
+    <span class="kn">add_header</span>                    <span class="s">Strict-Transport-Security</span> <span class="s">max-age=31536000</span><span class="p">;</span>
+
+    <span class="kn">server_name</span>                   <span class="s">xan-manning.co.uk</span> <span class="s">www.xan-manning.co.uk</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">proxy_set_header</span>          <span class="s">Host</span>              <span class="nv">$host</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>          <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>          <span class="s">X-Real-IP</span>         <span class="nv">$remote_addr</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>          <span class="s">X-Forwarded-For</span>   <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>          <span class="s">Proxy</span>             <span class="s">""</span><span class="p">;</span>
+
+        <span class="kn">proxy_pass</span>                <span class="s">http://localhost:2368</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/\.well-known\/acme-challenge</span> <span class="p">{</span>
+        <span class="kn">root</span> <span class="n">/var/www/html</span><span class="p">;</span>
+        <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/\.ht</span> <span class="p">{</span>
+        <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The main parts of the above config we need to explain are that plain old HTTP is being 301 redirected to HTTPS (443) so this is a small block.</p>
+
+<p>In the HTTPS block we have to define our certificate paths, <strong>remember to change these to your own paths</strong>. Below this is a fairly standard TLS configuration.</p>
+
+<p>We then have 2 main location blocks. <code class="highlighter-rouge">location / {}</code> is used to define our proxy pass. All traffic visiting our webserver is going to be passed to our Ghost Docker container on port 2368 (http://localhost:2368).</p>
+
+<p>Next we need to define our block for the acme-challenge for our certificate. This is done in the <code class="highlighter-rouge">location ~ /\.well-known\/acme-challenge {}</code> block. Here we are allowing all to visit this page. This will allow for validation of certificates. We are defining this as our shared webroot <code class="highlighter-rouge">/var/www/html</code>. Configure this however you want but remember this value for later on.</p>
+
+<h3 id="generate-our-first-certificate">Generate our first certificate!</h3>
+
+<p>Before we enable the vhost in nginx, we need to create our first certificate. This has been prepared for in our default config. Remember to use your own domain.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>certbot certonly --webroot -w /var/www/html -d xan-manning.co.uk -d www.xan-manning.co.uk
+</code></pre></div></div>
+
+<p>Once you have generated your certificate it’s time to enable the nginx config.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ln -s /etc/nginx/sites-available/xan-manning.co.uk /etc/nginx/sites-enables/xan-manning.co.uk
+</code></pre></div></div>
+
+<p>Run an nginx config test for good measure</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nginx -t
+</code></pre></div></div>
+
+<p>If all is good, restart nginx!</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart nginx
+</code></pre></div></div>
+
+<p><img src="/images/2016/08/nginxconfigured.png" alt="nginx success" /></p>
+
+<p>Now, when you visit your new site you will see a <code class="highlighter-rouge">502 Bad Gateway</code> error. Don’t panic. This is meant to happen! This means we haven’t started our Ghost container.</p>
+
+<p><img src="/images/2016/08/badGateway.png" alt="Bad Gateway" /></p>
+
+<p>So what now? Easy…</p>
+
+<h2 id="launch-our-production-ghost-blog">Launch our production Ghost Blog</h2>
+
+<p>Go to our Ghost container webroot.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /var/www/docker/ghostblog/
+</code></pre></div></div>
+
+<p>Now we start up our Docker Container with <code class="highlighter-rouge">docker-compose</code> like so. This time we are demonizing it so we need to use the -d argument.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up -d
+</code></pre></div></div>
+
+<p><img src="/images/2016/08/dockercomposedaemon.png" alt="Docker Compose Daemon" /></p>
+
+<p>Et voilla! Visit your blog on HTTPS and go to the setup page (https://your.ip.or.hostname/ghost).</p>
+
+<p><img src="/images/2016/08/WelcomeToGhost.png" alt="Welcome to Ghost" /></p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2016/08/19/re-architecting-a-global-data-object-store.html">Re-architecting a Global Data Object store</a></h2>
+          </header>
+          <section>
+            <p>In a recent project I have had the opportunity to work with MongoDB, admittedly this is the first real attempt to do so in any real capacity.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/08/19/re-architecting-a-global-data-object-store.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2016/09/02/so-this-happened.html">So this happened...</a></h2>
+          </header>
+          <section>
+            <p>I may have geeked out my car. <strong>#tuxftw!</strong></p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/09/02/so-this-happened.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

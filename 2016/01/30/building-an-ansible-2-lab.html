@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Building an Ansible 2 Lab in Vagrant/VirtualBox</h1>
+      <p class="post-meta">Jan 30, 2016</p>
+    </header>
+
+    <section>
+      <p>This post is all about Ansible. 2016 <a href="http://www.ansible.com/blog/ansible-2.0-launch">saw the release of Ansible 2</a>, which comes with a few new features however the bulk of the effort in version 2 looks to have been in refactoring. Regardless, I have found that my job often requires me to be doing lots of dull tasks on multiple servers. Whilst we have some older servers with some quite, ahem, bespoke and quirky setups making them unsuitable for integration into a configuration management system - some tasks can be performed en-masse using Ansible.</p>
+
+<p><strong>So Why Ansible?</strong></p>
+
+<p>Unlike configuration management systems like Puppet and Chef, Ansible doesn’t require an agent - all automation tasks are done over SSH. Ansible is also pretty easy to configure, playbooks (a list of actions) being defined inside a YAML file.</p>
+
+<p><strong>How do I try it out?</strong></p>
+
+<p>I’m the kind of person who doesn’t like trying out things on live servers, be it wisdom or common sense. My first port of call is a VM, sometimes on AWS but often in VirtualBox. Recently I became a big fan of Vagrant because I can set up consistently repeatable development environments for testing applications so considering Ansible now works with Vagrant this is a good starting point. What is more interesting is that we can also build a quick collection of VMs in Vagrant instantly to test our newly found Ansible-fu on.</p>
+
+<p><strong>Prerequisites</strong></p>
+
+<p>Before you start I highly recommend that the machine you work on is a minimum of an Intel i5 processor with 8GB of RAM. Both my work and home computers exactly match this spec however my work computer does struggle. I have done this on a Mac as well as on an Ubuntu 14.04 desktop and a Debian Jessie desktop, as such this guide is written in the most compatible way to either type of system. Let’s round up what you will need:</p>
+
+<ul>
+  <li>Linux / Mac OS X</li>
+  <li>Intel i5 or greater</li>
+  <li>&gt;= 8GB RAM</li>
+  <li>VirtualBox</li>
+  <li>Vagrant</li>
+  <li>Python (with pip).</li>
+</ul>
+
+<p><strong>Installing Ansible</strong></p>
+
+<p>I’m skipping the VirtualBox/Vagrant bit as that should be very straight forward, if in doubt search the internet. I’m also assuming you have a copy of Python 3 and pip installed on your computer - again this is easy to achieve. We aren’t bothering with package managers for installing Ansible as they are often out of date.</p>
+
+<p>First thing is first. As root, run:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install ansible
+</code></pre></div></div>
+
+<p>Wow. <em>Is it that simple?</em> Yes.</p>
+
+<p><strong>Creating our Lab</strong></p>
+
+<p>Here’s where the tricky part is, creating a load of Virtual Machines for us to manage using Ansible. Vagrant, however, will make this a lot simpler for us. Ideally as individuals new to Ansible we want to be testing all aspects of server ownership, from provisioning to management, on a cluster of VMs to get a feel for what we can achieve. In this example we are just going to fire up 3 Ubuntu 14.04 servers. Like me you may have a mixed selection of servers in your ecosystem but we can group hosts in Ansible which allows us finer tuning of tasks upon our servers, specific to their needs.</p>
+
+<p>Download <a href="https://github.com/xanmanning/vagrant-ansible-lab">Ansible Lab from GitHub</a> to get a copy of the files used in this tutorial.</p>
+
+<p>Then checkout to v1.0.0</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout v1.0.0
+</code></pre></div></div>
+
+<p>Lets create our <code class="highlighter-rouge">Vagrantfile</code>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Using Vagrant version 2. No ifs or buts. Vagrant.configure("2") do |config|</span>
+    <span class="c1"># Number of nodes. On an i5 with 8Gb RAM I use 3.</span>
+    <span class="no">N</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="c1"># Iterate for nodes</span>
+    <span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="no">N</span><span class="p">).</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">node_id</span><span class="o">|</span>
+        <span class="n">nid</span> <span class="o">=</span> <span class="p">(</span><span class="n">node_id</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Define our node</span>
+        <span class="n">config</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">define</span> <span class="s2">"node</span><span class="si">#{</span><span class="n">nid</span><span class="si">}</span><span class="s2">"</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
+            <span class="n">n</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">box</span> <span class="o">=</span> <span class="s2">"trusty64"</span>
+            <span class="n">n</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">box_url</span> <span class="o">=</span> <span class="s2">"http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"</span>
+            <span class="n">n</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">boot_timeout</span> <span class="o">=</span> <span class="mi">600</span>
+            <span class="n">n</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">hostname</span> <span class="o">=</span> <span class="s2">"node</span><span class="si">#{</span><span class="n">nid</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">n</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">network</span> <span class="s2">"private_network"</span><span class="p">,</span> <span class="ss">ip: </span><span class="s2">"10.8.10.</span><span class="si">#{</span><span class="mi">10</span> <span class="o">+</span> <span class="n">nid</span><span class="si">}</span><span class="s2">"</span>
+
+            <span class="n">n</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">provider</span> <span class="s2">"virtualbox"</span> <span class="k">do</span> <span class="o">|</span><span class="n">vb</span><span class="o">|</span>
+                <span class="n">vb</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"node</span><span class="si">#{</span><span class="n">nid</span><span class="si">}</span><span class="s2">"</span>
+                <span class="n">vb</span><span class="p">.</span><span class="nf">memory</span> <span class="o">=</span> <span class="mi">512</span>
+            <span class="k">end</span>
+
+            <span class="c1"># If this is our last node, lets provision all.</span>
+            <span class="k">if</span> <span class="n">node_id</span> <span class="o">==</span> <span class="no">N</span>
+                <span class="n">n</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">provision</span> <span class="s2">"ansible"</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
+                    <span class="n">a</span><span class="p">.</span><span class="nf">limit</span> <span class="o">=</span> <span class="s2">"all"</span>
+                    <span class="n">a</span><span class="p">.</span><span class="nf">verbose</span> <span class="o">=</span> <span class="s2">"v"</span>
+                    <span class="n">a</span><span class="p">.</span><span class="nf">playbook</span> <span class="o">=</span> <span class="s2">"provision.yml"</span>
+                <span class="k">end</span>
+            <span class="k">end</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>This <code class="highlighter-rouge">Vagrantfile</code> launches 3 nodes (you can change very easily this if you like, just alter the variable ‘N’). Each of these nodes is created from an Ubuntu 14.04 server image provided by Canonical. On each of these we have set up the hostname to be node0, node1, node2 etc. and given them an IP address of 10.8.10.(10 + nodeid).</p>
+
+<p>To make sure these 3 VMs are up to date with the latest software, we are going to use Ansible to run a provision script called <code class="highlighter-rouge">provision.yml</code>.</p>
+
+<p>In <code class="highlighter-rouge">provision.yml</code> we want to do two things:</p>
+
+<ol>
+  <li>Apply all package updates in apt</li>
+  <li>Insert an SSH key so that we can manage the machines without using <code class="highlighter-rouge">vagrant ssh</code>.</li>
+</ol>
+
+<p>To do this the playbook looks something like this:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Provision OS</span>
+  <span class="na">hosts</span><span class="pi">:</span> <span class="s">all</span>
+  <span class="na">vars</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">ansible_key</span><span class="pi">:</span> <span class="s">assets/ansible_rsa</span>
+    <span class="pi">-</span> <span class="na">ansible_pub_key</span><span class="pi">:</span> <span class="s">assets/ansible_rsa.pub</span>
+  <span class="na">tasks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upgrade OS</span>
+      <span class="na">become</span><span class="pi">:</span> <span class="s">yes</span>
+      <span class="na">become_method</span><span class="pi">:</span> <span class="s">sudo</span>
+      <span class="na">apt</span><span class="pi">:</span> <span class="s">upgrade=dist update_cache=yes</span>
+
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Insert (bad) Ansible Key</span>
+      <span class="na">authorized_key</span><span class="pi">:</span> <span class="s">user="vagrant" key="{{ lookup('file', ansible_pub_key) }}" state=present</span>
+</code></pre></div></div>
+
+<p>Now we have written our provisioning playbook and our <code class="highlighter-rouge">Vagrantfile</code>, let’s fire it up.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vagrant up
+</code></pre></div></div>
+<p>You will get to this point of provision that looks like it is stuck. Go grab yourself a coffee, this may take some time…</p>
+
+<p><img src="/images/2016/07/AnsibleUpgradeTask.png" alt="Ansible Provision" /></p>
+
+<p>Once this has done you should get a playbook summary (Play Recap) as below:</p>
+
+<p><img src="/images/2016/07/PlayRecap.png" alt="Ansible Play Recap" /></p>
+
+<p>An indicator of success is having 0 unreachable and 0 failed.</p>
+
+<p><strong>Diving into Playbooks, what next?</strong></p>
+
+<p>With Ansible everything is done over SSH. This means that there is one task yet to do before we can dive in and that is to connect to our VMs for the first time. Remember that you are always prompted to verify the RSA fingerprint on a new SSH connection for the first time.</p>
+
+<p>To save time, issue the following command:</p>
+
+<pre><code class="language-language-bash">chmod 0600 assets/ansible_rsa ; ssh -i assets/ansible_rsa vagrant@10.8.10.10 'echo $HOSTNAME' ; ssh -i assets/ansible_rsa vagrant@10.8.10.11 'echo $HOSTNAME' ; ssh -i assets/ansible_rsa vagrant@10.8.10.12 'echo $HOSTNAME'
+</code></pre>
+<p>and type ‘Yes’ to each prompt.</p>
+
+<p>Let’s add that new key to our keychain.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-add assets/ansible_rsa
+</code></pre></div></div>
+<p>Now we have verified the authenticity of our hosts, lets add them to our Ansible hosts file (<code class="highlighter-rouge">/etc/ansible/hosts</code>). I’ve added a host group called ‘vagrants’ for easy access and added the login user of ‘vagrant’ to each one of my VMs. Note that on a Mac you won’t have <code class="highlighter-rouge">/etc/ansible/hosts</code> on your OS, instead you can set the path to your hosts file in your shell config.</p>
+
+<p>(Required on Mac OS X Only)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export ANSIBLE_HOSTS=path_to_hostfile
+</code></pre></div></div>
+
+<p>Here is the host group in our hosts file:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[vagrants]
+10.8.10.10         ansible_ssh_user=vagrant
+10.8.10.11         ansible_ssh_user=vagrant
+10.8.10.12         ansible_ssh_user=vagrant
+</code></pre></div></div>
+
+<p><strong>Trying an example playbook</strong></p>
+
+<p>Now, let’s try our first playbook, one that we will notice a change in state. In the example files I have provided, we are going to run <code class="highlighter-rouge">bashrc.yml</code>. This playbook specifically changes the <em>$PS1</em> prompt in bash so that it is all pretty colours. To first take a look at the prompt, log in to any of the three nodes.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh vagrant@10.8.10.10
+</code></pre></div></div>
+
+<p>You will notice the dull default prompt.</p>
+
+<p><img src="/images/2016/07/DullPrompt.png" alt="Dull Bash Prompt" /></p>
+
+<p>Now type <code class="highlighter-rouge">exit</code> so that we can run our playbook. To do this, run:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook playbooks/bashrc.yml
+</code></pre></div></div>
+
+<p>Once complete, log in to any of the three nodes and you will notice the new coloured prompt.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh vagrant@10.8.10.10
+</code></pre></div></div>
+
+<p><img src="/images/2016/07/NicePrompt.png" alt="Coloured Prompt" /></p>
+
+<p>And voilla, this has been run on ALL your nodes. Go forth and play with Ansible.</p>
+
+<p>Download <a href="https://github.com/xanmanning/vagrant-ansible-lab">Ansible Lab from GitHub</a></p>
+
+<p>Then checkout to v1.0.0</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout v1.0.0
+</code></pre></div></div>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2015/12/22/two-node-glusterfs-vagrant.html">Two Node GlusterFS in Vagrant</a></h2>
+          </header>
+          <section>
+            <p>I’ve been experimenting with GlusterFS recently and I have found it fairly useful to be able to roll out a quick Gluster volume to play with. Vagrant here is your friend, you can roll out VMs fairly quickly and dispose of them leaving little to no mess afterwards.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2015/12/22/two-node-glusterfs-vagrant.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2016/07/19/migrated-to-ghost.html">Migrated to Ghost</a></h2>
+          </header>
+          <section>
+            <p>You may or may not have noticed that my site has changed a bit. Originally I was using Drupal 8 however I have now migrated to something a bit more suitable for my needs.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/07/19/migrated-to-ghost.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-10-19T18:06:13+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">UNIX-ing as a Linux Geek</title><link href="http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek.html" rel="alternate" type="text/html" title="UNIX-ing as a Linux Geek" /><published>2017-09-23T15:56:30+01:00</published><updated>2017-09-23T15:56:30+01:00</updated><id>http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek</id><content type="html" xml:base="http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek.html">So my background is mostly in GNU/Linux, I've ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I'm not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.
+
+It's not surprising that this is the case because of the exciting history of UNIX and the emergence of [GNU](https://www.gnu.org/gnu/manifesto.html) (GNU's Not UNIX) and [BSD](http://engineering2.berkeley.edu/labnotes/history_unix.html) (Berkeley Software Distribution of UNIX). Unsuprisingly, packages are regularly ported between GNU/Linux and BSD. Even more surprising is seeing the odd GNU package on IBM AIX.
+
+Since 2016 I've been dipping my toes into [OpenBSD](https://www.openbsd.org/) and to help myself get started I have been reading [Absolute OpenBSD: UNIX for the Practical Paranoid](https://www.amazon.co.uk/Absolute-OpenBSD-Unix-Practical-Paranoid/dp/1593274769).
+
+![Absolute BSD](/images/2017/09/20170923_124242_Cropped.jpg)
+
+I've not finished this book, however I have to highlight its value. I'm not going to spoil any of the wit and humour for what should be a dry read, however the real value I have found looking at the inner workings of the OpenBSD operating system's configuration.
+
+How does this help a Linux geek? Actually a surprising lot. There are a number of useful tips on running a secure and stable OpenBSD server, however a lot of these tips can translate into GNU/Linux.
+
+Good examples you can take with you on your GNU/Linux, BSD and UNIX journey include:
+
+* Partitioning disks
+* Permissions
+* User accounts, user limits
+* Sudoer files
+
+There are many more areas covered, I've just named a few. If you're having to switch between different UNIX-like OS, it is definately worth reading and dabbling into unfamiliar technology. You might learn something about your own yard!</content><author><name>Xan Manning</name></author><summary type="html">So my background is mostly in GNU/Linux, I’ve ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I’m not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.</summary></entry><entry><title type="html">Clean up old Docker images</title><link href="http://localhost:4000/2017/09/16/clean-up-docker-hosts.html" rel="alternate" type="text/html" title="Clean up old Docker images" /><published>2017-09-16T13:10:19+01:00</published><updated>2017-09-16T13:10:19+01:00</updated><id>http://localhost:4000/2017/09/16/clean-up-docker-hosts</id><content type="html" xml:base="http://localhost:4000/2017/09/16/clean-up-docker-hosts.html">Sorry for not posting in a while, I have been a bit busy. Here's a quick tip.
+
+## The Problem
+
+Ideally when running in the cloud we want to be able to ditch our VMs when they misbehave rather than trying to fix them. Reincarnate, don't resurrect.
+
+For me, however, I am running a single VM (Digital Ocean Droplet) with Docker. I want to be able to recreate my droplet very quickly should things go wrong, but I don't care much about 100% uptime on my personal server. The issue with this approach is that my SSD fills up quickly with multiple Docker image layers.
+
+## The Solution
+
+Despite my droplet being fairly quick to restore, this would be overkill for a simple 'disk full' issue. I reclaim my disk space using the `prune` functions in Docker.
+
+**The aggressive approach**
+
+This will clean up everything that is unused, use with caution.
+
+```
+# docker system prune
+```
+
+You can be more specific with these commands, pruning individual unused Docker objects
+
+```
+# docker container prune
+# docker image prune
+# docker network prune
+# docker volume prune
+```
+
+### Sources
+
+ 1. https://docs.docker.com/engine/reference/commandline/system_prune/
+ 2. https://docs.docker.com/engine/admin/pruning/#prune-everything</content><author><name>Xan Manning</name></author><summary type="html">Sorry for not posting in a while, I have been a bit busy. Here’s a quick tip.</summary></entry><entry><title type="html">Best Practice for Mounting an LVM Logical Volume with /etc/fstab</title><link href="http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html" rel="alternate" type="text/html" title="Best Practice for Mounting an LVM Logical Volume with /etc/fstab" /><published>2017-05-29T17:43:39+01:00</published><updated>2017-05-29T17:43:39+01:00</updated><id>http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab</id><content type="html" xml:base="http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html">If you've been using Linux for a bit you will be familiar with the file systems table ([fstab(5)](http://man7.org/linux/man-pages/man5/fstab.5.html): `/etc/fstab`). You will also be fairly familiar with the contents of this file and it's structure:
+
+```
+&lt;device&gt; &lt;mount-point&gt; &lt;filesystem-type&gt; &lt;options&gt; &lt;dump&gt; &lt;pass&gt;
+```
+
+So a typical entry may possibly look like the following:
+
+```
+/dev/sda1  /  ext4  defaults  0 0
+```
+
+This would mount `/dev/sda1`, the device file for the first partition on the first disk as the root (`/`) on your Linux system.
+
+Now you have possibly seen a problem... this device might change names and no longer be `/dev/sda1` next boot. Imagine performing an install from a live CD, the mappings of devices might change between booting the live CD and booting from the hard disk.
+
+If you looked at your _actual_ fstab, you will notice that instead of devices being identified by `/dev/sdx`, you will see the use of UUIDs. This method is considered the safest and most reliable way of mounting a plain old block device.
+
+To find a UUID, simply run the `blkid` command.
+
+```
+# blkid /dev/sda1
+/dev/sda1 UUID=&quot;15983cac-77bc-46b1-9f79-cb180e438a64&quot; TYPE=&quot;ext4&quot;
+```
+
+Your fstab now looks more like this, using UUID to identify the filesystem we wish to mount:
+
+```
+UUID=15983cac-77bc-46b1-9f79-cb180e438a64  /  ext4  defaults  0 0
+```
+
+## LVM
+
+Let's think about an example logical volume, 10 GB spread across a 16 GB volume group composed of two 8 GB disks:
+
+![LVM Example](/images/2017/05/blk_and_df.png)
+
+Now there is the temptation to put the UUID entry into your fstab.
+
+```
+# lsblk -f
+```
+
+![lsblk -f](/images/2017/05/lsblkF.png)
+
+Using this UUID in your fstab, you will be able to mount the filesystem consistently, surely? It's the best practice for mounting any other volume:
+
+```
+UUID=cefcdc28-ac6b-4a26-a14e-e27724489c52  /backup  ext4  defaults  0 0
+```
+Alas, no.
+
+Why?.. ___Snapshots___. This problem also applies for filesystems that support snapshots such as zfs.
+
+I'll demonstrate now by creating a snapshot of my logical volume and then re-run the command for finding the UUID.
+
+![Snapshot](/images/2017/05/snapshotsProblem.png)
+
+As you may have noticed, the original volume and the snapshot have _exactly the same UUID_. If I add this UUID to my fstab now, `umount` and `mount`; the snapshot volume will mount to `/backup`. This is potentially not the behavior we want.
+
+![Snapshot Mounted](/images/2017/05/snapshotMounted.png)
+
+So what do we do? What goes into our fstab? Let's look at the options available to us on this openSUSE VM. We have:
+
+ - `/dev/mapper/vg_test-lv_test`
+ - `/dev/vg_test/lv_test`
+ - `/dev/dm-#`
+
+On more modern Linux OS, the top 2 options are the same, a symlink to the device file `/dev/dm-#` (`/dev/dm-1` in my example).
+
+![/dev/dm-1 Symlink](/images/2017/05/symlink_devdm.png)
+
+We shouldn't reference `/dev/dm-1` in our fstab though as this reference is not persistent on reboot. We cam also have an increase or decrease in the number of device-mapper device files when we make snapshots. Additionally volumes will likely move around when re-discovered by device-mapper on boot.
+
+![Multiple /dev/dm-#s](/images/2017/05/devdms.png)
+
+So what the heck _do_ we use? Despite going against what was previously said in the introduction, either:
+
+ - `/dev/mapper/vg_test-lv_test` or
+ - `/dev/vg_test/lv_test`
+
+Preferably `/dev/mapper/vg_test-lv_test` as this used to be where device-mapper [originally](https://superuser.com/a/559478) created the device file, (instead of `/dev/dm-#`).
+
+I would also recommend using the `/dev/mapper/vg_test-lv_test` because I have also had experiences of the `/dev/vg_test/lv_test` symlink going missing during a reboot and requiring emergency console access.
+
+On older systems, `/dev/mapper/vg_test-lv_test` is more likely to be persistent than `/dev/vg_test/lv_test`.
+
+## Conclusion
+
+When adding a device to fstab, unless you are using LVM or a filesystem that supports snapshots*, use the UUID.
+
+When using LVM, use the `/dev/mapper/vg_volgrp-lv_logvol` device file (or symlink for later Linux OS).
+
+&lt;small&gt;*btrfs users, carry on using UUID but specify the subvolume name.&lt;/small&gt;</content><author><name>Xan Manning</name></author><summary type="html">If you’ve been using Linux for a bit you will be familiar with the file systems table (fstab(5): /etc/fstab). You will also be fairly familiar with the contents of this file and it’s structure:</summary></entry><entry><title type="html">Azure, an AWS guy dipping his toes.</title><link href="http://localhost:4000/2017/05/22/azure-an-aws-guy-dipping-his-toes.html" rel="alternate" type="text/html" title="Azure, an AWS guy dipping his toes." /><published>2017-05-22T18:43:00+01:00</published><updated>2017-05-22T18:43:00+01:00</updated><id>http://localhost:4000/2017/05/22/azure-an-aws-guy-dipping-his-toes</id><content type="html" xml:base="http://localhost:4000/2017/05/22/azure-an-aws-guy-dipping-his-toes.html">I am not going to lie, I am a big fan of AWS. I have been using AWS on and off for nearly 2 years now. I've done the training for both the AWS Solutions Architect Associate and SysOps Associate (although not got a certification _yet_). Shout out to [acloud.guru](https://acloud.guru/).
+
+Whilst there are no shortage of AWS jobs out there, depending on your industry it potentially pays to become cloud agnostic - having a finger in each of the cloud provider's pies (AWS, Azure, DigitalOcean, Google Cloud). What becomes difficult is understanding the concepts of cloud hosting and the terminology associated with them. Amazon in particular has a fantastic way of over-complicating the name of their products so moving between AWS and Azure (for example) can feel a bit confusing. I feel Azure does a better job of naming their resources, but it's ultimately just _different_.
+
+Let's dive in with just looking at the most basic of cloud resources, our networking and compute resources and compare their terminologies.
+
+![AWS vs. Azure](/images/2017/05/AWSvsAzure.png)
+
+&lt;table&gt;
+&lt;tr&gt;
+&lt;th&gt;Amazon Web Services&lt;/th&gt;&lt;th&gt;Azure&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;-&lt;/td&gt;&lt;td&gt;Resource Group&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Region&lt;/td&gt;&lt;td&gt;Location&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Availability Zone&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;IAM (Identity Access Management)&lt;/td&gt;&lt;td&gt;Azure Active Directory&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;VPC (Virtual Private Cloud)&lt;/td&gt;&lt;td&gt;Virtual Network&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Subnet&lt;/td&gt;&lt;td&gt;Subnet&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Security Group&lt;/td&gt;&lt;td&gt;Network Security Group&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Elastic IP&lt;/td&gt;&lt;td&gt;Public IP&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Route 53&lt;/td&gt;&lt;td&gt;Azure DNS&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;EC2 (Elastic Cloud Compute)&lt;/td&gt;&lt;td&gt;Virtual Machine&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;EBS (Elastic Block Storage)&lt;/td&gt;&lt;td&gt;Page Blob&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;S3 (Simple Storage Solution)&lt;/td&gt;&lt;td&gt;Block Blob&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;EFS (Elastic File System)&lt;/td&gt;&lt;td&gt;Azure File Storage&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Auto-Scaling Group&lt;/td&gt;&lt;td&gt;Autoscale&lt;br /&gt;Virtual Machine Scale Sets&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;ELB (Elastic Load Balancer)&lt;br /&gt;ALB (Application Load Balancer)&lt;/td&gt;&lt;td&gt;Load Balancer&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;CloudFormation&lt;/td&gt;&lt;td&gt;Resource Group Manager&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;CloudFront&lt;/td&gt;&lt;td&gt;Azure CDN&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Cloud Watch&lt;/td&gt;&lt;td&gt;Azure Portal&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Lambda&lt;/td&gt;&lt;td&gt;Web Jobs&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;small&gt;Source: [Microsoft, AWS to Azure services comparison](https://docs.microsoft.com/en-us/azure/architecture/aws-professional/services)&lt;/small&gt;
+
+As you can see, for the most part, they are fairly self explanatory. I can see that the biggest mixup would be in the storage solutions where the term 'block' may become misleading.
+
+Next post on this matter I shall be looking into Google Cloud Platform and eventually I shall lead us into using HashiCorp's [Terraform](https://www.terraform.io/) to manage each of these providers.</content><author><name>Xan Manning</name></author><summary type="html">I am not going to lie, I am a big fan of AWS. I have been using AWS on and off for nearly 2 years now. I’ve done the training for both the AWS Solutions Architect Associate and SysOps Associate (although not got a certification yet). Shout out to acloud.guru.</summary></entry><entry><title type="html">SaltStack at Home, Initial Thoughs</title><link href="http://localhost:4000/2017/05/21/saltstack-at-home-initial-thoughs.html" rel="alternate" type="text/html" title="SaltStack at Home, Initial Thoughs" /><published>2017-05-21T15:29:02+01:00</published><updated>2017-05-21T15:29:02+01:00</updated><id>http://localhost:4000/2017/05/21/saltstack-at-home-initial-thoughs</id><content type="html" xml:base="http://localhost:4000/2017/05/21/saltstack-at-home-initial-thoughs.html">_&quot;Cloud servers are cattle, not pets!&quot;_
+
+So I have been working with configuration management for a while, recently I have been switching between Ansilble and Salt Stack. After creating a Salt Stack for a previous employer in AWS (see below diagram), I have fallen for this configuration management system. As you may have noted, I am using Python based, YAML configured systems because this is where I am comfortable. These systems are easily extendable, the configuration files are easy to read for anyone and they are both awesome. Salt, ultimately, has won over purely based on requirements to support my previous employer's legacy applications. I've become very familiar with it and I am sticking with what I am comfortable with.
+
+Why do we use configuration management? The main answers in my mind are automation, repeatability and accountability. If I need to create a new machine (either because a previous one has failed or I need extra compute capacity), I don't have to do a lot. I bootstrap, Config Management does the rest. I can do this to one machine or a hundred machines and the resulting output will always be the same. I can track all configuration changes in version control systems such as git, so there is a level of accountability for change.
+
+Another final point to mention is that configuration management is idempotent. What does _idempotent_ mean? An example of an idempotent process is washing your dog, wash him once or wash him twice, the outcome is the same: a clean dog. The opposite of an idempotent process is an incremental process, I feed the dog once he is healthy, feed him twice and he gets fat. I can apply a configuration once or a hundred times and the output is always the same. This isn't always the case with custom shell scripts used for provisioning, these are often written to be run once.
+
+## Roles based on hostname
+
+![Salt Targeting](/images/2017/05/SaltTargeting.png)
+
+My previous employers legacy cloud applications used to be configured with CFEngine3. Arguably not the easiest system to work with, but it was one of the first configuration management systems available. As our main cloud environment hosted multiple customers, each host with a different role, a convenient way of tracking the role and cost centre for each VM was vital. This needs to be machine readable and human readable due to the sheer scale of VMs in use. With CFEngine3 it was identified the best way of assigning a role to a VM was via the hostname - this was useful for us human SysAdmins/Developers too because we could easily find what we needed. Moving to AWS, it made sense to keep this convention but find a way of applying it into SaltStack.
+
+From our naming convention, we had the ability to automatically set up grains to help in targeting our systems for configuration.
+
+When a minion connects to our Salt Master, the machine is seen as a 'base' configuration - the _initial_ highstate run is to perform the following:
+
+ 1. Set the grains of the minion based on hostname
+ 2. Add the host to a pool
+ 3. Install base packages and configuration that apply to ALL hosts
+ 4. Set up a cron job to check for configuration updates hourly
+ 5. Set up an `at` task to perform the next highstate run.
+
+Now that the initial highstate has been called, the minion will have it's configuration applied from one of the 3 pools (dev/staging/prod).
+
+Below is a partial extract of the configuration showing `base` (which was our initial configuration before grains had been established from hostname), and our `prod` with a few sample roles within our infrastructure.
+
+```yaml
+base:
+    '*':
+        - defaults
+        - defaults.at
+        - defaults.cron
+        - defaults.grains
+
+prod:
+    '*':
+        - defaults
+        - defaults.cron
+        - defaults.grains
+        - defaults.ntp
+    'G@g_client:infra and G@g_role:fileserver':
+        - fileserver.nginx
+    'G@g_client:infra and G@g_role:blogs':
+        - defaults.ssl
+        - blog.users
+        - blog.nginx
+        - blog.docker
+    'G@g_client:infra and G@g_role:automation':
+        - defaults.ssl
+        - automation.docker
+        - automation.docker.api
+        - automation.docker.codereviewbot
+    'G@g_client:infra and G@g_role:pypirepo':
+        - defaults.ssl
+        - pypi.users
+        - pypi.nginx
+        - pypi.docker
+[...]
+```
+
+Let's say we have the host `euw01-infra-prodautomation001.aws.domain.co.uk` - following the initial salt highstate run, we now have a host that will be configured from `prod: 'G@g_client:infra and G@g_role:automation`. The following states will be applied:
+
+ 1. defaults.ssl (our SSL configuration including access to SSL repository)
+ 2. automation.docker (Installation of docker for automation servers)
+ 3. automation.docker.api (Our API for CLI tools to interact with AWS during deployment).
+ 4. automation.docker.codereviewbot (Our bot for issuing code review requests)
+
+And just like that, within 10 minutes of spinning up an EC2 in AWS it can be configured precisely as needed based purely on the hostname of the server.
+
+## Home Use
+
+### Motivation
+
+Having invested a lot of time in Salt I decided that I should probably continue to practice what I preach. Having previously experienced data loss at home first hand, having to restore from backups and needing to install all my applications all over again, I thought it was time I actually used this great tool for keeping my own systems configured.
+
+I also (on the odd occasion) forget to apply the odd security update. _Who doesn't_. My Salt configuration will ensure that key security updates are done on time.
+
+Another key motivator is to continue that pets vs. cattle mentality to my own infrastructure, where I should be able to re-create my desktop environment, or my Raspberry Pi Bastion fairly quickly if it fails for whatever reason.
+
+I would like to note that you can run Salt decentralized, however I have chosen to keep it centralized so that the configuration is always at the same version across all machines.
+
+### Result
+
+![Home Salt](/images/2017/05/HomeSaltStack.png)
+
+Over the space of 2 months (a couple of hours every weekend), I've created a Salt configuration that describes the main devices in my personal infrastructure:
+
+ 1. Desktop computer
+ 2. Raspberry Pi Bastion/VPN Server
+ 3. Webserver (running Ghost on Docker)
+ 4. Bastion in the public subnet of my AWS lab.
+
+All of the above is described in a Vagrantfile that can be spun up and trashed as a development environment for testing before deploying to production.
+
+I do not have a naming scheme for hostnames that can be programmatically dealt with, so I have had to create a map that takes hostname and applies the appropriate grains to that minion. These grains then dictate what the configuration of the minion will be. I am still using the same definitions as before: region, cloud, pool, role, etc.
+
+{% raw %}
+```python
+# hosts.map
+{% set host_id = salt['grains.filter_by']({
+  'helios': {
+    'region': 'euw02',
+    'cloud': 'aws',
+    'pool': 'prod',
+    'role': 'bastion',
+  },
+  'icarus': {
+    'region': 'local',
+    'cloud': 'lan',
+    'pool': 'prod',
+    'role': 'bastion',
+  },
+  'daedalus': {
+    'region': 'local',
+    'cloud': 'lan',
+    'pool': 'prod',
+    'role': 'desktop',
+  },
+  'morpheus': {
+    'region': 'lon',
+    'cloud': 'digitalocean',
+    'pool': 'prod',
+    'role': 'webserver',
+  },
+  'unknown': {
+    'region': 'unknown',
+    'cloud': 'unknown',
+    'pool': 'base',
+    'role': 'generic',
+  },
+}, grain='hostname', default='unknown') %}
+```
+{% endraw %}
+
+### Problems, lessons learnt
+
+This is my initial attempt at configuration management at home. Upon reflection I have discovered the following issues that will affect my decisions going forward:
+
+ 1. A 512 MB RAM Rasberry Pi Model B is underpowered for running Salt-minion and a VPN at the same time.
+ 2. A Salt Master ideally needs at least 1 GB RAM.
+ 3. Vagrant is OK for testing, but you cannot test a Rasbperry Pi's performance in VirtualBox.
+ 4. Pillars are vital, and once Salt becomes more friendly with HashiCorp's Vault this will become much better for storing secrets - especially when backed with something like S3 storage. I am currently using GPG2 encrypted pillars which is slow and manual to manage.
+ 5. Configuration management tools are aimed at server markets, desktop environments require a lot more work to configure to your liking. Often it is easier to create a base config and further config (wallpapers, GNOME plugins) can be done to user taste.
+ 6. Salt has got some limits on minion OS support. openSUSE doesn't seem to work fantastically for the latest release.
+
+I will continue to work with Salt and see where I can make performance improvements and tighten my configuration, but I might resort to adopting Ansible for reasons I will explain at a later date.
+
+Going forward I can test the effectiveness of my configuration management by performing some infrastructure changes and restructuring. The changes I am going to test will involve:
+
+ 1. Changing my Raspberry Pi bastion to run OpenBSD/FreeBSD, it will be interesting to see how Salt handles either of these OS.
+ 2. Re-creating my web server with the exact configuration I have in configuration management.
+ 3. Updating my Debian 8 desktop to Debian 9 or moving to Ubuntu once GNOME is mainstream (or just going for UbuntuGNOME 16.04).
+
+At a later date (once my configuration is more &quot;stable&quot;) I shall release the source code to GitHub.</content><author><name>Xan Manning</name></author><summary type="html">“Cloud servers are cattle, not pets!”</summary></entry><entry><title type="html">Silence</title><link href="http://localhost:4000/2017/04/03/silence.html" rel="alternate" type="text/html" title="Silence" /><published>2017-04-03T19:10:48+01:00</published><updated>2017-04-03T19:10:48+01:00</updated><id>http://localhost:4000/2017/04/03/silence</id><content type="html" xml:base="http://localhost:4000/2017/04/03/silence.html">Back soon, just escaped a sticky situation...</content><author><name>Xan Manning</name></author><summary type="html">Back soon, just escaped a sticky situation…</summary></entry><entry><title type="html">Two node Redis cluster in Vagrant</title><link href="http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant.html" rel="alternate" type="text/html" title="Two node Redis cluster in Vagrant" /><published>2017-02-12T21:40:53+00:00</published><updated>2017-02-12T21:40:53+00:00</updated><id>http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant</id><content type="html" xml:base="http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant.html">So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a [Vagrantfile for creating a Redis Cluster](https://github.com/xanmanning/vagrant-redis-cluster).
+
+I thought I'd share. Feel free to clone. It's a fairly simple Vagrantfile that simply creates a Master-Slave replica for Redis.
+
+To get started:
+
+```
+$ git clone https://github.com/xanmanning/vagrant-redis-cluster
+$ cd vagrant-redis-cluster
+$ vagrant up
+```
+
+**Master node**: 10.11.8.2&lt;br /&gt;
+**Slave node**: 10.11.8.3</content><author><name>Xan Manning</name></author><summary type="html">So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a Vagrantfile for creating a Redis Cluster.</summary></entry><entry><title type="html">Throwback Thursday: Hacktrix*</title><link href="http://localhost:4000/2017/01/26/throwback-thursday-hacktrix.html" rel="alternate" type="text/html" title="Throwback Thursday: Hacktrix*" /><published>2017-01-26T19:51:00+00:00</published><updated>2017-01-26T19:51:00+00:00</updated><id>http://localhost:4000/2017/01/26/throwback-thursday-hacktrix</id><content type="html" xml:base="http://localhost:4000/2017/01/26/throwback-thursday-hacktrix.html">It's Thursday again, and I'm looking back on another project from days gone by.
+
+Following on from a decision not to renew our QueueMetrics license to monitor our call volume over Asterisk, we were left in a bit of a pickle. Numerous calls were coming in but managers could not gauge the volume and in times of an outage this was a serious problem when it came to breaks and assigning overtime.
+
+Luckily, Python comes to the rescue with the py-asterisk library that talks to the Asterisk API.
+
+&gt; &quot;Import all the things!&quot; &lt;small&gt;Python&lt;/small&gt;
+
+The design was quite simple, a small Python application that talks to the Asterisk API and returns JSON over HTTP. We then had a small HTML page with jQuery performing AJAX GET to this small server.
+
+Voilla, Hacktrix*. Tiny call monitor.
+
+![Hacktrix* Server](/images/2017/01/imag0371.jpg)
+
+![Hacktrix* Client](/images/2017/01/imag0370.jpg)
+
+Then for a sneaky added bonus (running on my desktop)... Caller ID! Basically looking up the number in a dictionary and returning the company name.
+
+![Hacktix* CallerID](/images/2017/01/image001_censored.png)</content><author><name>Xan Manning</name></author><summary type="html">It’s Thursday again, and I’m looking back on another project from days gone by.</summary></entry><entry><title type="html">SaltStack Lab in Vagrant</title><link href="http://localhost:4000/2017/01/19/saltstack-lab-in-vagrant.html" rel="alternate" type="text/html" title="SaltStack Lab in Vagrant" /><published>2017-01-19T21:58:12+00:00</published><updated>2017-01-19T21:58:12+00:00</updated><id>http://localhost:4000/2017/01/19/saltstack-lab-in-vagrant</id><content type="html" xml:base="http://localhost:4000/2017/01/19/saltstack-lab-in-vagrant.html">Today I have published a really simplistic [SaltStack](https://saltstack.com/) lab for Vagrant to GitHub:
+
+[https://github.com/xanmanning/vagrant-salt-example](https://github.com/xanmanning/vagrant-salt-example)
+
+Since being subjected to CFEngine (_shudder_), I have been very keen to try out other configuration management offerings. I had previously tried [Ansible](https://xan-manning.co.uk/building-an-ansible-2-lab/), that's great and all, however there are advantages to agent based systems, particularly the scalability.
+
+Salt stands out for me, because like Ansible, configuration is done in YAML - this is fantastically easy to use! Also, Salt can be easily extended with custom modules! It's standard stuff: Python, Fabric and Jinja2. It's quick, scalable and flexible. It's simple.
+
+## Using Vagrant
+
+Salt is actually quite easy to get running in Vagrant, if your Vagrantfile defines Salt as the provisioning method then Vagrant will go off and install the Salt Master and Salt Minions to whichever VM you define. Unlike Ansible, you don't need Salt on your host machine.
+
+A master configuration would likely look like the below in your Vagrantfile:
+
+```ruby
+master.vm.provision :salt do |salt|
+    salt.install_master = true
+    salt.install_type = &quot;stable&quot;
+    salt.master_config = &quot;salt/master&quot;
+    salt.minion_config = &quot;salt/minion&quot;
+    salt.masterless = true
+end
+```
+
+Where `master_config` and `minion_config` point to the configurations in your Vagrant directory.
+
+## Example Configuration
+
+The above [repository](https://github.com/xanmanning/vagrant-salt-example) includes a simple configuration of 1 master and 2 minions. One minion will be configured as an App server (running SQLBuddy), the other as a Db server (Running MySQL Server).
+
+```
+
+    +---------+     +--------+
+    |   App   | --&gt; |   Db   |
+    +---------+     +--------+
+         ^               ^
+         |               |
+         +---------------+
+                 |
+                 |
+             +--------+
+             | Master |
+             +--------+
+```
+
+## Fire it up!
+
+To get started with my example, simply run:
+
+```
+$ git clone https://github.com/xanmanning/vagrant-salt-example &amp;&amp; cd ./vagrant-salt-example
+```
+
+Then:
+
+```
+$ vagrant up
+```
+
+Wait for the VMs to finish provisioning, you will get output similar to the below:
+
+![Salt Provision](/images/2017/01/SaltProvision.png)
+
+Once you are done, you can visit your app server: http://10.10.8.3/ and login to the database with the below details:
+
+ - Host: db.salt.local
+ - User: salt
+ - Pass: s4ltm4$t3r!
+
+![SQLBuddy managed with Salt](/images/2017/01/SaltSQLBuddy.png)
+
+## Play
+
+If you want to play about with Salt, a good way to get your hands dirty is to SSH into the master and start editing the salt state files:
+
+```
+$ vagrant ssh master
+```
+
+From here, you can find all the states in `/srv/salt/base`, with some tweaking you can make some awesome changes!
+
+![Vim Editor](/images/2017/01/VimLatest.png)
+
+Then push these changes out by running:
+
+```
+$ sudo salt '*' state.highstate
+```
+
+This will (by default) present you with the output of your salt states:
+
+![Highstate](/images/2017/01/HighState.png)</content><author><name>Xan Manning</name></author><summary type="html">Today I have published a really simplistic SaltStack lab for Vagrant to GitHub:</summary></entry><entry><title type="html">Throwback Thursday: Thermostat</title><link href="http://localhost:4000/2017/01/12/throwback-thursday-thermostat.html" rel="alternate" type="text/html" title="Throwback Thursday: Thermostat" /><published>2017-01-12T20:32:00+00:00</published><updated>2017-01-12T20:32:00+00:00</updated><id>http://localhost:4000/2017/01/12/throwback-thursday-thermostat</id><content type="html" xml:base="http://localhost:4000/2017/01/12/throwback-thursday-thermostat.html">I've decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.
+
+Today I am writing about a project I created to fix a problem with a misbehaving version of our CRM software (to remain nameless).
+
+## Backstory
+
+So this tale begins when I worked as first line technical support at an internet service provider (ISP). Our ticketing system had been migrated over to our new CRM, however the version we were using had a small flaw. It caused high load to one CPU core when open, with most of the tech support desk using solo core processors. This made life _unbearable_, especially as we had to do a lot of work on JavaScript heavy webpages outside of the CRM software.
+
+![100% CPU Usage](/images/2017/01/100pc_Usage.PNG)
+
+## Solution
+
+Our workflow was interrupted by the slow and unresponsive ticketing system, there was no ETA for an update but work had to continue. In a little under a week I decided to write a small Visual C# application that would throttle the CRM process to allow the computer to do other work. We obviously only wanted this to happen when not working in the CRM software, so we had two distinct behaviors:
+
+**When CRM is not focused (idle)**
+
+ * Set's CPU affinity to core0. (does this once, multi-core machines only)
+ * Deprioritise CPU Threads. (sets priority to LOW, allowing other processes to use CPU)
+ * Throttles CPU usage. (when throttling is enabled)
+ * Monitors CRM to make sure is responsive. (when Throttling)
+
+**When CRM is focused**
+
+ * Prioritize CPU threads.
+ * Monitor CRM to make sure responsive. (when Throttling)
+
+## The Result
+
+When active, Thermostat would take average load down from 100% to ~38%.
+
+![Better CPU usage](/images/2017/01/Throttled_Usage.PNG)
+
+## Side effects of throttling
+
+Throttling was done by using the standard Windows `SuspendThread()` method in kernel32.dll. One of the side effects of throttling the process was that occasionally the application would become completely unresponsive.
+
+To overcome this, a built in health monitor within the application would attempt to send several calls to `ResumeThread()` to try bring it online. To keep the user informed of the changes to the state of the CRM system, Thermostat would notify the user via a Balloon Tip.
+
+**Recovered CRM process:**
+
+![CRM Recovered](/images/2017/01/Warning.PNG)
+
+**Dead CRM Process:**
+
+![CRM Flatlined](/images/2017/01/flatline.PNG)</content><author><name>Xan Manning</name></author><summary type="html">I’ve decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.</summary></entry></feed>

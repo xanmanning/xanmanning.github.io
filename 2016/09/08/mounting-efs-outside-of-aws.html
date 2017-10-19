@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Mounting EFS outside of AWS</h1>
+      <p class="post-meta">Sep 8, 2016</p>
+    </header>
+
+    <section>
+      <p>Why EFS? Well, despite being 3x more expensive than Elastic Block Volumes, EFS is sharable between EC2 instances and it is literally Pay As You Go (PAYG), no over-provisioning in sight.</p>
+
+<p>So for that NAS like experience without the need to buy hardware, EFS would sound like a winning solution. Unfortunately at the time of writing this (September 2016) it is <a href="http://serverfault.com/questions/799016/elastic-file-system-efs-mount-outside-of-aws">not yet possible</a> to directly mount EFS outside of your Amazon VPC.</p>
+
+<p>This may change but for now there are three possible workarounds…</p>
+
+<ol>
+  <li><em>“Forget EFS, use S3 - it is cheaper!”</em> - This is true, S3 is a lot cheaper but it does come with some drawbacks. It’s object storage, not block storage, and the FUSE mounts for S3 are slow.</li>
+  <li><em>“VPN into your VPC (Virtual Private Cloud)”</em> - This will probably work, I guess, but a VPN can cost a pretty penny depending on the amount of data being transferred.</li>
+  <li><em>“Use an EC2 running HAProxy to Reverse Proxy to EFS”</em> - This is what we are going to explore. Why? Well, this one is probably going to be the easiest and cheapest way to access EFS outside of your VPC. Y’know, until Amazon bring it to market.</li>
+</ol>
+
+<p>So let’s explore this realistically.</p>
+
+<p><strong>Note</strong>: This will not work for people running Microsoft Windows, sorry guys! It’s a *NIX kind of thing.</p>
+
+<p><strong>Security Note</strong>: This method relies on controlling access to the EFS by IP address in security groups. If you want something a lot more secure you are probably going to want to go down the route of VPN into your VPC.</p>
+
+<h2 id="fire-up-the-ec2">Fire up the EC2!</h2>
+
+<p>Right, let’s start by launching an instance! Click the magic blue button!</p>
+
+<p><img src="/images/2016/09/01_LaunchInstance.png" alt="Launch Instance" /></p>
+
+<p>I’m going to be fairly unoriginal and run an Amazon Linux AMI. Why not?</p>
+
+<p><img src="/images/2016/09/02_AmazonLinux.png" alt="Amazon Linux AMI" /></p>
+
+<p>If you are just messing around then I’d select a T-Series instance - I refer to these colloquially as “Testing Series” instances. This is because they are cheap and the network performance can leave a bit to be desired but hey. I don’t have a Free Tier account so I am going to have to go for a t2.nano - you may as well go t2.micro if you still have Free Tier and want to try this out.</p>
+
+<p>Remember you can always Scale Up/Down as needed.</p>
+
+<p><img src="/images/2016/09/03_TSeriesInstance.png" alt="T Series Instance" /></p>
+
+<p>Keep all the defaults for your EC2 until you get to the “Security Group” section of the form.</p>
+
+<p>This is the important security part. Make sure you can only connect via SSH to your instance from your IP address. Also add a new “NFS” rule, also make sure this is locked down to your IP Address. You also need another NFS rule that allows your VPC to connect.</p>
+
+<p><img src="/images/2016/09/04_SecurityGroups-1.png" alt="Security!" /></p>
+
+<p>Now you are ready to go! Make sure you select a key you either own or create a new one to download.</p>
+
+<p>Hey presto, your instance should be launching!</p>
+
+<p><img src="/images/2016/09/05_InstanceLaunching.png" alt="EC2 Launching" /></p>
+
+<h2 id="prepare-your-ec2">Prepare your EC2</h2>
+
+<p>We first need to make sure the EC2 is all up to date and has everything we need installed. SSH into your server with your .pem (RSA) key file:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh -i path/to/key.pem ec2-user@your.ec2.ip.addr
+</code></pre></div></div>
+
+<p><img src="/images/2016/09/06_LoginPrompt.png" alt="SSH" /></p>
+
+<p>Update the Operating System:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum update
+</code></pre></div></div>
+
+<p><img src="/images/2016/09/07_YumUpdate.png" alt="Yum Update" /></p>
+
+<p>Now install HAProxy:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum install haproxy
+</code></pre></div></div>
+
+<p><img src="/images/2016/09/08_YumHaproxy.png" alt="Yum HAProxy" /></p>
+
+<h2 id="prepare-your-efs">Prepare your EFS</h2>
+
+<p>Go to your AWS console and click “Elastic File System”. If you do not have existing volumes you will need to create one.</p>
+
+<p><img src="/images/2016/09/09_CreateEFS.png" alt="Create EFS Volume" /></p>
+
+<p>Add your newly created security group to your EFS volume in all of the VPC Availability Zones in your region.</p>
+
+<p><img src="/images/2016/09/10_EFSSG.png" alt="EFS Security" /></p>
+
+<p>When asked, select General Purpose I/O.</p>
+
+<p><img src="/images/2016/09/11_GeneralPurposeIO.png" alt="I/O" /></p>
+
+<p>Success we have an EFS volume!</p>
+
+<p><img src="/images/2016/09/12_SuccessEFS.png" alt="EFS Volume" /></p>
+
+<p>Clicking the EFS volume will give you the ability to discover your DNS Endpoint names. Keep a record of these as you will need them.</p>
+
+<p><img src="/images/2016/09/13_DNSNames.png" alt="DNS Names" /></p>
+
+<h2 id="configure-haproxy">Configure HAProxy</h2>
+
+<p>First thing is first, keep a copy of the HAProxy default configuration handy. You may want/need it again in the future.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo cp /etc/haproxy/haproxy.conf ~/haproxy.conf.backup
+</code></pre></div></div>
+
+<p>Next, edit your <code class="highlighter-rouge">/etc/haproxy/haproxy.conf</code> file, configuring it as a TCP reverse proxy:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo vim /etc/haproxy/haproxy.conf
+</code></pre></div></div>
+
+<p>Below is a sample config that works, remember to replace your DNS endpoint names:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>global
+    log 127.0.0.1 local0 notice
+    maxconn 2000
+    user haproxy
+    group haproxy
+
+defaults
+    log     global
+    mode    tcp
+    option  tcplog
+    option  dontlognull
+    retries 3
+    option redispatch
+    timeout connect  5000
+    timeout client  10000
+    timeout server  10000
+
+listen efs 0.0.0.0:2049
+    mode tcp
+    option tcplog
+    timeout tunnel 300000
+    server eu-west-1a eu-west-1a.fs-c464910d.efs.eu-west-1.amazonaws.com:2049
+    server eu-west-1b eu-west-1b.fs-c464910d.efs.eu-west-1.amazonaws.com:2049
+    server eu-west-1c eu-west-1c.fs-c464910d.efs.eu-west-1.amazonaws.com:2049
+</code></pre></div></div>
+
+<p>Once you have finished editing, restart HAProxy:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service haproxy restart
+</code></pre></div></div>
+
+<h2 id="mounting-your-efs-volume">Mounting your EFS volume.</h2>
+
+<p>As mentioned, you can’t mount your EFS volume on Windows. I also had no luck mounting this on a Mac.</p>
+
+<p>I created a directory to mount on:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir /mnt/efs
+</code></pre></div></div>
+
+<p>You want to mount this as an NFSv4.1 mount:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mount -t nfs4 -o nfsvers=4.1 your.ec2.ip.addr:/ /mnt/efs/
+</code></pre></div></div>
+
+<p><img src="/images/2016/09/DebianMount.png" alt="EFS Mount Command" /></p>
+
+<p>You can check the mount by issuing:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df -h
+</code></pre></div></div>
+
+<p>You’ll see something like this if successful.</p>
+
+<p><img src="/images/2016/09/EFSisMounted.png" alt="EFS File Usage" /></p>
+
+<p>Enjoy!</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2016/09/07/two-underrated-bash-aliases.html">Two underrated Bash aliases</a></h2>
+          </header>
+          <section>
+            <p>Digital Ocean recently <a href="http://do.co/aliases">posted an article</a> on must have Bash aliases.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/09/07/two-underrated-bash-aliases.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2016/10/10/getting-started-with-racheros-using-docker-machine.html">Getting started with RacherOS using Docker-Machine</a></h2>
+          </header>
+          <section>
+            <p>Sadly, RancherOS is no longer available on <a href="https://www.vagrantup.com/">Vagrant</a> so dipping your toes in Rancher is a bit less easy. Or is it? The folks are Rancher are suggesting you use <a href="https://docs.docker.com/machine/overview/">Docker-machine</a>, a really nice command line tool for provisioning and managing Docker hosts! If you are used to Vagrant you already have a bit of a head start on getting to grips with Docker Machine.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/10/10/getting-started-with-racheros-using-docker-machine.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

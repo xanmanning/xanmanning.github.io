@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Azure, an AWS guy dipping his toes.</h1>
+      <p class="post-meta">May 22, 2017</p>
+    </header>
+
+    <section>
+      <p>I am not going to lie, I am a big fan of AWS. I have been using AWS on and off for nearly 2 years now. I’ve done the training for both the AWS Solutions Architect Associate and SysOps Associate (although not got a certification <em>yet</em>). Shout out to <a href="https://acloud.guru/">acloud.guru</a>.</p>
+
+<p>Whilst there are no shortage of AWS jobs out there, depending on your industry it potentially pays to become cloud agnostic - having a finger in each of the cloud provider’s pies (AWS, Azure, DigitalOcean, Google Cloud). What becomes difficult is understanding the concepts of cloud hosting and the terminology associated with them. Amazon in particular has a fantastic way of over-complicating the name of their products so moving between AWS and Azure (for example) can feel a bit confusing. I feel Azure does a better job of naming their resources, but it’s ultimately just <em>different</em>.</p>
+
+<p>Let’s dive in with just looking at the most basic of cloud resources, our networking and compute resources and compare their terminologies.</p>
+
+<p><img src="/images/2017/05/AWSvsAzure.png" alt="AWS vs. Azure" /></p>
+
+<table>
+<tr>
+<th>Amazon Web Services</th><th>Azure</th>
+</tr>
+<tr><td>-</td><td>Resource Group</td></tr>
+<tr><td>Region</td><td>Location</td></tr>
+<tr><td>Availability Zone</td><td>-</td></tr>
+<tr><td>IAM (Identity Access Management)</td><td>Azure Active Directory</td></tr>
+<tr><td>VPC (Virtual Private Cloud)</td><td>Virtual Network</td></tr>
+<tr><td>Subnet</td><td>Subnet</td></tr>
+<tr><td>Security Group</td><td>Network Security Group</td></tr>
+<tr><td>Elastic IP</td><td>Public IP</td></tr>
+<tr><td>Route 53</td><td>Azure DNS</td></tr>
+<tr><td>EC2 (Elastic Cloud Compute)</td><td>Virtual Machine</td></tr>
+<tr><td>EBS (Elastic Block Storage)</td><td>Page Blob</td></tr>
+<tr><td>S3 (Simple Storage Solution)</td><td>Block Blob</td></tr>
+<tr><td>EFS (Elastic File System)</td><td>Azure File Storage</td></tr>
+<tr><td>Auto-Scaling Group</td><td>Autoscale<br />Virtual Machine Scale Sets</td></tr>
+<tr><td>ELB (Elastic Load Balancer)<br />ALB (Application Load Balancer)</td><td>Load Balancer</td></tr>
+<tr><td>CloudFormation</td><td>Resource Group Manager</td>
+</tr>
+<tr><td>CloudFront</td><td>Azure CDN</td></tr>
+<tr><td>Cloud Watch</td><td>Azure Portal</td></tr>
+<tr><td>Lambda</td><td>Web Jobs</td></tr>
+</table>
+
+<p><small>Source: <a href="https://docs.microsoft.com/en-us/azure/architecture/aws-professional/services">Microsoft, AWS to Azure services comparison</a></small></p>
+
+<p>As you can see, for the most part, they are fairly self explanatory. I can see that the biggest mixup would be in the storage solutions where the term ‘block’ may become misleading.</p>
+
+<p>Next post on this matter I shall be looking into Google Cloud Platform and eventually I shall lead us into using HashiCorp’s <a href="https://www.terraform.io/">Terraform</a> to manage each of these providers.</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2017/05/21/saltstack-at-home-initial-thoughs.html">SaltStack at Home, Initial Thoughs</a></h2>
+          </header>
+          <section>
+            <p><em>“Cloud servers are cattle, not pets!”</em></p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/05/21/saltstack-at-home-initial-thoughs.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html">Best Practice for Mounting an LVM Logical Volume with /etc/fstab</a></h2>
+          </header>
+          <section>
+            <p>If you’ve been using Linux for a bit you will be familiar with the file systems table (<a href="http://man7.org/linux/man-pages/man5/fstab.5.html">fstab(5)</a>: <code class="highlighter-rouge">/etc/fstab</code>). You will also be fairly familiar with the contents of this file and it’s structure:</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

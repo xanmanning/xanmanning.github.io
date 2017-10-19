@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Drupal 8 on nginx HHVM and PHP5-FPM fallback.</h1>
+      <p class="post-meta">Dec 9, 2015</p>
+    </header>
+
+    <section>
+      <p>It is, without a doubt, an exciting time for everyone working with Drupal and PHP in general - a great way to round of 2015. We’ve seen two major releases of our favourite open source projects, Drupal 8 and PHP 7. Whilst the performance boost of PHP7 over PHP5.6 is beyond anecdotal - it is proven - the performance of Drupal 8 on PHP7 vs. PHP5.6 isn’t as great when compared to other open source projects (see <a href="https://kinsta.com/blog/the-definitive-php-7-final-version-hhvm-benchmark/">Kinsta.com</a> benchmarking).</p>
+
+<p>What is clear from all benchmarking to date is that Facebook’s HHVM is the technology to beat - Drupal 8 in particular works great! That being said, there are some “<a href="https://github.com/facebook/hhvm/issues?q=is%3Aopen+is%3Aissue+label%3A%22php5+incompatibility%22">minor incompatibilities</a>” that the HHVM team is aware of, which means it is best having a backup solution for when things go wrong. Since Drupal 8 is tried and tested on PHP5 and the performance of PHP7 on Drupal isn’t substantial we shall fall back onto PHP5-FPM.</p>
+
+<p>After reading <a href="https://bjornjohansen.no/hhvm-with-fallback-to-php">Bjørn Johansen’s article</a> on HHVM with PHP5-FPM fallback I felt the need to attempt a Drupal 8 specific setup.</p>
+
+<p>Let’s begin.</p>
+
+<p><strong>Provision</strong></p>
+
+<p>Grab yourself a fresh VM - <a href="https://m.do.co/c/adaa5ab1a3b4">DigitalOcean</a> and <a href="http://aws.amazon.com/">Amazon Web Services</a> are pretty reasonable, start off with a small droplet/instance so that you aren’t incurring a huge cost. Spin up an Ubuntu 14.04 server. Make sure all the packages are all up to date.</p>
+
+<p><strong>Installation</strong></p>
+
+<p>You will need to add HHVM to your package manager, luckily in Ubuntu this is easy. First install software-properties-common and add the HHVM repository:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install -y software-properties-common
+sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
+sudo add-apt-repository -y "deb http://dl.hhvm.com/ubuntu $(lsb_release -sc) main"
+sudo apt-get update
+</code></pre></div></div>
+
+<p>Now it is time to install our stack. Typically I would refer to the LEMP statck (Linux Nginx MySQL PHP) however this shoudl perhaps be referred to as a LEMPH (Linux Nginx MySQL PHP HHVM) stack. Answer all the basic questions presented from Postfix and MySQL as required.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install -y nginx php5-fpm php5-gd php5-imagick php5-mcrypt php5-curl php5-json php5-mongo php5-mysql mysql-server hhvm postfix
+</code></pre></div></div>
+
+<p>Right, after setting this all up, we need to get configuring. We’re going to need a database, here I am being extremely lazy and calling it “drupal”</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -u root -p -e "CREATE DATABASE drupal;"
+</code></pre></div></div>
+
+<p>Now, a quick HHVM bugfix. To avoid a lot of error messages being generated when we run Drupal 8 we need to set the timezone for HHVM to use. There is a one-liner for this, I’m using UTC, use whatever you want:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo bash -c "echo 'date.timezone = \"UTC\"' &gt;&gt; /etc/hhvm/php.ini"
+</code></pre></div></div>
+
+<p>We also need to get HHVM to start up when the server starts.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo update-rc.d hhvm defaults
+</code></pre></div></div>
+
+<p>Next, lets get nginx sorted. Here is my basic vhost configuration for nginx/HHVM with PHP5-FPM failover.</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">listen</span> <span class="s">[::]:80</span><span class="p">;</span>
+    <span class="kn">client_max_body_size</span> <span class="mi">20M</span><span class="p">;</span>
+
+    <span class="kn">root</span> <span class="n">/var/www/example.com</span><span class="p">;</span>
+    <span class="kn">index</span> <span class="s">index.php</span> <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">example.com</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\..*/.*\.php$</span> <span class="p">{</span> <span class="kn">return</span> <span class="mi">403</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="s">@rewrite</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="s">@rewrite</span> <span class="p">{</span>
+        <span class="kn">rewrite</span> <span class="s">^</span> <span class="n">/index.php</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.(hh|php)$|^/update.php</span> <span class="p">{</span>
+        <span class="kn">fastcgi_intercept_errors</span> <span class="no">on</span><span class="p">;</span>
+        <span class="kn">error_page</span> <span class="mi">500</span> <span class="p">=</span> <span class="s">@fallback</span><span class="p">;</span>
+        <span class="kn">error_page</span> <span class="mi">502</span> <span class="p">=</span> <span class="s">@fallback</span><span class="p">;</span>
+        <span class="kn">fastcgi_split_path_info</span> <span class="s">^(.+</span><span class="err">\</span><span class="s">.php)(/.+)</span>$<span class="p">;</span>
+
+        <span class="kn">fastcgi_keep_conn</span> <span class="no">on</span><span class="p">;</span>
+        <span class="kn">include</span> <span class="s">fastcgi_params</span><span class="p">;</span>
+        <span class="kn">fastcgi_index</span> <span class="s">index.php</span><span class="p">;</span>
+        <span class="kn">fastcgi_param</span> <span class="s">SCRIPT_FILENAME</span> <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+        <span class="kn">fastcgi_param</span> <span class="s">SERVER_NAME</span> <span class="nv">$host</span><span class="p">;</span>
+        <span class="kn">fastcgi_pass</span> <span class="nf">127.0.0.1</span><span class="p">:</span><span class="mi">9000</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="s">@fallback</span> <span class="p">{</span>
+        <span class="kn">fastcgi_split_path_info</span> <span class="s">^(.+</span><span class="err">\</span><span class="s">.php)(/.+)</span>$<span class="p">;</span>
+        <span class="kn">include</span> <span class="s">fastcgi_params</span><span class="p">;</span>
+        <span class="kn">fastcgi_index</span> <span class="s">index.php</span><span class="p">;</span>
+        <span class="kn">fastcgi_param</span> <span class="s">SCRIPT_FILENAME</span> <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+        <span class="kn">fastcgi_param</span> <span class="s">SERVER_NAME</span> <span class="nv">$host</span><span class="p">;</span>
+        <span class="kn">fastcgi_pass</span> <span class="s">unix:/var/run/php5-fpm.sock</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/\.ht</span> <span class="p">{</span> <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>So what does it do? In a nutshell our site is hosted in root folder /var/www/example.com - we listen on port 80 (HTTP) for connections to example.com. First off, rewrite all requests to /index.php (Drupal 8) - this is how Drupal handles request URIs.</p>
+
+<p>Now, if we hit a .php file (or .hh for specific HHVM stuff) we first pass this to HHVM running as FastCGI on port 9000.  Notice the fastcgi_intercept_errors on;? This is what we use to see if HHVM was able to run the Drupal code. So how do we deal with this failing? We redirect it to PHP5-FPM running on a Unix Socket, for this we catch the HHVM errors and redirect to @fallback, our block for running PHP5-FPM using error_page 500 = @fallback; error_page 502 = @fallback;.</p>
+
+<p>Time to test it out. Let’s restart all our services for good measure and get testing.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo service mysql restart
+sudo service hhvm restart
+sudo service php5-fpm restart
+sudo service nginx restart
+sudo service postfix restart
+</code></pre></div></div>
+
+<p>Then visit your web page. Install Drupal 8 and enjoy.</p>
+
+<p><img src="/images/2016/07/HHVMPHPDrupal8.png" alt="Drupal 8 HHVM" /></p>
+
+<p><strong>Testing</strong></p>
+
+<p>If you press F12 on the page and refresh the page whilst on the “Network” tab you should see whether or not the page has run in HHVM or PHP5-FPM based on the page headers. All being well you should see HHVM/3.10 in the header - if not something has probably been misconfigured.</p>
+
+<p>To check if the fallback is working, stop the HHVM service and refresh the page.</p>
+
+<p><em>HHVM Working</em></p>
+
+<p><img src="/images/2016/07/HHVMHeaders.png" alt="HHVM Working" /></p>
+
+<p><em>HHVM Stopped / PHP5-FPM Fallback</em></p>
+
+<p><img src="/images/2016/07/PHPHeaders.png" alt="PHP5-FPM Fallback" /></p>
+
+<p><strong>Sources</strong></p>
+
+<ul>
+  <li>https://www.digitalocean.com/company/blog/getting-ready-for-php-7/</li>
+  <li>https://kinsta.com/blog/the-definitive-php-7-final-version-hhvm-benchmark/</li>
+  <li>http://hhvm.com/</li>
+  <li>https://bjornjohansen.no/hhvm-with-fallback-to-php</li>
+</ul>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2015/12/05/creating-guest-network-mikrotik-routeros6.html">Creating a Guest Wireless Network on a MikroTik running RouterOS 6 with Winbox</a></h2>
+          </header>
+          <section>
+            <p>I revived a brand new MikroTik routerboard through the post recently; an RB2011U series router to be specific. My goal for using this router is to better manage my home network, VPN connections and the guests who come into our home. The last point is fairly important to me as I want to create a guest WiFi network to isolate visitors from the rest of the network, BYOD is the acronym for “Bring Your Own Disaster” after all.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2015/12/05/creating-guest-network-mikrotik-routeros6.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2015/12/17/lets-encrypt-nginx.html">Let's Encrypt - nginx!</a></h2>
+          </header>
+          <section>
+            <p>So, December 3rd saw the public beta release of “Let’s Encrypt”, a free, automated and open certificate authority from the Internet Security Research Group. I’ve tried out their client on Apache2 and all I can say is that it is the easiest and cheapest way of getting your site on SSL.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2015/12/17/lets-encrypt-nginx.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Let's Encrypt - nginx!</h1>
+      <p class="post-meta">Dec 17, 2015</p>
+    </header>
+
+    <section>
+      <p>So, December 3rd saw the public beta release of “Let’s Encrypt”, a free, automated and open certificate authority from the Internet Security Research Group. I’ve tried out their client on Apache2 and all I can say is that it is the easiest and cheapest way of getting your site on SSL.</p>
+
+<p>When it comes to nginx, things aren’t quite as simple. As I write this the nginx plugin isn’t yet supported, probably because nginx config comes in all shapes and sizes dependent on version, os and package maintainer.</p>
+
+<p>Luckily, Let’s Encrypt still keeps things simple for those of us who are OK doing a bit of the manual work.</p>
+
+<p>Let’s Encrypt. Download from the git repository and run the setup.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/letsencrypt/letsencrypt
+cd letsencrypt
+./letsencrypt-auto --help
+</code></pre></div></div>
+
+<p>Excellent. Here’s the bit where we deviate to work on nginx. Run the following, replacing the domain for your own:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./letsencrypt-auto --standalone certonly -d xan-manning.co.uk
+</code></pre></div></div>
+
+<p>You may get prompted to stop nginx, unfortunately you cannot continue until you do.</p>
+
+<p>So now we have all the certificates and keys we need in /etc/letsencrypt/live/xan-manning.co.uk/ it’s time to configure nginx. Let’s make a diffie-hellman param file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl dhparam -out /etc/nginx/dh.pem 4096
+</code></pre></div></div>
+
+<p>Now to make our vhost listen on SSL. We’ll also enable spdy while we are here, if your version of nginx doesn’t support spdy then feel free to miss this out. Configure the top of your vhost server block as below:</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">spdy</span><span class="p">;</span>
+    <span class="kn">listen</span> <span class="s">[::]:443</span> <span class="s">ssl</span> <span class="s">spdy</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">xan-manning.co.uk</span>
+    <span class="s">ssl_certificate</span> <span class="n">/etc/letsencrypt/live/xan-manning.co.uk/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="n">/etc/letsencrypt/live/xan-manning.co.uk/privkey.pem</span><span class="p">;</span>
+
+    <span class="kn">ssl_dhparam</span> <span class="n">/etc/nginx/dh.pem</span><span class="p">;</span>
+
+    <span class="kn">ssl_protocols</span> <span class="s">TLSv1</span> <span class="s">TLSv1.1</span> <span class="s">TLSv1.2</span><span class="p">;</span>
+    <span class="kn">ssl_ciphers</span> <span class="s">'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS'</span><span class="p">;</span>
+    <span class="kn">ssl_prefer_server_ciphers</span> <span class="no">on</span><span class="p">;</span>
+    <span class="kn">ssl_session_timeout</span>                 <span class="mi">30m</span><span class="p">;</span>
+    <span class="kn">ssl_session_cache</span>                   <span class="s">shared:SSL:10m</span><span class="p">;</span>
+
+    <span class="kn">ssl_stapling</span>                        <span class="no">on</span><span class="p">;</span>
+    <span class="kn">resolver</span>                            <span class="mi">8</span><span class="s">.8.8.8</span><span class="p">;</span>
+    <span class="kn">ssl_stapling_verify</span>                 <span class="no">on</span><span class="p">;</span>
+
+    <span class="kn">add_header</span>                          <span class="s">Strict-Transport-Security</span> <span class="s">max-age=31536000</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>And we should now be done. Run a quick config test.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nginx -t -c /etc/nginx/nginx.conf
+</code></pre></div></div>
+
+<p>All being well, restart the server</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service nginx restart
+</code></pre></div></div>
+
+<p>Congrats, you have a free SSL certificate!</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2015/12/09/d8-on-lemph.html">Drupal 8 on nginx HHVM and PHP5-FPM fallback.</a></h2>
+          </header>
+          <section>
+            <p>It is, without a doubt, an exciting time for everyone working with Drupal and PHP in general - a great way to round of 2015. We’ve seen two major releases of our favourite open source projects, Drupal 8 and PHP 7. Whilst the performance boost of PHP7 over PHP5.6 is beyond anecdotal - it is proven - the performance of Drupal 8 on PHP7 vs. PHP5.6 isn’t as great when compared to other open source projects (see <a href="https://kinsta.com/blog/the-definitive-php-7-final-version-hhvm-benchmark/">Kinsta.com</a> benchmarking).</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2015/12/09/d8-on-lemph.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2015/12/22/two-node-glusterfs-vagrant.html">Two Node GlusterFS in Vagrant</a></h2>
+          </header>
+          <section>
+            <p>I’ve been experimenting with GlusterFS recently and I have found it fairly useful to be able to roll out a quick Gluster volume to play with. Vagrant here is your friend, you can roll out VMs fairly quickly and dispose of them leaving little to no mess afterwards.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2015/12/22/two-node-glusterfs-vagrant.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

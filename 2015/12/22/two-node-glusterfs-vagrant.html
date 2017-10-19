@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Two Node GlusterFS in Vagrant</h1>
+      <p class="post-meta">Dec 22, 2015</p>
+    </header>
+
+    <section>
+      <p>I’ve been experimenting with GlusterFS recently and I have found it fairly useful to be able to roll out a quick Gluster volume to play with. Vagrant here is your friend, you can roll out VMs fairly quickly and dispose of them leaving little to no mess afterwards.</p>
+
+<p>The following Vagrantfile is for VirtualBox and will create a volume replicated across two nodes. My main aim of creating this Vagrantfile is to experience how Gluster behaves when taking servers offline, adding more servers and what happens when you replace/add bricks to a volume.</p>
+
+<p><strong>Download</strong>: <a href="https://hellholt.s3.amazonaws.com/downloads/Vagrantfiles_gluster-2node.tar.gz">Vagrantfiles_gluster-2node.tar.gz</a></p>
+
+<p>Below is the diagram (<a href="http://gluster.readthedocs.org/en/latest/Quick-Start-Guide/Architecture/">source</a>) that describes what we are creating as our base replicated volume in Vagrant/Virtualbox:</p>
+
+<p><img src="/images/2016/07/replicatedVolume.png" alt="GlusterFS Diagram" /></p>
+
+<p>Once you have run “vagrant up”, the above will be represented on the host filesystem as two .vdi images. When you add files to your mounted volume you can start to see how data starts to replicate between volumes and how the volume repairs when bringing up a server back online.</p>
+
+<p><img src="/images/2016/07/VBoxGluster.png" alt="GlusterFS Host Directory" /></p>
+
+<p>Hope this helps somebody, feel free to go nuts.</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2015/12/17/lets-encrypt-nginx.html">Let's Encrypt - nginx!</a></h2>
+          </header>
+          <section>
+            <p>So, December 3rd saw the public beta release of “Let’s Encrypt”, a free, automated and open certificate authority from the Internet Security Research Group. I’ve tried out their client on Apache2 and all I can say is that it is the easiest and cheapest way of getting your site on SSL.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2015/12/17/lets-encrypt-nginx.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2016/01/30/building-an-ansible-2-lab.html">Building an Ansible 2 Lab in Vagrant/VirtualBox</a></h2>
+          </header>
+          <section>
+            <p>This post is all about Ansible. 2016 <a href="http://www.ansible.com/blog/ansible-2.0-launch">saw the release of Ansible 2</a>, which comes with a few new features however the bulk of the effort in version 2 looks to have been in refactoring. Regardless, I have found that my job often requires me to be doing lots of dull tasks on multiple servers. Whilst we have some older servers with some quite, ahem, bespoke and quirky setups making them unsuitable for integration into a configuration management system - some tasks can be performed en-masse using Ansible.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/01/30/building-an-ansible-2-lab.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Throwback Thursday: Hacktrix*</h1>
+      <p class="post-meta">Jan 26, 2017</p>
+    </header>
+
+    <section>
+      <p>It’s Thursday again, and I’m looking back on another project from days gone by.</p>
+
+<p>Following on from a decision not to renew our QueueMetrics license to monitor our call volume over Asterisk, we were left in a bit of a pickle. Numerous calls were coming in but managers could not gauge the volume and in times of an outage this was a serious problem when it came to breaks and assigning overtime.</p>
+
+<p>Luckily, Python comes to the rescue with the py-asterisk library that talks to the Asterisk API.</p>
+
+<blockquote>
+  <p>“Import all the things!” <small>Python</small></p>
+</blockquote>
+
+<p>The design was quite simple, a small Python application that talks to the Asterisk API and returns JSON over HTTP. We then had a small HTML page with jQuery performing AJAX GET to this small server.</p>
+
+<p>Voilla, Hacktrix*. Tiny call monitor.</p>
+
+<p><img src="/images/2017/01/imag0371.jpg" alt="Hacktrix* Server" /></p>
+
+<p><img src="/images/2017/01/imag0370.jpg" alt="Hacktrix* Client" /></p>
+
+<p>Then for a sneaky added bonus (running on my desktop)… Caller ID! Basically looking up the number in a dictionary and returning the company name.</p>
+
+<p><img src="/images/2017/01/image001_censored.png" alt="Hacktix* CallerID" /></p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2017/01/19/saltstack-lab-in-vagrant.html">SaltStack Lab in Vagrant</a></h2>
+          </header>
+          <section>
+            <p>Today I have published a really simplistic <a href="https://saltstack.com/">SaltStack</a> lab for Vagrant to GitHub:</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/01/19/saltstack-lab-in-vagrant.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2017/02/12/two-node-redis-cluster-in-vagrant.html">Two node Redis cluster in Vagrant</a></h2>
+          </header>
+          <section>
+            <p>So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a <a href="https://github.com/xanmanning/vagrant-redis-cluster">Vagrantfile for creating a Redis Cluster</a>.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/02/12/two-node-redis-cluster-in-vagrant.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

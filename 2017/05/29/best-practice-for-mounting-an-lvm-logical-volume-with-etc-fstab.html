@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Best Practice for Mounting an LVM Logical Volume with /etc/fstab</h1>
+      <p class="post-meta">May 29, 2017</p>
+    </header>
+
+    <section>
+      <p>If you’ve been using Linux for a bit you will be familiar with the file systems table (<a href="http://man7.org/linux/man-pages/man5/fstab.5.html">fstab(5)</a>: <code class="highlighter-rouge">/etc/fstab</code>). You will also be fairly familiar with the contents of this file and it’s structure:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;device&gt; &lt;mount-point&gt; &lt;filesystem-type&gt; &lt;options&gt; &lt;dump&gt; &lt;pass&gt;
+</code></pre></div></div>
+
+<p>So a typical entry may possibly look like the following:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/dev/sda1  /  ext4  defaults  0 0
+</code></pre></div></div>
+
+<p>This would mount <code class="highlighter-rouge">/dev/sda1</code>, the device file for the first partition on the first disk as the root (<code class="highlighter-rouge">/</code>) on your Linux system.</p>
+
+<p>Now you have possibly seen a problem… this device might change names and no longer be <code class="highlighter-rouge">/dev/sda1</code> next boot. Imagine performing an install from a live CD, the mappings of devices might change between booting the live CD and booting from the hard disk.</p>
+
+<p>If you looked at your <em>actual</em> fstab, you will notice that instead of devices being identified by <code class="highlighter-rouge">/dev/sdx</code>, you will see the use of UUIDs. This method is considered the safest and most reliable way of mounting a plain old block device.</p>
+
+<p>To find a UUID, simply run the <code class="highlighter-rouge">blkid</code> command.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># blkid /dev/sda1
+/dev/sda1 UUID="15983cac-77bc-46b1-9f79-cb180e438a64" TYPE="ext4"
+</code></pre></div></div>
+
+<p>Your fstab now looks more like this, using UUID to identify the filesystem we wish to mount:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UUID=15983cac-77bc-46b1-9f79-cb180e438a64  /  ext4  defaults  0 0
+</code></pre></div></div>
+
+<h2 id="lvm">LVM</h2>
+
+<p>Let’s think about an example logical volume, 10 GB spread across a 16 GB volume group composed of two 8 GB disks:</p>
+
+<p><img src="/images/2017/05/blk_and_df.png" alt="LVM Example" /></p>
+
+<p>Now there is the temptation to put the UUID entry into your fstab.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># lsblk -f
+</code></pre></div></div>
+
+<p><img src="/images/2017/05/lsblkF.png" alt="lsblk -f" /></p>
+
+<p>Using this UUID in your fstab, you will be able to mount the filesystem consistently, surely? It’s the best practice for mounting any other volume:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UUID=cefcdc28-ac6b-4a26-a14e-e27724489c52  /backup  ext4  defaults  0 0
+</code></pre></div></div>
+<p>Alas, no.</p>
+
+<p>Why?.. <strong><em>Snapshots</em></strong>. This problem also applies for filesystems that support snapshots such as zfs.</p>
+
+<p>I’ll demonstrate now by creating a snapshot of my logical volume and then re-run the command for finding the UUID.</p>
+
+<p><img src="/images/2017/05/snapshotsProblem.png" alt="Snapshot" /></p>
+
+<p>As you may have noticed, the original volume and the snapshot have <em>exactly the same UUID</em>. If I add this UUID to my fstab now, <code class="highlighter-rouge">umount</code> and <code class="highlighter-rouge">mount</code>; the snapshot volume will mount to <code class="highlighter-rouge">/backup</code>. This is potentially not the behavior we want.</p>
+
+<p><img src="/images/2017/05/snapshotMounted.png" alt="Snapshot Mounted" /></p>
+
+<p>So what do we do? What goes into our fstab? Let’s look at the options available to us on this openSUSE VM. We have:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">/dev/mapper/vg_test-lv_test</code></li>
+  <li><code class="highlighter-rouge">/dev/vg_test/lv_test</code></li>
+  <li><code class="highlighter-rouge">/dev/dm-#</code></li>
+</ul>
+
+<p>On more modern Linux OS, the top 2 options are the same, a symlink to the device file <code class="highlighter-rouge">/dev/dm-#</code> (<code class="highlighter-rouge">/dev/dm-1</code> in my example).</p>
+
+<p><img src="/images/2017/05/symlink_devdm.png" alt="/dev/dm-1 Symlink" /></p>
+
+<p>We shouldn’t reference <code class="highlighter-rouge">/dev/dm-1</code> in our fstab though as this reference is not persistent on reboot. We cam also have an increase or decrease in the number of device-mapper device files when we make snapshots. Additionally volumes will likely move around when re-discovered by device-mapper on boot.</p>
+
+<p><img src="/images/2017/05/devdms.png" alt="Multiple /dev/dm-#s" /></p>
+
+<p>So what the heck <em>do</em> we use? Despite going against what was previously said in the introduction, either:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">/dev/mapper/vg_test-lv_test</code> or</li>
+  <li><code class="highlighter-rouge">/dev/vg_test/lv_test</code></li>
+</ul>
+
+<p>Preferably <code class="highlighter-rouge">/dev/mapper/vg_test-lv_test</code> as this used to be where device-mapper <a href="https://superuser.com/a/559478">originally</a> created the device file, (instead of <code class="highlighter-rouge">/dev/dm-#</code>).</p>
+
+<p>I would also recommend using the <code class="highlighter-rouge">/dev/mapper/vg_test-lv_test</code> because I have also had experiences of the <code class="highlighter-rouge">/dev/vg_test/lv_test</code> symlink going missing during a reboot and requiring emergency console access.</p>
+
+<p>On older systems, <code class="highlighter-rouge">/dev/mapper/vg_test-lv_test</code> is more likely to be persistent than <code class="highlighter-rouge">/dev/vg_test/lv_test</code>.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>When adding a device to fstab, unless you are using LVM or a filesystem that supports snapshots*, use the UUID.</p>
+
+<p>When using LVM, use the <code class="highlighter-rouge">/dev/mapper/vg_volgrp-lv_logvol</code> device file (or symlink for later Linux OS).</p>
+
+<p><small>*btrfs users, carry on using UUID but specify the subvolume name.</small></p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2017/05/22/azure-an-aws-guy-dipping-his-toes.html">Azure, an AWS guy dipping his toes.</a></h2>
+          </header>
+          <section>
+            <p>I am not going to lie, I am a big fan of AWS. I have been using AWS on and off for nearly 2 years now. I’ve done the training for both the AWS Solutions Architect Associate and SysOps Associate (although not got a certification <em>yet</em>). Shout out to <a href="https://acloud.guru/">acloud.guru</a>.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/05/22/azure-an-aws-guy-dipping-his-toes.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2017/09/16/clean-up-docker-hosts.html">Clean up old Docker images</a></h2>
+          </header>
+          <section>
+            <p>Sorry for not posting in a while, I have been a bit busy. Here’s a quick tip.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/09/16/clean-up-docker-hosts.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

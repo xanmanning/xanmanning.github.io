@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">OpenBSD 6.0: Simple NAT with pf</h1>
+      <p class="post-meta">Dec 23, 2016</p>
+    </header>
+
+    <section>
+      <p>This post is more of a “note to self”, but this is a summary of a simple NAT setup between an “Internal” interface and an “External” interface on our OpenBSD server or router.</p>
+
+<p>Why would we do this? Well we might have an OpenBSD machine acting as a router and so 1 public IP address on our “External” interface which is to be shared between our devices on our “Internal” network. Otherwise we might have a VPN running on a TUN/TAP that we wish to communicate with the outside world.</p>
+
+<p>First thing’s first. Make sure <code class="highlighter-rouge">pf</code> is enabled by editing <code class="highlighter-rouge">/etc/rc.conf.local</code>, uncomment/add the following line:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pf=YES
+</code></pre></div></div>
+
+<p>Now, we need to enable IP forwarding by editing <code class="highlighter-rouge">/etc/sysctl.conf</code> and un-comment/add this line:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net.inet.ip.forwarding=1
+</code></pre></div></div>
+
+<p>We can get this IP forwarding working without rebooting with the following command:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># sysctl net.inet.ip.forwarding=1
+</code></pre></div></div>
+
+<p>Now we can edit our <code class="highlighter-rouge">/etc/pf.conf</code> to put in place our NAT. For this we are going to assume that our “Internal” interface has a private network on it, for this example we are using a <em>192.168.100.0/24</em> range. Append the following lines your pf configuration file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>###
+### OPENBSD NAT CONFIG
+###
+
+## Interfaces, External and Internal
+ExtIf = "xnf0"
+IntIf = "xnf1"
+
+## Our Private Network in NAT
+PrivNet = "192.168.100/24"
+
+## Our NAT
+match out log on $ExtIf from $PrivNet to any received-on $IntIf tag EGRESS nat-to ($ExtIf:0)
+</code></pre></div></div>
+
+<p>Now there is probably more configuration needed for the network as a whole but the NAT can be simply created in the above 1 line and 3 variables.</p>
+
+<p>I’ve found some use for it, others might want it for reference.</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2016/11/21/salt-master-on-openbsd-6-0.html">Salt Master on OpenBSD 6.0</a></h2>
+          </header>
+          <section>
+            <p>Let’s get started with <a href="https://saltstack.com/">SaltStack</a>, but let’s put a twist on it and install our Salt Master on OpenBSD 6.0.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/11/21/salt-master-on-openbsd-6-0.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html">Chmod 0777; when permissions go bad and using the Sticky bit!</a></h2>
+          </header>
+          <section>
+            <p>I recently got tested on an important piece of Linux file permissions trivia and must admit I fumbled the answer a bit.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

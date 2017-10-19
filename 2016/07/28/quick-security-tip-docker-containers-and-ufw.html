@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Quick security tip! Docker containers and ufw.</h1>
+      <p class="post-meta">Jul 28, 2016</p>
+    </header>
+
+    <section>
+      <p>I recently discovered that the Docker daemon ‘out of the box’ (as it where) will run with the option <code class="highlighter-rouge">--iptables=true</code>.</p>
+
+<p><em>Why is this important?</em> - Well, for on your own development environment perhaps it isn’t so important. You can just get on with running your containers and access them over the network as expected.</p>
+
+<p>If you are a bit more security conscious, perhaps because you are running on a production server, you will have firewall rules of some sort. <code class="highlighter-rouge">iptables</code> users may have spotted this but <code class="highlighter-rouge">ufw</code> users will potentially miss this: Docker is allowed to make changes to iptables to make networking easier. The reason why ufw users may miss this happening is that the rules for Docker do not appear in the list of rules.</p>
+
+<p>Perhaps you want Docker managing <code class="highlighter-rouge">iptables</code>, this is your decision, but if you are running a selection of microservices behind an <code class="highlighter-rouge">nginx</code> load balancer/reverse proxy then you might not want this.</p>
+
+<p><em>How do we fix this?</em> - Luckily it isn’t that hard to change the behavior.</p>
+
+<h2 id="systemd-distros">systemd Distros</h2>
+
+<p>Debian 8 for example, edit: /etc/systemd/system/multi-user.target.wants/docker.service</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/systemd/system/multi-user.target.wants/docker.service
+</code></pre></div></div>
+
+<p>You are looking for the following line:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ExecStart=/usr/bin/docker daemon -H fd://
+</code></pre></div></div>
+
+<p>Change it to:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ExecStart=/usr/bin/docker daemon -H fd:// --iptables=false
+</code></pre></div></div>
+
+<p>Restart your Docker daemon</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart docker
+</code></pre></div></div>
+
+<h2 id="non-systemd-systems">non-systemd Systems</h2>
+
+<p>Ubuntu 14.04 for example.</p>
+
+<p>Edit /etc/default/docker</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/default/docker
+</code></pre></div></div>
+
+<p>Change the following line:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
+</code></pre></div></div>
+
+<p>To:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --iptables=false"
+</code></pre></div></div>
+
+<p>Restart your Docker daemon</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service docker restart
+</code></pre></div></div>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2016/07/27/making-deb-packages-using-docker.html">Making .deb packages using Docker</a></h2>
+          </header>
+          <section>
+            <p>This is a bit of an odd exercise but I recently found myself needing to compile a program and produce a .deb package. We were looking at making a shared environment for producing these packages to roll out to production environments, however what was needed was a method of just spitting out .deb packages from sourcecode from git.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/07/27/making-deb-packages-using-docker.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2016/08/19/re-architecting-a-global-data-object-store.html">Re-architecting a Global Data Object store</a></h2>
+          </header>
+          <section>
+            <p>In a recent project I have had the opportunity to work with MongoDB, admittedly this is the first real attempt to do so in any real capacity.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/08/19/re-architecting-a-global-data-object-store.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

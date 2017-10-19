@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="http://localhost:4000" class="image avatar"><img class="editable" src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="http://localhost:4000">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Making .deb packages using Docker</h1>
+      <p class="post-meta">Jul 27, 2016</p>
+    </header>
+
+    <section>
+      <p>This is a bit of an odd exercise but I recently found myself needing to compile a program and produce a .deb package. We were looking at making a shared environment for producing these packages to roll out to production environments, however what was needed was a method of just spitting out .deb packages from sourcecode from git.</p>
+
+<h2 id="approach">Approach</h2>
+
+<p>Rather than taking up a VM on our KVM server we decided to compile and build our .debs using Docker. Our target production servers are all Ubuntu servers but our Ops are potentially running a variety of Linux distributions.</p>
+
+<p>For the sake of consistency Docker felt like the logical choice. So what do we need to do?</p>
+
+<ol>
+  <li>Pull the latest sourcecode from GitHub.</li>
+  <li>Checkout the latest release version.</li>
+  <li>Compile an executable and “make install” the resulting binary and man pages to our build directory.</li>
+  <li>Populate the DEBIAN/control file with data.</li>
+  <li>Create a .deb package into our volume directory.</li>
+</ol>
+
+<h2 id="working-example">Working Example</h2>
+
+<p><em>Warning: this is quite a dirty way of making .deb packages!</em></p>
+
+<p>For our working example we’ll look at using <a href="https://github.com/s3fs-fuse/s3fs-fuse">s3fs-fuse</a>. Let’s say we want to construct a container that simply spits out the latest release in the git repository into a .deb package for installation on our productions servers. We obviously don’t want build essential on the production servers so we turn to Docker to quickly produce our binary.</p>
+
+<p>Let’s look at our <code class="highlighter-rouge">Dockerfile</code>, this contains the initial instructions for creating our development environment from a standard image. As our target production servers are running Ubuntu Server 14.04 let’s use the image “Ubuntu: Trusty”.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM ubuntu:trusty
+MAINTAINER Xan Manning &lt;hello@[some-domain].co.uk&gt;
+
+<span class="c"># Volumes</span>
+VOLUME /build
+VOLUME /release
+
+<span class="c"># Install build dependencies</span>
+RUN apt-get update <span class="o">&amp;&amp;</span> apt-get <span class="nt">-y</span> install <span class="se">\</span>
+    build-essential <span class="se">\</span>
+    devscripts <span class="se">\</span>
+    fakeroot <span class="se">\</span>
+    debhelper <span class="se">\</span>
+    automake <span class="se">\</span>
+    autotools-dev <span class="se">\</span>
+    pkg-config <span class="se">\</span>
+    git <span class="se">\</span>
+    ca-certificates <span class="se">\</span>
+    <span class="nt">--no-install-recommends</span>
+
+<span class="c"># Install application dependencies</span>
+RUN apt-get <span class="nt">-y</span> install <span class="se">\</span>
+    libcurl4-gnutls-dev <span class="se">\</span>
+    libfuse-dev <span class="se">\</span>
+    libssl-dev <span class="se">\</span>
+    libxml2-dev <span class="se">\</span>
+    <span class="nt">--no-install-recommends</span>
+
+<span class="c"># clone s3fs-fuse</span>
+RUN git clone https://github.com/s3fs-fuse/s3fs-fuse.git /src
+WORKDIR /src
+RUN git fetch
+
+<span class="c"># Import resources</span>
+COPY ./resources /src/resources
+COPY ./entrypoint.sh /entrypoint.sh
+
+<span class="c"># Make Executable</span>
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT <span class="o">[</span><span class="s2">"/entrypoint.sh"</span><span class="o">]</span>
+</code></pre></div></div>
+<p>What we effectively have in this file is the installation of all the tools we need to build the binary from source, installing all the required libraries then cloning the repository to a specific location.</p>
+
+<p>Two volumes have been created which are available for mounting on the Docker Machine host. <code class="highlighter-rouge">/build</code> which contains all the compiled binaries and <code class="highlighter-rouge">/release</code> which will be our .deb package output directory.</p>
+
+<p>We also have another directory called <code class="highlighter-rouge">./resources</code> which contains our Debian <code class="highlighter-rouge">control</code> file for building our .deb. Here is what it looks like:</p>
+
+<div class="language-make highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">Package</span><span class="o">:</span> <span class="nf">s3fs-fuse</span>
+<span class="nl">Version</span><span class="o">:</span> <span class="nf">__VERSION__</span>
+<span class="nl">Depends</span><span class="o">:</span> <span class="nf">libfuse2</span><span class="p">,</span><span class="nf"> libssl1.0.0</span><span class="p">,</span><span class="nf"> libxml2</span>
+<span class="nl">Recommends</span><span class="o">:</span> <span class="nf">lsb-release</span>
+<span class="nl">Section</span><span class="o">:</span> <span class="nf">devel</span>
+<span class="nl">Priority</span><span class="o">:</span> <span class="nf">optional</span>
+<span class="nl">Architecture</span><span class="o">:</span> <span class="nf">amd64</span>
+<span class="nl">Installed-Size</span><span class="o">:</span> <span class="nf">__FILESIZE__</span>
+<span class="nl">Maintainer</span><span class="o">:</span> <span class="nf">Xan Manning &lt;hello@[some-domain].co.uk&gt;</span>
+<span class="nl">Description</span><span class="o">:</span> <span class="nf">s3fs-fuse package.</span>
+</code></pre></div></div>
+<p>We will replace <code class="highlighter-rouge">__VERSION__</code> and <code class="highlighter-rouge">__FILESIZE__</code> using <code class="highlighter-rouge">sed</code> a bit later on.</p>
+
+<p>Next, we configure our ENTRYPOINT. This will be a script that is run as the container is run. Typically there are more technical and useful ways of using an entrypoint, we are simply at this point going to use it as our “do stuff” script. Here is what our <code class="highlighter-rouge">entrypoint.sh</code> looks like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="c"># Clear out the /build and /release directory</span>
+rm <span class="nt">-rf</span> /build/<span class="k">*</span>
+rm <span class="nt">-rf</span> /release/<span class="k">*</span>
+
+<span class="c"># Re-pull the repository</span>
+git fetch <span class="o">&amp;&amp;</span> <span class="se">\</span>
+    <span class="nv">BUILD_VERSION</span><span class="o">=</span><span class="k">$(</span>git describe <span class="nt">--tags</span> <span class="k">$(</span>git rev-list <span class="nt">--tags</span> <span class="nt">--max-count</span><span class="o">=</span>1<span class="k">))</span> <span class="o">&amp;&amp;</span> <span class="se">\</span>
+    git checkout <span class="k">${</span><span class="nv">BUILD_VERSION</span><span class="k">}</span>
+
+<span class="c"># Configure, make, make install</span>
+./autogen.sh <span class="o">&amp;&amp;</span> ./configure <span class="se">\</span>
+    <span class="nt">--prefix</span><span class="o">=</span>/usr <span class="se">\</span>
+    <span class="nt">--libdir</span><span class="o">=</span>/usr/lib <span class="se">\</span>
+    <span class="nt">--localstatedir</span><span class="o">=</span>/var <span class="se">\</span>
+    <span class="nt">--mandir</span><span class="o">=</span>/usr/share/man <span class="se">\</span>
+    <span class="nt">--with-openssl</span>
+make
+fakeroot make install <span class="nv">DESTDIR</span><span class="o">=</span>/build
+
+<span class="c"># GZip the Man pages</span>
+gzip /build/usr/share/man/man1/s3fs.1
+
+<span class="c"># Get the Install Size</span>
+<span class="nv">INSTALL_SIZE</span><span class="o">=</span><span class="k">$(</span>du <span class="nt">-s</span> /build/usr | awk <span class="s1">'{ print $1 }'</span><span class="k">)</span>
+
+<span class="c"># Make DEBIAN directory in /build</span>
+mkdir <span class="nt">-p</span> /build/DEBIAN
+
+<span class="c"># Copy the control file from resources</span>
+cp /src/resources/control.in /build/DEBIAN/control
+
+<span class="c"># Fill in the information in the control file</span>
+sed <span class="nt">-i</span> <span class="s2">"s/__VERSION__/</span><span class="k">${</span><span class="nv">BUILD_VERSION</span>:1<span class="k">}</span><span class="s2">/g"</span> /build/DEBIAN/control
+sed <span class="nt">-i</span> <span class="s2">"s/__FILESIZE__/</span><span class="k">${</span><span class="nv">INSTALL_SIZE</span><span class="k">}</span><span class="s2">/g"</span> /build/DEBIAN/control
+
+<span class="c"># Build our Debian package</span>
+fakeroot dpkg-deb <span class="nt">-b</span> <span class="s2">"/build"</span>
+
+<span class="c"># Move it to release</span>
+mv /build.deb /release/s3fs-fuse-<span class="k">${</span><span class="nv">BUILD_VERSION</span><span class="k">}</span><span class="nt">-amd64</span>.deb
+</code></pre></div></div>
+
+<p>In a nutshell, what we do in this script is clear out any junk. Fetch the latest information from the git repository and check out the latest tag.</p>
+
+<p>We can then build the application with the typical <code class="highlighter-rouge">./configure &amp;&amp; make &amp;&amp; make install</code> however we want to make sure that it is moved to our <code class="highlighter-rouge">./build</code> directory.</p>
+
+<p>Now that we have our binary we can make our .deb package. The script will copy and populate the fields in our <code class="highlighter-rouge">DEBIAN/control</code> file using <code class="highlighter-rouge">sed</code> with information gleamed from the repository and the build folder.</p>
+
+<p>After building the .deb package (called build.deb due to the naming convention of our directory) - we can move it to the <code class="highlighter-rouge">./release</code> volume of our Docker container.</p>
+
+<h2 id="the-result">The Result</h2>
+
+<p>So, first thing is first, building the image. The easiest one-liner for this is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build -t s3fs_fuse_builder .
+</code></pre></div></div>
+
+<p>We can now run it and have our .deb package spat out. To do this we will be mounting the volumes in the following way as we run the container:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run \
+    -v $(pwd)/build:/build \
+    -v $(pwd)/release:/release \
+    --name s3fs_build_$(date "+%s") \
+    s3fs_fuse_builder
+</code></pre></div></div>
+
+<p>So, we get and output of our build:</p>
+
+<p><img src="/images/2016/07/dockerOutput.png" alt="Build" /></p>
+
+<p>and finally our .deb package</p>
+
+<p><img src="/images/2016/07/debpkg.png" alt=".deb pkg" /></p>
+
+<p>without a single development package installed on our production environment!</p>
+
+<p>Full archive of this example project to follow…</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2016/07/19/migrated-to-ghost.html">Migrated to Ghost</a></h2>
+          </header>
+          <section>
+            <p>You may or may not have noticed that my site has changed a bit. Originally I was using Drupal 8 however I have now migrated to something a bit more suitable for my needs.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/07/19/migrated-to-ghost.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+        <article class="6u$ 12u(small) excerpt f-right">
+          <header>
+            <h2><a href="/2016/07/28/quick-security-tip-docker-containers-and-ufw.html">Quick security tip! Docker containers and ufw.</a></h2>
+          </header>
+          <section>
+            <p>I recently discovered that the Docker daemon ‘out of the box’ (as it where) will run with the option <code class="highlighter-rouge">--iptables=true</code>.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2016/07/28/quick-security-tip-docker-containers-and-ufw.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>
