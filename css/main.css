@@ -91,6 +91,30 @@ section img {
 	font-size: 0.8em;
 }
 
+a.next {
+  margin-left: 1em;
+}
+
+span.next {
+  margin-left: 1em;
+  color: rgba(94, 94, 94, 0.4);
+}
+
+a.previous {
+  margin-right: 1em;
+}
+
+span.previous {
+  margin-right: 1em;
+  color: rgba(94, 94, 94, 0.4);
+}
+
+div.pagination {
+  text-align: center;
+  padding: 2em 0 2em 0;
+  border-top: solid 2px #efefef;
+}
+
 @media screen and (max-width: 1800px) {
   .container.\31 25\25 {
     width: 100%;
