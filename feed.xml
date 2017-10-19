@@ -1,154 +1,154 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-10-19T18:14:30+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">UNIX-ing as a Linux Geek</title><link href="http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek.html" rel="alternate" type="text/html" title="UNIX-ing as a Linux Geek" /><published>2017-09-23T15:56:30+01:00</published><updated>2017-09-23T15:56:30+01:00</updated><id>http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek</id><content type="html" xml:base="http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek.html">&lt;p&gt;So my background is mostly in GNU/Linux, I’ve ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I’m not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-10-19T18:32:59+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">UNIX-ing as a Linux Geek</title><link href="http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek.html" rel="alternate" type="text/html" title="UNIX-ing as a Linux Geek" /><published>2017-09-23T15:56:30+01:00</published><updated>2017-09-23T15:56:30+01:00</updated><id>http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek</id><content type="html" xml:base="http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek.html">So my background is mostly in GNU/Linux, I've ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I'm not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.
 
-&lt;p&gt;It’s not surprising that this is the case because of the exciting history of UNIX and the emergence of &lt;a href=&quot;https://www.gnu.org/gnu/manifesto.html&quot;&gt;GNU&lt;/a&gt; (GNU’s Not UNIX) and &lt;a href=&quot;http://engineering2.berkeley.edu/labnotes/history_unix.html&quot;&gt;BSD&lt;/a&gt; (Berkeley Software Distribution of UNIX). Unsuprisingly, packages are regularly ported between GNU/Linux and BSD. Even more surprising is seeing the odd GNU package on IBM AIX.&lt;/p&gt;
+It's not surprising that this is the case because of the exciting history of UNIX and the emergence of [GNU](https://www.gnu.org/gnu/manifesto.html) (GNU's Not UNIX) and [BSD](http://engineering2.berkeley.edu/labnotes/history_unix.html) (Berkeley Software Distribution of UNIX). Unsuprisingly, packages are regularly ported between GNU/Linux and BSD. Even more surprising is seeing the odd GNU package on IBM AIX.
 
-&lt;p&gt;Since 2016 I’ve been dipping my toes into &lt;a href=&quot;https://www.openbsd.org/&quot;&gt;OpenBSD&lt;/a&gt; and to help myself get started I have been reading &lt;a href=&quot;https://www.amazon.co.uk/Absolute-OpenBSD-Unix-Practical-Paranoid/dp/1593274769&quot;&gt;Absolute OpenBSD: UNIX for the Practical Paranoid&lt;/a&gt;.&lt;/p&gt;
+Since 2016 I've been dipping my toes into [OpenBSD](https://www.openbsd.org/) and to help myself get started I have been reading [Absolute OpenBSD: UNIX for the Practical Paranoid](https://www.amazon.co.uk/Absolute-OpenBSD-Unix-Practical-Paranoid/dp/1593274769).
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/09/20170923_124242_Cropped.jpg&quot; alt=&quot;Absolute BSD&quot; /&gt;&lt;/p&gt;
+![Absolute BSD](/images/2017/09/20170923_124242_Cropped.jpg)
 
-&lt;p&gt;I’ve not finished this book, however I have to highlight its value. I’m not going to spoil any of the wit and humour for what should be a dry read, however the real value I have found looking at the inner workings of the OpenBSD operating system’s configuration.&lt;/p&gt;
+I've not finished this book, however I have to highlight its value. I'm not going to spoil any of the wit and humour for what should be a dry read, however the real value I have found looking at the inner workings of the OpenBSD operating system's configuration.
 
-&lt;p&gt;How does this help a Linux geek? Actually a surprising lot. There are a number of useful tips on running a secure and stable OpenBSD server, however a lot of these tips can translate into GNU/Linux.&lt;/p&gt;
+How does this help a Linux geek? Actually a surprising lot. There are a number of useful tips on running a secure and stable OpenBSD server, however a lot of these tips can translate into GNU/Linux.
 
-&lt;p&gt;Good examples you can take with you on your GNU/Linux, BSD and UNIX journey include:&lt;/p&gt;
+Good examples you can take with you on your GNU/Linux, BSD and UNIX journey include:
 
-&lt;ul&gt;
-  &lt;li&gt;Partitioning disks&lt;/li&gt;
-  &lt;li&gt;Permissions&lt;/li&gt;
-  &lt;li&gt;User accounts, user limits&lt;/li&gt;
-  &lt;li&gt;Sudoer files&lt;/li&gt;
-&lt;/ul&gt;
+* Partitioning disks
+* Permissions
+* User accounts, user limits
+* Sudoer files
 
-&lt;p&gt;There are many more areas covered, I’ve just named a few. If you’re having to switch between different UNIX-like OS, it is definately worth reading and dabbling into unfamiliar technology. You might learn something about your own yard!&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">So my background is mostly in GNU/Linux, I’ve ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I’m not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.</summary></entry><entry><title type="html">Clean up old Docker images</title><link href="http://localhost:4000/2017/09/16/clean-up-docker-hosts.html" rel="alternate" type="text/html" title="Clean up old Docker images" /><published>2017-09-16T13:10:19+01:00</published><updated>2017-09-16T13:10:19+01:00</updated><id>http://localhost:4000/2017/09/16/clean-up-docker-hosts</id><content type="html" xml:base="http://localhost:4000/2017/09/16/clean-up-docker-hosts.html">&lt;p&gt;Sorry for not posting in a while, I have been a bit busy. Here’s a quick tip.&lt;/p&gt;
+There are many more areas covered, I've just named a few. If you're having to switch between different UNIX-like OS, it is definately worth reading and dabbling into unfamiliar technology. You might learn something about your own yard!</content><author><name>Xan Manning</name></author><summary type="html">So my background is mostly in GNU/Linux, I’ve ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I’m not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.</summary></entry><entry><title type="html">Clean up old Docker images</title><link href="http://localhost:4000/2017/09/16/clean-up-docker-hosts.html" rel="alternate" type="text/html" title="Clean up old Docker images" /><published>2017-09-16T13:10:19+01:00</published><updated>2017-09-16T13:10:19+01:00</updated><id>http://localhost:4000/2017/09/16/clean-up-docker-hosts</id><content type="html" xml:base="http://localhost:4000/2017/09/16/clean-up-docker-hosts.html">Sorry for not posting in a while, I have been a bit busy. Here's a quick tip.
 
-&lt;h2 id=&quot;the-problem&quot;&gt;The Problem&lt;/h2&gt;
+## The Problem
 
-&lt;p&gt;Ideally when running in the cloud we want to be able to ditch our VMs when they misbehave rather than trying to fix them. Reincarnate, don’t resurrect.&lt;/p&gt;
+Ideally when running in the cloud we want to be able to ditch our VMs when they misbehave rather than trying to fix them. Reincarnate, don't resurrect.
 
-&lt;p&gt;For me, however, I am running a single VM (Digital Ocean Droplet) with Docker. I want to be able to recreate my droplet very quickly should things go wrong, but I don’t care much about 100% uptime on my personal server. The issue with this approach is that my SSD fills up quickly with multiple Docker image layers.&lt;/p&gt;
+For me, however, I am running a single VM (Digital Ocean Droplet) with Docker. I want to be able to recreate my droplet very quickly should things go wrong, but I don't care much about 100% uptime on my personal server. The issue with this approach is that my SSD fills up quickly with multiple Docker image layers.
 
-&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+## The Solution
 
-&lt;p&gt;Despite my droplet being fairly quick to restore, this would be overkill for a simple ‘disk full’ issue. I reclaim my disk space using the &lt;code class=&quot;highlighter-rouge&quot;&gt;prune&lt;/code&gt; functions in Docker.&lt;/p&gt;
+Despite my droplet being fairly quick to restore, this would be overkill for a simple 'disk full' issue. I reclaim my disk space using the `prune` functions in Docker.
 
-&lt;p&gt;&lt;strong&gt;The aggressive approach&lt;/strong&gt;&lt;/p&gt;
+**The aggressive approach**
 
-&lt;p&gt;This will clean up everything that is unused, use with caution.&lt;/p&gt;
+This will clean up everything that is unused, use with caution.
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# docker system prune
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
+# docker system prune
+```
 
-&lt;p&gt;You can be more specific with these commands, pruning individual unused Docker objects&lt;/p&gt;
+You can be more specific with these commands, pruning individual unused Docker objects
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# docker container prune
+```
+# docker container prune
 # docker image prune
 # docker network prune
 # docker volume prune
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
 
-&lt;h3 id=&quot;sources&quot;&gt;Sources&lt;/h3&gt;
+### Sources
 
-&lt;ol&gt;
-  &lt;li&gt;https://docs.docker.com/engine/reference/commandline/system_prune/&lt;/li&gt;
-  &lt;li&gt;https://docs.docker.com/engine/admin/pruning/#prune-everything&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Xan Manning</name></author><summary type="html">Sorry for not posting in a while, I have been a bit busy. Here’s a quick tip.</summary></entry><entry><title type="html">Best Practice for Mounting an LVM Logical Volume with /etc/fstab</title><link href="http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html" rel="alternate" type="text/html" title="Best Practice for Mounting an LVM Logical Volume with /etc/fstab" /><published>2017-05-29T17:43:39+01:00</published><updated>2017-05-29T17:43:39+01:00</updated><id>http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab</id><content type="html" xml:base="http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html">&lt;p&gt;If you’ve been using Linux for a bit you will be familiar with the file systems table (&lt;a href=&quot;http://man7.org/linux/man-pages/man5/fstab.5.html&quot;&gt;fstab(5)&lt;/a&gt;: &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/fstab&lt;/code&gt;). You will also be fairly familiar with the contents of this file and it’s structure:&lt;/p&gt;
+ 1. https://docs.docker.com/engine/reference/commandline/system_prune/
+ 2. https://docs.docker.com/engine/admin/pruning/#prune-everything</content><author><name>Xan Manning</name></author><summary type="html">Sorry for not posting in a while, I have been a bit busy. Here’s a quick tip.</summary></entry><entry><title type="html">Best Practice for Mounting an LVM Logical Volume with /etc/fstab</title><link href="http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html" rel="alternate" type="text/html" title="Best Practice for Mounting an LVM Logical Volume with /etc/fstab" /><published>2017-05-29T17:43:39+01:00</published><updated>2017-05-29T17:43:39+01:00</updated><id>http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab</id><content type="html" xml:base="http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html">If you've been using Linux for a bit you will be familiar with the file systems table ([fstab(5)](http://man7.org/linux/man-pages/man5/fstab.5.html): `/etc/fstab`). You will also be fairly familiar with the contents of this file and it's structure:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;device&amp;gt; &amp;lt;mount-point&amp;gt; &amp;lt;filesystem-type&amp;gt; &amp;lt;options&amp;gt; &amp;lt;dump&amp;gt; &amp;lt;pass&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
+&lt;device&gt; &lt;mount-point&gt; &lt;filesystem-type&gt; &lt;options&gt; &lt;dump&gt; &lt;pass&gt;
+```
 
-&lt;p&gt;So a typical entry may possibly look like the following:&lt;/p&gt;
+So a typical entry may possibly look like the following:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/dev/sda1  /  ext4  defaults  0 0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
+/dev/sda1  /  ext4  defaults  0 0
+```
 
-&lt;p&gt;This would mount &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/sda1&lt;/code&gt;, the device file for the first partition on the first disk as the root (&lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt;) on your Linux system.&lt;/p&gt;
+This would mount `/dev/sda1`, the device file for the first partition on the first disk as the root (`/`) on your Linux system.
 
-&lt;p&gt;Now you have possibly seen a problem… this device might change names and no longer be &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/sda1&lt;/code&gt; next boot. Imagine performing an install from a live CD, the mappings of devices might change between booting the live CD and booting from the hard disk.&lt;/p&gt;
+Now you have possibly seen a problem... this device might change names and no longer be `/dev/sda1` next boot. Imagine performing an install from a live CD, the mappings of devices might change between booting the live CD and booting from the hard disk.
 
-&lt;p&gt;If you looked at your &lt;em&gt;actual&lt;/em&gt; fstab, you will notice that instead of devices being identified by &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/sdx&lt;/code&gt;, you will see the use of UUIDs. This method is considered the safest and most reliable way of mounting a plain old block device.&lt;/p&gt;
+If you looked at your _actual_ fstab, you will notice that instead of devices being identified by `/dev/sdx`, you will see the use of UUIDs. This method is considered the safest and most reliable way of mounting a plain old block device.
 
-&lt;p&gt;To find a UUID, simply run the &lt;code class=&quot;highlighter-rouge&quot;&gt;blkid&lt;/code&gt; command.&lt;/p&gt;
+To find a UUID, simply run the `blkid` command.
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# blkid /dev/sda1
+```
+# blkid /dev/sda1
 /dev/sda1 UUID=&quot;15983cac-77bc-46b1-9f79-cb180e438a64&quot; TYPE=&quot;ext4&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
 
-&lt;p&gt;Your fstab now looks more like this, using UUID to identify the filesystem we wish to mount:&lt;/p&gt;
+Your fstab now looks more like this, using UUID to identify the filesystem we wish to mount:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;UUID=15983cac-77bc-46b1-9f79-cb180e438a64  /  ext4  defaults  0 0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
+UUID=15983cac-77bc-46b1-9f79-cb180e438a64  /  ext4  defaults  0 0
+```
 
-&lt;h2 id=&quot;lvm&quot;&gt;LVM&lt;/h2&gt;
+## LVM
 
-&lt;p&gt;Let’s think about an example logical volume, 10 GB spread across a 16 GB volume group composed of two 8 GB disks:&lt;/p&gt;
+Let's think about an example logical volume, 10 GB spread across a 16 GB volume group composed of two 8 GB disks:
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/blk_and_df.png&quot; alt=&quot;LVM Example&quot; /&gt;&lt;/p&gt;
+![LVM Example](/images/2017/05/blk_and_df.png)
 
-&lt;p&gt;Now there is the temptation to put the UUID entry into your fstab.&lt;/p&gt;
+Now there is the temptation to put the UUID entry into your fstab.
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# lsblk -f
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
+# lsblk -f
+```
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/lsblkF.png&quot; alt=&quot;lsblk -f&quot; /&gt;&lt;/p&gt;
+![lsblk -f](/images/2017/05/lsblkF.png)
 
-&lt;p&gt;Using this UUID in your fstab, you will be able to mount the filesystem consistently, surely? It’s the best practice for mounting any other volume:&lt;/p&gt;
+Using this UUID in your fstab, you will be able to mount the filesystem consistently, surely? It's the best practice for mounting any other volume:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;UUID=cefcdc28-ac6b-4a26-a14e-e27724489c52  /backup  ext4  defaults  0 0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Alas, no.&lt;/p&gt;
+```
+UUID=cefcdc28-ac6b-4a26-a14e-e27724489c52  /backup  ext4  defaults  0 0
+```
+Alas, no.
 
-&lt;p&gt;Why?.. &lt;strong&gt;&lt;em&gt;Snapshots&lt;/em&gt;&lt;/strong&gt;. This problem also applies for filesystems that support snapshots such as zfs.&lt;/p&gt;
+Why?.. ___Snapshots___. This problem also applies for filesystems that support snapshots such as zfs.
 
-&lt;p&gt;I’ll demonstrate now by creating a snapshot of my logical volume and then re-run the command for finding the UUID.&lt;/p&gt;
+I'll demonstrate now by creating a snapshot of my logical volume and then re-run the command for finding the UUID.
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/snapshotsProblem.png&quot; alt=&quot;Snapshot&quot; /&gt;&lt;/p&gt;
+![Snapshot](/images/2017/05/snapshotsProblem.png)
 
-&lt;p&gt;As you may have noticed, the original volume and the snapshot have &lt;em&gt;exactly the same UUID&lt;/em&gt;. If I add this UUID to my fstab now, &lt;code class=&quot;highlighter-rouge&quot;&gt;umount&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;mount&lt;/code&gt;; the snapshot volume will mount to &lt;code class=&quot;highlighter-rouge&quot;&gt;/backup&lt;/code&gt;. This is potentially not the behavior we want.&lt;/p&gt;
+As you may have noticed, the original volume and the snapshot have _exactly the same UUID_. If I add this UUID to my fstab now, `umount` and `mount`; the snapshot volume will mount to `/backup`. This is potentially not the behavior we want.
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/snapshotMounted.png&quot; alt=&quot;Snapshot Mounted&quot; /&gt;&lt;/p&gt;
+![Snapshot Mounted](/images/2017/05/snapshotMounted.png)
 
-&lt;p&gt;So what do we do? What goes into our fstab? Let’s look at the options available to us on this openSUSE VM. We have:&lt;/p&gt;
+So what do we do? What goes into our fstab? Let's look at the options available to us on this openSUSE VM. We have:
 
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_test-lv_test&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/vg_test/lv_test&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/dm-#&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
+ - `/dev/mapper/vg_test-lv_test`
+ - `/dev/vg_test/lv_test`
+ - `/dev/dm-#`
 
-&lt;p&gt;On more modern Linux OS, the top 2 options are the same, a symlink to the device file &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/dm-#&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/dm-1&lt;/code&gt; in my example).&lt;/p&gt;
+On more modern Linux OS, the top 2 options are the same, a symlink to the device file `/dev/dm-#` (`/dev/dm-1` in my example).
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/symlink_devdm.png&quot; alt=&quot;/dev/dm-1 Symlink&quot; /&gt;&lt;/p&gt;
+![/dev/dm-1 Symlink](/images/2017/05/symlink_devdm.png)
 
-&lt;p&gt;We shouldn’t reference &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/dm-1&lt;/code&gt; in our fstab though as this reference is not persistent on reboot. We cam also have an increase or decrease in the number of device-mapper device files when we make snapshots. Additionally volumes will likely move around when re-discovered by device-mapper on boot.&lt;/p&gt;
+We shouldn't reference `/dev/dm-1` in our fstab though as this reference is not persistent on reboot. We cam also have an increase or decrease in the number of device-mapper device files when we make snapshots. Additionally volumes will likely move around when re-discovered by device-mapper on boot.
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/devdms.png&quot; alt=&quot;Multiple /dev/dm-#s&quot; /&gt;&lt;/p&gt;
+![Multiple /dev/dm-#s](/images/2017/05/devdms.png)
 
-&lt;p&gt;So what the heck &lt;em&gt;do&lt;/em&gt; we use? Despite going against what was previously said in the introduction, either:&lt;/p&gt;
+So what the heck _do_ we use? Despite going against what was previously said in the introduction, either:
 
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_test-lv_test&lt;/code&gt; or&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/vg_test/lv_test&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
+ - `/dev/mapper/vg_test-lv_test` or
+ - `/dev/vg_test/lv_test`
 
-&lt;p&gt;Preferably &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_test-lv_test&lt;/code&gt; as this used to be where device-mapper &lt;a href=&quot;https://superuser.com/a/559478&quot;&gt;originally&lt;/a&gt; created the device file, (instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/dm-#&lt;/code&gt;).&lt;/p&gt;
+Preferably `/dev/mapper/vg_test-lv_test` as this used to be where device-mapper [originally](https://superuser.com/a/559478) created the device file, (instead of `/dev/dm-#`).
 
-&lt;p&gt;I would also recommend using the &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_test-lv_test&lt;/code&gt; because I have also had experiences of the &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/vg_test/lv_test&lt;/code&gt; symlink going missing during a reboot and requiring emergency console access.&lt;/p&gt;
+I would also recommend using the `/dev/mapper/vg_test-lv_test` because I have also had experiences of the `/dev/vg_test/lv_test` symlink going missing during a reboot and requiring emergency console access.
 
-&lt;p&gt;On older systems, &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_test-lv_test&lt;/code&gt; is more likely to be persistent than &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/vg_test/lv_test&lt;/code&gt;.&lt;/p&gt;
+On older systems, `/dev/mapper/vg_test-lv_test` is more likely to be persistent than `/dev/vg_test/lv_test`.
 
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+## Conclusion
 
-&lt;p&gt;When adding a device to fstab, unless you are using LVM or a filesystem that supports snapshots*, use the UUID.&lt;/p&gt;
+When adding a device to fstab, unless you are using LVM or a filesystem that supports snapshots*, use the UUID.
 
-&lt;p&gt;When using LVM, use the &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_volgrp-lv_logvol&lt;/code&gt; device file (or symlink for later Linux OS).&lt;/p&gt;
+When using LVM, use the `/dev/mapper/vg_volgrp-lv_logvol` device file (or symlink for later Linux OS).
 
-&lt;p&gt;&lt;small&gt;*btrfs users, carry on using UUID but specify the subvolume name.&lt;/small&gt;&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">If you’ve been using Linux for a bit you will be familiar with the file systems table (fstab(5): /etc/fstab). You will also be fairly familiar with the contents of this file and it’s structure:</summary></entry><entry><title type="html">Azure, an AWS guy dipping his toes.</title><link href="http://localhost:4000/2017/05/22/azure-an-aws-guy-dipping-his-toes.html" rel="alternate" type="text/html" title="Azure, an AWS guy dipping his toes." /><published>2017-05-22T18:43:00+01:00</published><updated>2017-05-22T18:43:00+01:00</updated><id>http://localhost:4000/2017/05/22/azure-an-aws-guy-dipping-his-toes</id><content type="html" xml:base="http://localhost:4000/2017/05/22/azure-an-aws-guy-dipping-his-toes.html">&lt;p&gt;I am not going to lie, I am a big fan of AWS. I have been using AWS on and off for nearly 2 years now. I’ve done the training for both the AWS Solutions Architect Associate and SysOps Associate (although not got a certification &lt;em&gt;yet&lt;/em&gt;). Shout out to &lt;a href=&quot;https://acloud.guru/&quot;&gt;acloud.guru&lt;/a&gt;.&lt;/p&gt;
+&lt;small&gt;*btrfs users, carry on using UUID but specify the subvolume name.&lt;/small&gt;</content><author><name>Xan Manning</name></author><summary type="html">If you’ve been using Linux for a bit you will be familiar with the file systems table (fstab(5): /etc/fstab). You will also be fairly familiar with the contents of this file and it’s structure:</summary></entry><entry><title type="html">Azure, an AWS guy dipping his toes.</title><link href="http://localhost:4000/2017/05/22/azure-an-aws-guy-dipping-his-toes.html" rel="alternate" type="text/html" title="Azure, an AWS guy dipping his toes." /><published>2017-05-22T18:43:00+01:00</published><updated>2017-05-22T18:43:00+01:00</updated><id>http://localhost:4000/2017/05/22/azure-an-aws-guy-dipping-his-toes</id><content type="html" xml:base="http://localhost:4000/2017/05/22/azure-an-aws-guy-dipping-his-toes.html">I am not going to lie, I am a big fan of AWS. I have been using AWS on and off for nearly 2 years now. I've done the training for both the AWS Solutions Architect Associate and SysOps Associate (although not got a certification _yet_). Shout out to [acloud.guru](https://acloud.guru/).
 
-&lt;p&gt;Whilst there are no shortage of AWS jobs out there, depending on your industry it potentially pays to become cloud agnostic - having a finger in each of the cloud provider’s pies (AWS, Azure, DigitalOcean, Google Cloud). What becomes difficult is understanding the concepts of cloud hosting and the terminology associated with them. Amazon in particular has a fantastic way of over-complicating the name of their products so moving between AWS and Azure (for example) can feel a bit confusing. I feel Azure does a better job of naming their resources, but it’s ultimately just &lt;em&gt;different&lt;/em&gt;.&lt;/p&gt;
+Whilst there are no shortage of AWS jobs out there, depending on your industry it potentially pays to become cloud agnostic - having a finger in each of the cloud provider's pies (AWS, Azure, DigitalOcean, Google Cloud). What becomes difficult is understanding the concepts of cloud hosting and the terminology associated with them. Amazon in particular has a fantastic way of over-complicating the name of their products so moving between AWS and Azure (for example) can feel a bit confusing. I feel Azure does a better job of naming their resources, but it's ultimately just _different_.
 
-&lt;p&gt;Let’s dive in with just looking at the most basic of cloud resources, our networking and compute resources and compare their terminologies.&lt;/p&gt;
+Let's dive in with just looking at the most basic of cloud resources, our networking and compute resources and compare their terminologies.
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/AWSvsAzure.png&quot; alt=&quot;AWS vs. Azure&quot; /&gt;&lt;/p&gt;
+![AWS vs. Azure](/images/2017/05/AWSvsAzure.png)
 
 &lt;table&gt;
 &lt;tr&gt;
@@ -176,235 +176,230 @@
 &lt;tr&gt;&lt;td&gt;Lambda&lt;/td&gt;&lt;td&gt;Web Jobs&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 
-&lt;p&gt;&lt;small&gt;Source: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/architecture/aws-professional/services&quot;&gt;Microsoft, AWS to Azure services comparison&lt;/a&gt;&lt;/small&gt;&lt;/p&gt;
+&lt;small&gt;Source: [Microsoft, AWS to Azure services comparison](https://docs.microsoft.com/en-us/azure/architecture/aws-professional/services)&lt;/small&gt;
 
-&lt;p&gt;As you can see, for the most part, they are fairly self explanatory. I can see that the biggest mixup would be in the storage solutions where the term ‘block’ may become misleading.&lt;/p&gt;
+As you can see, for the most part, they are fairly self explanatory. I can see that the biggest mixup would be in the storage solutions where the term 'block' may become misleading.
 
-&lt;p&gt;Next post on this matter I shall be looking into Google Cloud Platform and eventually I shall lead us into using HashiCorp’s &lt;a href=&quot;https://www.terraform.io/&quot;&gt;Terraform&lt;/a&gt; to manage each of these providers.&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">I am not going to lie, I am a big fan of AWS. I have been using AWS on and off for nearly 2 years now. I’ve done the training for both the AWS Solutions Architect Associate and SysOps Associate (although not got a certification yet). Shout out to acloud.guru.</summary></entry><entry><title type="html">SaltStack at Home, Initial Thoughs</title><link href="http://localhost:4000/2017/05/21/saltstack-at-home-initial-thoughs.html" rel="alternate" type="text/html" title="SaltStack at Home, Initial Thoughs" /><published>2017-05-21T15:29:02+01:00</published><updated>2017-05-21T15:29:02+01:00</updated><id>http://localhost:4000/2017/05/21/saltstack-at-home-initial-thoughs</id><content type="html" xml:base="http://localhost:4000/2017/05/21/saltstack-at-home-initial-thoughs.html">&lt;p&gt;&lt;em&gt;“Cloud servers are cattle, not pets!”&lt;/em&gt;&lt;/p&gt;
+Next post on this matter I shall be looking into Google Cloud Platform and eventually I shall lead us into using HashiCorp's [Terraform](https://www.terraform.io/) to manage each of these providers.</content><author><name>Xan Manning</name></author><summary type="html">I am not going to lie, I am a big fan of AWS. I have been using AWS on and off for nearly 2 years now. I’ve done the training for both the AWS Solutions Architect Associate and SysOps Associate (although not got a certification yet). Shout out to acloud.guru.</summary></entry><entry><title type="html">SaltStack at Home, Initial Thoughs</title><link href="http://localhost:4000/2017/05/21/saltstack-at-home-initial-thoughs.html" rel="alternate" type="text/html" title="SaltStack at Home, Initial Thoughs" /><published>2017-05-21T15:29:02+01:00</published><updated>2017-05-21T15:29:02+01:00</updated><id>http://localhost:4000/2017/05/21/saltstack-at-home-initial-thoughs</id><content type="html" xml:base="http://localhost:4000/2017/05/21/saltstack-at-home-initial-thoughs.html">_&quot;Cloud servers are cattle, not pets!&quot;_
 
-&lt;p&gt;So I have been working with configuration management for a while, recently I have been switching between Ansilble and Salt Stack. After creating a Salt Stack for a previous employer in AWS (see below diagram), I have fallen for this configuration management system. As you may have noted, I am using Python based, YAML configured systems because this is where I am comfortable. These systems are easily extendable, the configuration files are easy to read for anyone and they are both awesome. Salt, ultimately, has won over purely based on requirements to support my previous employer’s legacy applications. I’ve become very familiar with it and I am sticking with what I am comfortable with.&lt;/p&gt;
+So I have been working with configuration management for a while, recently I have been switching between Ansilble and Salt Stack. After creating a Salt Stack for a previous employer in AWS (see below diagram), I have fallen for this configuration management system. As you may have noted, I am using Python based, YAML configured systems because this is where I am comfortable. These systems are easily extendable, the configuration files are easy to read for anyone and they are both awesome. Salt, ultimately, has won over purely based on requirements to support my previous employer's legacy applications. I've become very familiar with it and I am sticking with what I am comfortable with.
 
-&lt;p&gt;Why do we use configuration management? The main answers in my mind are automation, repeatability and accountability. If I need to create a new machine (either because a previous one has failed or I need extra compute capacity), I don’t have to do a lot. I bootstrap, Config Management does the rest. I can do this to one machine or a hundred machines and the resulting output will always be the same. I can track all configuration changes in version control systems such as git, so there is a level of accountability for change.&lt;/p&gt;
+Why do we use configuration management? The main answers in my mind are automation, repeatability and accountability. If I need to create a new machine (either because a previous one has failed or I need extra compute capacity), I don't have to do a lot. I bootstrap, Config Management does the rest. I can do this to one machine or a hundred machines and the resulting output will always be the same. I can track all configuration changes in version control systems such as git, so there is a level of accountability for change.
 
-&lt;p&gt;Another final point to mention is that configuration management is idempotent. What does &lt;em&gt;idempotent&lt;/em&gt; mean? An example of an idempotent process is washing your dog, wash him once or wash him twice, the outcome is the same: a clean dog. The opposite of an idempotent process is an incremental process, I feed the dog once he is healthy, feed him twice and he gets fat. I can apply a configuration once or a hundred times and the output is always the same. This isn’t always the case with custom shell scripts used for provisioning, these are often written to be run once.&lt;/p&gt;
+Another final point to mention is that configuration management is idempotent. What does _idempotent_ mean? An example of an idempotent process is washing your dog, wash him once or wash him twice, the outcome is the same: a clean dog. The opposite of an idempotent process is an incremental process, I feed the dog once he is healthy, feed him twice and he gets fat. I can apply a configuration once or a hundred times and the output is always the same. This isn't always the case with custom shell scripts used for provisioning, these are often written to be run once.
 
-&lt;h2 id=&quot;roles-based-on-hostname&quot;&gt;Roles based on hostname&lt;/h2&gt;
+## Roles based on hostname
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/SaltTargeting.png&quot; alt=&quot;Salt Targeting&quot; /&gt;&lt;/p&gt;
+![Salt Targeting](/images/2017/05/SaltTargeting.png)
 
-&lt;p&gt;My previous employers legacy cloud applications used to be configured with CFEngine3. Arguably not the easiest system to work with, but it was one of the first configuration management systems available. As our main cloud environment hosted multiple customers, each host with a different role, a convenient way of tracking the role and cost centre for each VM was vital. This needs to be machine readable and human readable due to the sheer scale of VMs in use. With CFEngine3 it was identified the best way of assigning a role to a VM was via the hostname - this was useful for us human SysAdmins/Developers too because we could easily find what we needed. Moving to AWS, it made sense to keep this convention but find a way of applying it into SaltStack.&lt;/p&gt;
+My previous employers legacy cloud applications used to be configured with CFEngine3. Arguably not the easiest system to work with, but it was one of the first configuration management systems available. As our main cloud environment hosted multiple customers, each host with a different role, a convenient way of tracking the role and cost centre for each VM was vital. This needs to be machine readable and human readable due to the sheer scale of VMs in use. With CFEngine3 it was identified the best way of assigning a role to a VM was via the hostname - this was useful for us human SysAdmins/Developers too because we could easily find what we needed. Moving to AWS, it made sense to keep this convention but find a way of applying it into SaltStack.
 
-&lt;p&gt;From our naming convention, we had the ability to automatically set up grains to help in targeting our systems for configuration.&lt;/p&gt;
+From our naming convention, we had the ability to automatically set up grains to help in targeting our systems for configuration.
 
-&lt;p&gt;When a minion connects to our Salt Master, the machine is seen as a ‘base’ configuration - the &lt;em&gt;initial&lt;/em&gt; highstate run is to perform the following:&lt;/p&gt;
+When a minion connects to our Salt Master, the machine is seen as a 'base' configuration - the _initial_ highstate run is to perform the following:
 
-&lt;ol&gt;
-  &lt;li&gt;Set the grains of the minion based on hostname&lt;/li&gt;
-  &lt;li&gt;Add the host to a pool&lt;/li&gt;
-  &lt;li&gt;Install base packages and configuration that apply to ALL hosts&lt;/li&gt;
-  &lt;li&gt;Set up a cron job to check for configuration updates hourly&lt;/li&gt;
-  &lt;li&gt;Set up an &lt;code class=&quot;highlighter-rouge&quot;&gt;at&lt;/code&gt; task to perform the next highstate run.&lt;/li&gt;
-&lt;/ol&gt;
+ 1. Set the grains of the minion based on hostname
+ 2. Add the host to a pool
+ 3. Install base packages and configuration that apply to ALL hosts
+ 4. Set up a cron job to check for configuration updates hourly
+ 5. Set up an `at` task to perform the next highstate run.
 
-&lt;p&gt;Now that the initial highstate has been called, the minion will have it’s configuration applied from one of the 3 pools (dev/staging/prod).&lt;/p&gt;
+Now that the initial highstate has been called, the minion will have it's configuration applied from one of the 3 pools (dev/staging/prod).
 
-&lt;p&gt;Below is a partial extract of the configuration showing &lt;code class=&quot;highlighter-rouge&quot;&gt;base&lt;/code&gt; (which was our initial configuration before grains had been established from hostname), and our &lt;code class=&quot;highlighter-rouge&quot;&gt;prod&lt;/code&gt; with a few sample roles within our infrastructure.&lt;/p&gt;
+Below is a partial extract of the configuration showing `base` (which was our initial configuration before grains had been established from hostname), and our `prod` with a few sample roles within our infrastructure.
 
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;*'&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults.at&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults.cron&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults.grains&lt;/span&gt;
+```yaml
+base:
+    '*':
+        - defaults
+        - defaults.at
+        - defaults.cron
+        - defaults.grains
 
-&lt;span class=&quot;na&quot;&gt;prod&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;*'&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults.cron&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults.grains&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults.ntp&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;G@g_client:infra&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;G@g_role:fileserver'&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;fileserver.nginx&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;G@g_client:infra&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;G@g_role:blogs'&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults.ssl&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;blog.users&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;blog.nginx&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;blog.docker&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;G@g_client:infra&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;G@g_role:automation'&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults.ssl&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;automation.docker&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;automation.docker.api&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;automation.docker.codereviewbot&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;G@g_client:infra&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;G@g_role:pypirepo'&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;defaults.ssl&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;pypi.users&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;pypi.nginx&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;pypi.docker&lt;/span&gt;
-&lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+prod:
+    '*':
+        - defaults
+        - defaults.cron
+        - defaults.grains
+        - defaults.ntp
+    'G@g_client:infra and G@g_role:fileserver':
+        - fileserver.nginx
+    'G@g_client:infra and G@g_role:blogs':
+        - defaults.ssl
+        - blog.users
+        - blog.nginx
+        - blog.docker
+    'G@g_client:infra and G@g_role:automation':
+        - defaults.ssl
+        - automation.docker
+        - automation.docker.api
+        - automation.docker.codereviewbot
+    'G@g_client:infra and G@g_role:pypirepo':
+        - defaults.ssl
+        - pypi.users
+        - pypi.nginx
+        - pypi.docker
+[...]
+```
 
-&lt;p&gt;Let’s say we have the host &lt;code class=&quot;highlighter-rouge&quot;&gt;euw01-infra-prodautomation001.aws.domain.co.uk&lt;/code&gt; - following the initial salt highstate run, we now have a host that will be configured from &lt;code class=&quot;highlighter-rouge&quot;&gt;prod: 'G@g_client:infra and G@g_role:automation&lt;/code&gt;. The following states will be applied:&lt;/p&gt;
+Let's say we have the host `euw01-infra-prodautomation001.aws.domain.co.uk` - following the initial salt highstate run, we now have a host that will be configured from `prod: 'G@g_client:infra and G@g_role:automation`. The following states will be applied:
 
-&lt;ol&gt;
-  &lt;li&gt;defaults.ssl (our SSL configuration including access to SSL repository)&lt;/li&gt;
-  &lt;li&gt;automation.docker (Installation of docker for automation servers)&lt;/li&gt;
-  &lt;li&gt;automation.docker.api (Our API for CLI tools to interact with AWS during deployment).&lt;/li&gt;
-  &lt;li&gt;automation.docker.codereviewbot (Our bot for issuing code review requests)&lt;/li&gt;
-&lt;/ol&gt;
+ 1. defaults.ssl (our SSL configuration including access to SSL repository)
+ 2. automation.docker (Installation of docker for automation servers)
+ 3. automation.docker.api (Our API for CLI tools to interact with AWS during deployment).
+ 4. automation.docker.codereviewbot (Our bot for issuing code review requests)
 
-&lt;p&gt;And just like that, within 10 minutes of spinning up an EC2 in AWS it can be configured precisely as needed based purely on the hostname of the server.&lt;/p&gt;
+And just like that, within 10 minutes of spinning up an EC2 in AWS it can be configured precisely as needed based purely on the hostname of the server.
 
-&lt;h2 id=&quot;home-use&quot;&gt;Home Use&lt;/h2&gt;
+## Home Use
 
-&lt;h3 id=&quot;motivation&quot;&gt;Motivation&lt;/h3&gt;
+### Motivation
 
-&lt;p&gt;Having invested a lot of time in Salt I decided that I should probably continue to practice what I preach. Having previously experienced data loss at home first hand, having to restore from backups and needing to install all my applications all over again, I thought it was time I actually used this great tool for keeping my own systems configured.&lt;/p&gt;
+Having invested a lot of time in Salt I decided that I should probably continue to practice what I preach. Having previously experienced data loss at home first hand, having to restore from backups and needing to install all my applications all over again, I thought it was time I actually used this great tool for keeping my own systems configured.
 
-&lt;p&gt;I also (on the odd occasion) forget to apply the odd security update. &lt;em&gt;Who doesn’t&lt;/em&gt;. My Salt configuration will ensure that key security updates are done on time.&lt;/p&gt;
+I also (on the odd occasion) forget to apply the odd security update. _Who doesn't_. My Salt configuration will ensure that key security updates are done on time.
 
-&lt;p&gt;Another key motivator is to continue that pets vs. cattle mentality to my own infrastructure, where I should be able to re-create my desktop environment, or my Raspberry Pi Bastion fairly quickly if it fails for whatever reason.&lt;/p&gt;
+Another key motivator is to continue that pets vs. cattle mentality to my own infrastructure, where I should be able to re-create my desktop environment, or my Raspberry Pi Bastion fairly quickly if it fails for whatever reason.
 
-&lt;p&gt;I would like to note that you can run Salt decentralized, however I have chosen to keep it centralized so that the configuration is always at the same version across all machines.&lt;/p&gt;
+I would like to note that you can run Salt decentralized, however I have chosen to keep it centralized so that the configuration is always at the same version across all machines.
 
-&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+### Result
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/HomeSaltStack.png&quot; alt=&quot;Home Salt&quot; /&gt;&lt;/p&gt;
+![Home Salt](/images/2017/05/HomeSaltStack.png)
 
-&lt;p&gt;Over the space of 2 months (a couple of hours every weekend), I’ve created a Salt configuration that describes the main devices in my personal infrastructure:&lt;/p&gt;
+Over the space of 2 months (a couple of hours every weekend), I've created a Salt configuration that describes the main devices in my personal infrastructure:
 
-&lt;ol&gt;
-  &lt;li&gt;Desktop computer&lt;/li&gt;
-  &lt;li&gt;Raspberry Pi Bastion/VPN Server&lt;/li&gt;
-  &lt;li&gt;Webserver (running Ghost on Docker)&lt;/li&gt;
-  &lt;li&gt;Bastion in the public subnet of my AWS lab.&lt;/li&gt;
-&lt;/ol&gt;
+ 1. Desktop computer
+ 2. Raspberry Pi Bastion/VPN Server
+ 3. Webserver (running Ghost on Docker)
+ 4. Bastion in the public subnet of my AWS lab.
 
-&lt;p&gt;All of the above is described in a Vagrantfile that can be spun up and trashed as a development environment for testing before deploying to production.&lt;/p&gt;
+All of the above is described in a Vagrantfile that can be spun up and trashed as a development environment for testing before deploying to production.
 
-&lt;p&gt;I do not have a naming scheme for hostnames that can be programmatically dealt with, so I have had to create a map that takes hostname and applies the appropriate grains to that minion. These grains then dictate what the configuration of the minion will be. I am still using the same definitions as before: region, cloud, pool, role, etc.&lt;/p&gt;
+I do not have a naming scheme for hostnames that can be programmatically dealt with, so I have had to create a map that takes hostname and applies the appropriate grains to that minion. These grains then dictate what the configuration of the minion will be. I am still using the same definitions as before: region, cloud, pool, role, etc.
 
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# hosts.map&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;host_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'grains.filter_by'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]({&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;'helios'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'region'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'euw02'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'cloud'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'aws'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'pool'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'prod'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'role'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'bastion'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;'icarus'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'region'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'local'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'cloud'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'lan'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'pool'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'prod'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'role'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'bastion'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;'daedalus'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'region'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'local'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'cloud'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'lan'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'pool'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'prod'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'role'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'desktop'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;'morpheus'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'region'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'lon'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'cloud'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'digitalocean'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'pool'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'prod'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'role'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'webserver'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;'unknown'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'region'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'unknown'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'cloud'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'unknown'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'pool'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'base'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'role'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'generic'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;grain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'hostname'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'unknown'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+{% raw %}
+```python
+# hosts.map
+{% set host_id = salt['grains.filter_by']({
+  'helios': {
+    'region': 'euw02',
+    'cloud': 'aws',
+    'pool': 'prod',
+    'role': 'bastion',
+  },
+  'icarus': {
+    'region': 'local',
+    'cloud': 'lan',
+    'pool': 'prod',
+    'role': 'bastion',
+  },
+  'daedalus': {
+    'region': 'local',
+    'cloud': 'lan',
+    'pool': 'prod',
+    'role': 'desktop',
+  },
+  'morpheus': {
+    'region': 'lon',
+    'cloud': 'digitalocean',
+    'pool': 'prod',
+    'role': 'webserver',
+  },
+  'unknown': {
+    'region': 'unknown',
+    'cloud': 'unknown',
+    'pool': 'base',
+    'role': 'generic',
+  },
+}, grain='hostname', default='unknown') %}
+```
+{% endraw %}
 
-&lt;h3 id=&quot;problems-lessons-learnt&quot;&gt;Problems, lessons learnt&lt;/h3&gt;
+### Problems, lessons learnt
 
-&lt;p&gt;This is my initial attempt at configuration management at home. Upon reflection I have discovered the following issues that will affect my decisions going forward:&lt;/p&gt;
+This is my initial attempt at configuration management at home. Upon reflection I have discovered the following issues that will affect my decisions going forward:
 
-&lt;ol&gt;
-  &lt;li&gt;A 512 MB RAM Rasberry Pi Model B is underpowered for running Salt-minion and a VPN at the same time.&lt;/li&gt;
-  &lt;li&gt;A Salt Master ideally needs at least 1 GB RAM.&lt;/li&gt;
-  &lt;li&gt;Vagrant is OK for testing, but you cannot test a Rasbperry Pi’s performance in VirtualBox.&lt;/li&gt;
-  &lt;li&gt;Pillars are vital, and once Salt becomes more friendly with HashiCorp’s Vault this will become much better for storing secrets - especially when backed with something like S3 storage. I am currently using GPG2 encrypted pillars which is slow and manual to manage.&lt;/li&gt;
-  &lt;li&gt;Configuration management tools are aimed at server markets, desktop environments require a lot more work to configure to your liking. Often it is easier to create a base config and further config (wallpapers, GNOME plugins) can be done to user taste.&lt;/li&gt;
-  &lt;li&gt;Salt has got some limits on minion OS support. openSUSE doesn’t seem to work fantastically for the latest release.&lt;/li&gt;
-&lt;/ol&gt;
+ 1. A 512 MB RAM Rasberry Pi Model B is underpowered for running Salt-minion and a VPN at the same time.
+ 2. A Salt Master ideally needs at least 1 GB RAM.
+ 3. Vagrant is OK for testing, but you cannot test a Rasbperry Pi's performance in VirtualBox.
+ 4. Pillars are vital, and once Salt becomes more friendly with HashiCorp's Vault this will become much better for storing secrets - especially when backed with something like S3 storage. I am currently using GPG2 encrypted pillars which is slow and manual to manage.
+ 5. Configuration management tools are aimed at server markets, desktop environments require a lot more work to configure to your liking. Often it is easier to create a base config and further config (wallpapers, GNOME plugins) can be done to user taste.
+ 6. Salt has got some limits on minion OS support. openSUSE doesn't seem to work fantastically for the latest release.
 
-&lt;p&gt;I will continue to work with Salt and see where I can make performance improvements and tighten my configuration, but I might resort to adopting Ansible for reasons I will explain at a later date.&lt;/p&gt;
+I will continue to work with Salt and see where I can make performance improvements and tighten my configuration, but I might resort to adopting Ansible for reasons I will explain at a later date.
 
-&lt;p&gt;Going forward I can test the effectiveness of my configuration management by performing some infrastructure changes and restructuring. The changes I am going to test will involve:&lt;/p&gt;
+Going forward I can test the effectiveness of my configuration management by performing some infrastructure changes and restructuring. The changes I am going to test will involve:
 
-&lt;ol&gt;
-  &lt;li&gt;Changing my Raspberry Pi bastion to run OpenBSD/FreeBSD, it will be interesting to see how Salt handles either of these OS.&lt;/li&gt;
-  &lt;li&gt;Re-creating my web server with the exact configuration I have in configuration management.&lt;/li&gt;
-  &lt;li&gt;Updating my Debian 8 desktop to Debian 9 or moving to Ubuntu once GNOME is mainstream (or just going for UbuntuGNOME 16.04).&lt;/li&gt;
-&lt;/ol&gt;
+ 1. Changing my Raspberry Pi bastion to run OpenBSD/FreeBSD, it will be interesting to see how Salt handles either of these OS.
+ 2. Re-creating my web server with the exact configuration I have in configuration management.
+ 3. Updating my Debian 8 desktop to Debian 9 or moving to Ubuntu once GNOME is mainstream (or just going for UbuntuGNOME 16.04).
 
-&lt;p&gt;At a later date (once my configuration is more “stable”) I shall release the source code to GitHub.&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">“Cloud servers are cattle, not pets!”</summary></entry><entry><title type="html">Silence</title><link href="http://localhost:4000/2017/04/03/silence.html" rel="alternate" type="text/html" title="Silence" /><published>2017-04-03T19:10:48+01:00</published><updated>2017-04-03T19:10:48+01:00</updated><id>http://localhost:4000/2017/04/03/silence</id><content type="html" xml:base="http://localhost:4000/2017/04/03/silence.html">&lt;p&gt;Back soon, just escaped a sticky situation…&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">Back soon, just escaped a sticky situation…</summary></entry><entry><title type="html">Two node Redis cluster in Vagrant</title><link href="http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant.html" rel="alternate" type="text/html" title="Two node Redis cluster in Vagrant" /><published>2017-02-12T21:40:53+00:00</published><updated>2017-02-12T21:40:53+00:00</updated><id>http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant</id><content type="html" xml:base="http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant.html">&lt;p&gt;So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a &lt;a href=&quot;https://github.com/xanmanning/vagrant-redis-cluster&quot;&gt;Vagrantfile for creating a Redis Cluster&lt;/a&gt;.&lt;/p&gt;
+At a later date (once my configuration is more &quot;stable&quot;) I shall release the source code to GitHub.</content><author><name>Xan Manning</name></author><summary type="html">“Cloud servers are cattle, not pets!”</summary></entry><entry><title type="html">Silence</title><link href="http://localhost:4000/2017/04/03/silence.html" rel="alternate" type="text/html" title="Silence" /><published>2017-04-03T19:10:48+01:00</published><updated>2017-04-03T19:10:48+01:00</updated><id>http://localhost:4000/2017/04/03/silence</id><content type="html" xml:base="http://localhost:4000/2017/04/03/silence.html">Back soon, just escaped a sticky situation...</content><author><name>Xan Manning</name></author><summary type="html">Back soon, just escaped a sticky situation…</summary></entry><entry><title type="html">Two node Redis cluster in Vagrant</title><link href="http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant.html" rel="alternate" type="text/html" title="Two node Redis cluster in Vagrant" /><published>2017-02-12T21:40:53+00:00</published><updated>2017-02-12T21:40:53+00:00</updated><id>http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant</id><content type="html" xml:base="http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant.html">So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a [Vagrantfile for creating a Redis Cluster](https://github.com/xanmanning/vagrant-redis-cluster).
 
-&lt;p&gt;I thought I’d share. Feel free to clone. It’s a fairly simple Vagrantfile that simply creates a Master-Slave replica for Redis.&lt;/p&gt;
+I thought I'd share. Feel free to clone. It's a fairly simple Vagrantfile that simply creates a Master-Slave replica for Redis.
 
-&lt;p&gt;To get started:&lt;/p&gt;
+To get started:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ git clone https://github.com/xanmanning/vagrant-redis-cluster
+```
+$ git clone https://github.com/xanmanning/vagrant-redis-cluster
 $ cd vagrant-redis-cluster
 $ vagrant up
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
 
-&lt;p&gt;&lt;strong&gt;Master node&lt;/strong&gt;: 10.11.8.2&lt;br /&gt;
-&lt;strong&gt;Slave node&lt;/strong&gt;: 10.11.8.3&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a Vagrantfile for creating a Redis Cluster.</summary></entry><entry><title type="html">Throwback Thursday: Hacktrix*</title><link href="http://localhost:4000/2017/01/26/throwback-thursday-hacktrix.html" rel="alternate" type="text/html" title="Throwback Thursday: Hacktrix*" /><published>2017-01-26T19:51:00+00:00</published><updated>2017-01-26T19:51:00+00:00</updated><id>http://localhost:4000/2017/01/26/throwback-thursday-hacktrix</id><content type="html" xml:base="http://localhost:4000/2017/01/26/throwback-thursday-hacktrix.html">&lt;p&gt;It’s Thursday again, and I’m looking back on another project from days gone by.&lt;/p&gt;
+**Master node**: 10.11.8.2&lt;br /&gt;
+**Slave node**: 10.11.8.3</content><author><name>Xan Manning</name></author><summary type="html">So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a Vagrantfile for creating a Redis Cluster.</summary></entry><entry><title type="html">Throwback Thursday: Hacktrix*</title><link href="http://localhost:4000/2017/01/26/throwback-thursday-hacktrix.html" rel="alternate" type="text/html" title="Throwback Thursday: Hacktrix*" /><published>2017-01-26T19:51:00+00:00</published><updated>2017-01-26T19:51:00+00:00</updated><id>http://localhost:4000/2017/01/26/throwback-thursday-hacktrix</id><content type="html" xml:base="http://localhost:4000/2017/01/26/throwback-thursday-hacktrix.html">It's Thursday again, and I'm looking back on another project from days gone by.
 
-&lt;p&gt;Following on from a decision not to renew our QueueMetrics license to monitor our call volume over Asterisk, we were left in a bit of a pickle. Numerous calls were coming in but managers could not gauge the volume and in times of an outage this was a serious problem when it came to breaks and assigning overtime.&lt;/p&gt;
+Following on from a decision not to renew our QueueMetrics license to monitor our call volume over Asterisk, we were left in a bit of a pickle. Numerous calls were coming in but managers could not gauge the volume and in times of an outage this was a serious problem when it came to breaks and assigning overtime.
 
-&lt;p&gt;Luckily, Python comes to the rescue with the py-asterisk library that talks to the Asterisk API.&lt;/p&gt;
+Luckily, Python comes to the rescue with the py-asterisk library that talks to the Asterisk API.
 
-&lt;blockquote&gt;
-  &lt;p&gt;“Import all the things!” &lt;small&gt;Python&lt;/small&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&gt; &quot;Import all the things!&quot; &lt;small&gt;Python&lt;/small&gt;
 
-&lt;p&gt;The design was quite simple, a small Python application that talks to the Asterisk API and returns JSON over HTTP. We then had a small HTML page with jQuery performing AJAX GET to this small server.&lt;/p&gt;
+The design was quite simple, a small Python application that talks to the Asterisk API and returns JSON over HTTP. We then had a small HTML page with jQuery performing AJAX GET to this small server.
 
-&lt;p&gt;Voilla, Hacktrix*. Tiny call monitor.&lt;/p&gt;
+Voilla, Hacktrix*. Tiny call monitor.
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/imag0371.jpg&quot; alt=&quot;Hacktrix* Server&quot; /&gt;&lt;/p&gt;
+![Hacktrix* Server](/images/2017/01/imag0371.jpg)
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/imag0370.jpg&quot; alt=&quot;Hacktrix* Client&quot; /&gt;&lt;/p&gt;
+![Hacktrix* Client](/images/2017/01/imag0370.jpg)
 
-&lt;p&gt;Then for a sneaky added bonus (running on my desktop)… Caller ID! Basically looking up the number in a dictionary and returning the company name.&lt;/p&gt;
+Then for a sneaky added bonus (running on my desktop)... Caller ID! Basically looking up the number in a dictionary and returning the company name.
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/image001_censored.png&quot; alt=&quot;Hacktix* CallerID&quot; /&gt;&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">It’s Thursday again, and I’m looking back on another project from days gone by.</summary></entry><entry><title type="html">SaltStack Lab in Vagrant</title><link href="http://localhost:4000/2017/01/19/saltstack-lab-in-vagrant.html" rel="alternate" type="text/html" title="SaltStack Lab in Vagrant" /><published>2017-01-19T21:58:12+00:00</published><updated>2017-01-19T21:58:12+00:00</updated><id>http://localhost:4000/2017/01/19/saltstack-lab-in-vagrant</id><content type="html" xml:base="http://localhost:4000/2017/01/19/saltstack-lab-in-vagrant.html">&lt;p&gt;Today I have published a really simplistic &lt;a href=&quot;https://saltstack.com/&quot;&gt;SaltStack&lt;/a&gt; lab for Vagrant to GitHub:&lt;/p&gt;
+![Hacktix* CallerID](/images/2017/01/image001_censored.png)</content><author><name>Xan Manning</name></author><summary type="html">It’s Thursday again, and I’m looking back on another project from days gone by.</summary></entry><entry><title type="html">SaltStack Lab in Vagrant</title><link href="http://localhost:4000/2017/01/19/saltstack-lab-in-vagrant.html" rel="alternate" type="text/html" title="SaltStack Lab in Vagrant" /><published>2017-01-19T21:58:12+00:00</published><updated>2017-01-19T21:58:12+00:00</updated><id>http://localhost:4000/2017/01/19/saltstack-lab-in-vagrant</id><content type="html" xml:base="http://localhost:4000/2017/01/19/saltstack-lab-in-vagrant.html">Today I have published a really simplistic [SaltStack](https://saltstack.com/) lab for Vagrant to GitHub:
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/xanmanning/vagrant-salt-example&quot;&gt;https://github.com/xanmanning/vagrant-salt-example&lt;/a&gt;&lt;/p&gt;
+[https://github.com/xanmanning/vagrant-salt-example](https://github.com/xanmanning/vagrant-salt-example)
 
-&lt;p&gt;Since being subjected to CFEngine (&lt;em&gt;shudder&lt;/em&gt;), I have been very keen to try out other configuration management offerings. I had previously tried &lt;a href=&quot;https://xan-manning.co.uk/building-an-ansible-2-lab/&quot;&gt;Ansible&lt;/a&gt;, that’s great and all, however there are advantages to agent based systems, particularly the scalability.&lt;/p&gt;
+Since being subjected to CFEngine (_shudder_), I have been very keen to try out other configuration management offerings. I had previously tried [Ansible](https://xan-manning.co.uk/building-an-ansible-2-lab/), that's great and all, however there are advantages to agent based systems, particularly the scalability.
 
-&lt;p&gt;Salt stands out for me, because like Ansible, configuration is done in YAML - this is fantastically easy to use! Also, Salt can be easily extended with custom modules! It’s standard stuff: Python, Fabric and Jinja2. It’s quick, scalable and flexible. It’s simple.&lt;/p&gt;
+Salt stands out for me, because like Ansible, configuration is done in YAML - this is fantastically easy to use! Also, Salt can be easily extended with custom modules! It's standard stuff: Python, Fabric and Jinja2. It's quick, scalable and flexible. It's simple.
 
-&lt;h2 id=&quot;using-vagrant&quot;&gt;Using Vagrant&lt;/h2&gt;
+## Using Vagrant
 
-&lt;p&gt;Salt is actually quite easy to get running in Vagrant, if your Vagrantfile defines Salt as the provisioning method then Vagrant will go off and install the Salt Master and Salt Minions to whichever VM you define. Unlike Ansible, you don’t need Salt on your host machine.&lt;/p&gt;
+Salt is actually quite easy to get running in Vagrant, if your Vagrantfile defines Salt as the provisioning method then Vagrant will go off and install the Salt Master and Salt Minions to whichever VM you define. Unlike Ansible, you don't need Salt on your host machine.
 
-&lt;p&gt;A master configuration would likely look like the below in your Vagrantfile:&lt;/p&gt;
+A master configuration would likely look like the below in your Vagrantfile:
 
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;provision&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:salt&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;salt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;install_master&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;salt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;install_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;stable&quot;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;salt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;master_config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;salt/master&quot;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;salt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;minion_config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;salt/minion&quot;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;salt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;masterless&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```ruby
+master.vm.provision :salt do |salt|
+    salt.install_master = true
+    salt.install_type = &quot;stable&quot;
+    salt.master_config = &quot;salt/master&quot;
+    salt.minion_config = &quot;salt/minion&quot;
+    salt.masterless = true
+end
+```
 
-&lt;p&gt;Where &lt;code class=&quot;highlighter-rouge&quot;&gt;master_config&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;minion_config&lt;/code&gt; point to the configurations in your Vagrant directory.&lt;/p&gt;
+Where `master_config` and `minion_config` point to the configurations in your Vagrant directory.
 
-&lt;h2 id=&quot;example-configuration&quot;&gt;Example Configuration&lt;/h2&gt;
+## Example Configuration
 
-&lt;p&gt;The above &lt;a href=&quot;https://github.com/xanmanning/vagrant-salt-example&quot;&gt;repository&lt;/a&gt; includes a simple configuration of 1 master and 2 minions. One minion will be configured as an App server (running SQLBuddy), the other as a Db server (Running MySQL Server).&lt;/p&gt;
+The above [repository](https://github.com/xanmanning/vagrant-salt-example) includes a simple configuration of 1 master and 2 minions. One minion will be configured as an App server (running SQLBuddy), the other as a Db server (Running MySQL Server).
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+```
+
     +---------+     +--------+
-    |   App   | --&amp;gt; |   Db   |
+    |   App   | --&gt; |   Db   |
     +---------+     +--------+
          ^               ^
          |               |
@@ -414,98 +409,96 @@ $ vagrant up
              +--------+
              | Master |
              +--------+
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
 
-&lt;h2 id=&quot;fire-it-up&quot;&gt;Fire it up!&lt;/h2&gt;
+## Fire it up!
 
-&lt;p&gt;To get started with my example, simply run:&lt;/p&gt;
+To get started with my example, simply run:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ git clone https://github.com/xanmanning/vagrant-salt-example &amp;amp;&amp;amp; cd ./vagrant-salt-example
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
+$ git clone https://github.com/xanmanning/vagrant-salt-example &amp;&amp; cd ./vagrant-salt-example
+```
 
-&lt;p&gt;Then:&lt;/p&gt;
+Then:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant up
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
+$ vagrant up
+```
 
-&lt;p&gt;Wait for the VMs to finish provisioning, you will get output similar to the below:&lt;/p&gt;
+Wait for the VMs to finish provisioning, you will get output similar to the below:
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/SaltProvision.png&quot; alt=&quot;Salt Provision&quot; /&gt;&lt;/p&gt;
+![Salt Provision](/images/2017/01/SaltProvision.png)
 
-&lt;p&gt;Once you are done, you can visit your app server: http://10.10.8.3/ and login to the database with the below details:&lt;/p&gt;
+Once you are done, you can visit your app server: http://10.10.8.3/ and login to the database with the below details:
 
-&lt;ul&gt;
-  &lt;li&gt;Host: db.salt.local&lt;/li&gt;
-  &lt;li&gt;User: salt&lt;/li&gt;
-  &lt;li&gt;Pass: s4ltm4$t3r!&lt;/li&gt;
-&lt;/ul&gt;
+ - Host: db.salt.local
+ - User: salt
+ - Pass: s4ltm4$t3r!
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/SaltSQLBuddy.png&quot; alt=&quot;SQLBuddy managed with Salt&quot; /&gt;&lt;/p&gt;
+![SQLBuddy managed with Salt](/images/2017/01/SaltSQLBuddy.png)
 
-&lt;h2 id=&quot;play&quot;&gt;Play&lt;/h2&gt;
+## Play
 
-&lt;p&gt;If you want to play about with Salt, a good way to get your hands dirty is to SSH into the master and start editing the salt state files:&lt;/p&gt;
+If you want to play about with Salt, a good way to get your hands dirty is to SSH into the master and start editing the salt state files:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant ssh master
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
+$ vagrant ssh master
+```
 
-&lt;p&gt;From here, you can find all the states in &lt;code class=&quot;highlighter-rouge&quot;&gt;/srv/salt/base&lt;/code&gt;, with some tweaking you can make some awesome changes!&lt;/p&gt;
+From here, you can find all the states in `/srv/salt/base`, with some tweaking you can make some awesome changes!
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/VimLatest.png&quot; alt=&quot;Vim Editor&quot; /&gt;&lt;/p&gt;
+![Vim Editor](/images/2017/01/VimLatest.png)
 
-&lt;p&gt;Then push these changes out by running:&lt;/p&gt;
+Then push these changes out by running:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo salt '*' state.highstate
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+```
+$ sudo salt '*' state.highstate
+```
 
-&lt;p&gt;This will (by default) present you with the output of your salt states:&lt;/p&gt;
+This will (by default) present you with the output of your salt states:
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/HighState.png&quot; alt=&quot;Highstate&quot; /&gt;&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">Today I have published a really simplistic SaltStack lab for Vagrant to GitHub:</summary></entry><entry><title type="html">Throwback Thursday: Thermostat</title><link href="http://localhost:4000/2017/01/12/throwback-thursday-thermostat.html" rel="alternate" type="text/html" title="Throwback Thursday: Thermostat" /><published>2017-01-12T20:32:00+00:00</published><updated>2017-01-12T20:32:00+00:00</updated><id>http://localhost:4000/2017/01/12/throwback-thursday-thermostat</id><content type="html" xml:base="http://localhost:4000/2017/01/12/throwback-thursday-thermostat.html">&lt;p&gt;I’ve decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.&lt;/p&gt;
+![Highstate](/images/2017/01/HighState.png)</content><author><name>Xan Manning</name></author><summary type="html">Today I have published a really simplistic SaltStack lab for Vagrant to GitHub:</summary></entry><entry><title type="html">Throwback Thursday: Thermostat</title><link href="http://localhost:4000/2017/01/12/throwback-thursday-thermostat.html" rel="alternate" type="text/html" title="Throwback Thursday: Thermostat" /><published>2017-01-12T20:32:00+00:00</published><updated>2017-01-12T20:32:00+00:00</updated><id>http://localhost:4000/2017/01/12/throwback-thursday-thermostat</id><content type="html" xml:base="http://localhost:4000/2017/01/12/throwback-thursday-thermostat.html">I've decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.
 
-&lt;p&gt;Today I am writing about a project I created to fix a problem with a misbehaving version of our CRM software (to remain nameless).&lt;/p&gt;
+Today I am writing about a project I created to fix a problem with a misbehaving version of our CRM software (to remain nameless).
 
-&lt;h2 id=&quot;backstory&quot;&gt;Backstory&lt;/h2&gt;
+## Backstory
 
-&lt;p&gt;So this tale begins when I worked as first line technical support at an internet service provider (ISP). Our ticketing system had been migrated over to our new CRM, however the version we were using had a small flaw. It caused high load to one CPU core when open, with most of the tech support desk using solo core processors. This made life &lt;em&gt;unbearable&lt;/em&gt;, especially as we had to do a lot of work on JavaScript heavy webpages outside of the CRM software.&lt;/p&gt;
+So this tale begins when I worked as first line technical support at an internet service provider (ISP). Our ticketing system had been migrated over to our new CRM, however the version we were using had a small flaw. It caused high load to one CPU core when open, with most of the tech support desk using solo core processors. This made life _unbearable_, especially as we had to do a lot of work on JavaScript heavy webpages outside of the CRM software.
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/100pc_Usage.PNG&quot; alt=&quot;100% CPU Usage&quot; /&gt;&lt;/p&gt;
+![100% CPU Usage](/images/2017/01/100pc_Usage.PNG)
 
-&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+## Solution
 
-&lt;p&gt;Our workflow was interrupted by the slow and unresponsive ticketing system, there was no ETA for an update but work had to continue. In a little under a week I decided to write a small Visual C# application that would throttle the CRM process to allow the computer to do other work. We obviously only wanted this to happen when not working in the CRM software, so we had two distinct behaviors:&lt;/p&gt;
+Our workflow was interrupted by the slow and unresponsive ticketing system, there was no ETA for an update but work had to continue. In a little under a week I decided to write a small Visual C# application that would throttle the CRM process to allow the computer to do other work. We obviously only wanted this to happen when not working in the CRM software, so we had two distinct behaviors:
 
-&lt;p&gt;&lt;strong&gt;When CRM is not focused (idle)&lt;/strong&gt;&lt;/p&gt;
+**When CRM is not focused (idle)**
 
-&lt;ul&gt;
-  &lt;li&gt;Set’s CPU affinity to core0. (does this once, multi-core machines only)&lt;/li&gt;
-  &lt;li&gt;Deprioritise CPU Threads. (sets priority to LOW, allowing other processes to use CPU)&lt;/li&gt;
-  &lt;li&gt;Throttles CPU usage. (when throttling is enabled)&lt;/li&gt;
-  &lt;li&gt;Monitors CRM to make sure is responsive. (when Throttling)&lt;/li&gt;
-&lt;/ul&gt;
+ * Set's CPU affinity to core0. (does this once, multi-core machines only)
+ * Deprioritise CPU Threads. (sets priority to LOW, allowing other processes to use CPU)
+ * Throttles CPU usage. (when throttling is enabled)
+ * Monitors CRM to make sure is responsive. (when Throttling)
 
-&lt;p&gt;&lt;strong&gt;When CRM is focused&lt;/strong&gt;&lt;/p&gt;
+**When CRM is focused**
 
-&lt;ul&gt;
-  &lt;li&gt;Prioritize CPU threads.&lt;/li&gt;
-  &lt;li&gt;Monitor CRM to make sure responsive. (when Throttling)&lt;/li&gt;
-&lt;/ul&gt;
+ * Prioritize CPU threads.
+ * Monitor CRM to make sure responsive. (when Throttling)
 
-&lt;h2 id=&quot;the-result&quot;&gt;The Result&lt;/h2&gt;
+## The Result
 
-&lt;p&gt;When active, Thermostat would take average load down from 100% to ~38%.&lt;/p&gt;
+When active, Thermostat would take average load down from 100% to ~38%.
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/Throttled_Usage.PNG&quot; alt=&quot;Better CPU usage&quot; /&gt;&lt;/p&gt;
+![Better CPU usage](/images/2017/01/Throttled_Usage.PNG)
 
-&lt;h2 id=&quot;side-effects-of-throttling&quot;&gt;Side effects of throttling&lt;/h2&gt;
+## Side effects of throttling
 
-&lt;p&gt;Throttling was done by using the standard Windows &lt;code class=&quot;highlighter-rouge&quot;&gt;SuspendThread()&lt;/code&gt; method in kernel32.dll. One of the side effects of throttling the process was that occasionally the application would become completely unresponsive.&lt;/p&gt;
+Throttling was done by using the standard Windows `SuspendThread()` method in kernel32.dll. One of the side effects of throttling the process was that occasionally the application would become completely unresponsive.
 
-&lt;p&gt;To overcome this, a built in health monitor within the application would attempt to send several calls to &lt;code class=&quot;highlighter-rouge&quot;&gt;ResumeThread()&lt;/code&gt; to try bring it online. To keep the user informed of the changes to the state of the CRM system, Thermostat would notify the user via a Balloon Tip.&lt;/p&gt;
+To overcome this, a built in health monitor within the application would attempt to send several calls to `ResumeThread()` to try bring it online. To keep the user informed of the changes to the state of the CRM system, Thermostat would notify the user via a Balloon Tip.
 
-&lt;p&gt;&lt;strong&gt;Recovered CRM process:&lt;/strong&gt;&lt;/p&gt;
+**Recovered CRM process:**
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/Warning.PNG&quot; alt=&quot;CRM Recovered&quot; /&gt;&lt;/p&gt;
+![CRM Recovered](/images/2017/01/Warning.PNG)
 
-&lt;p&gt;&lt;strong&gt;Dead CRM Process:&lt;/strong&gt;&lt;/p&gt;
+**Dead CRM Process:**
 
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/flatline.PNG&quot; alt=&quot;CRM Flatlined&quot; /&gt;&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">I’ve decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.</summary></entry></feed>
+![CRM Flatlined](/images/2017/01/flatline.PNG)</content><author><name>Xan Manning</name></author><summary type="html">I’ve decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.</summary></entry></feed>
