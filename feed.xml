@@ -1,4 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-10-19T18:32:59+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">UNIX-ing as a Linux Geek</title><link href="http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek.html" rel="alternate" type="text/html" title="UNIX-ing as a Linux Geek" /><published>2017-09-23T15:56:30+01:00</published><updated>2017-09-23T15:56:30+01:00</updated><id>http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek</id><content type="html" xml:base="http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek.html">So my background is mostly in GNU/Linux, I've ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I'm not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-26T12:52:02+00:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Switched to Jekyll</title><link href="http://localhost:4000/2017/11/26/switched-to-jekyll.html" rel="alternate" type="text/html" title="Switched to Jekyll" /><published>2017-11-26T12:35:32+00:00</published><updated>2017-11-26T12:35:32+00:00</updated><id>http://localhost:4000/2017/11/26/switched-to-jekyll</id><content type="html" xml:base="http://localhost:4000/2017/11/26/switched-to-jekyll.html">As yoy may have noticed I've migrated my blog from Ghost to Jekyll. Please
+do not be alarmed! As I am not able to put significant time into keeping a
+server running nginx and Ghost up to date with security updates.
+
+![Jekyll](/images/2017/11/jekyll_logo.png)
+
+So why choose Jekyll? It's still markdown, it can be pretty and the output is
+static HTML. I no longer have a node.js application and database to worry about,
+at the moment all I have is the nginx webserver to keep on top of which can be
+automatically updated.
+
+The more astute individual will notice the updated SSL certificate! I've moved
+to Let's Encrypt following the expiry of my old certificate. All automated,
+one less thing to worry about.</content><author><name>Xan Manning</name></author><summary type="html">As yoy may have noticed I’ve migrated my blog from Ghost to Jekyll. Please do not be alarmed! As I am not able to put significant time into keeping a server running nginx and Ghost up to date with security updates.</summary></entry><entry><title type="html">UNIX-ing as a Linux Geek</title><link href="http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek.html" rel="alternate" type="text/html" title="UNIX-ing as a Linux Geek" /><published>2017-09-23T15:56:30+01:00</published><updated>2017-09-23T15:56:30+01:00</updated><id>http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek</id><content type="html" xml:base="http://localhost:4000/2017/09/23/unix-ing-as-a-linux-geek.html">So my background is mostly in GNU/Linux, I've ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I'm not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.
 
 It's not surprising that this is the case because of the exciting history of UNIX and the emergence of [GNU](https://www.gnu.org/gnu/manifesto.html) (GNU's Not UNIX) and [BSD](http://engineering2.berkeley.edu/labnotes/history_unix.html) (Berkeley Software Distribution of UNIX). Unsuprisingly, packages are regularly ported between GNU/Linux and BSD. Even more surprising is seeing the odd GNU package on IBM AIX.
 
@@ -457,48 +470,4 @@ $ sudo salt '*' state.highstate
 
 This will (by default) present you with the output of your salt states:
 
-![Highstate](/images/2017/01/HighState.png)</content><author><name>Xan Manning</name></author><summary type="html">Today I have published a really simplistic SaltStack lab for Vagrant to GitHub:</summary></entry><entry><title type="html">Throwback Thursday: Thermostat</title><link href="http://localhost:4000/2017/01/12/throwback-thursday-thermostat.html" rel="alternate" type="text/html" title="Throwback Thursday: Thermostat" /><published>2017-01-12T20:32:00+00:00</published><updated>2017-01-12T20:32:00+00:00</updated><id>http://localhost:4000/2017/01/12/throwback-thursday-thermostat</id><content type="html" xml:base="http://localhost:4000/2017/01/12/throwback-thursday-thermostat.html">I've decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.
-
-Today I am writing about a project I created to fix a problem with a misbehaving version of our CRM software (to remain nameless).
-
-## Backstory
-
-So this tale begins when I worked as first line technical support at an internet service provider (ISP). Our ticketing system had been migrated over to our new CRM, however the version we were using had a small flaw. It caused high load to one CPU core when open, with most of the tech support desk using solo core processors. This made life _unbearable_, especially as we had to do a lot of work on JavaScript heavy webpages outside of the CRM software.
-
-![100% CPU Usage](/images/2017/01/100pc_Usage.PNG)
-
-## Solution
-
-Our workflow was interrupted by the slow and unresponsive ticketing system, there was no ETA for an update but work had to continue. In a little under a week I decided to write a small Visual C# application that would throttle the CRM process to allow the computer to do other work. We obviously only wanted this to happen when not working in the CRM software, so we had two distinct behaviors:
-
-**When CRM is not focused (idle)**
-
- * Set's CPU affinity to core0. (does this once, multi-core machines only)
- * Deprioritise CPU Threads. (sets priority to LOW, allowing other processes to use CPU)
- * Throttles CPU usage. (when throttling is enabled)
- * Monitors CRM to make sure is responsive. (when Throttling)
-
-**When CRM is focused**
-
- * Prioritize CPU threads.
- * Monitor CRM to make sure responsive. (when Throttling)
-
-## The Result
-
-When active, Thermostat would take average load down from 100% to ~38%.
-
-![Better CPU usage](/images/2017/01/Throttled_Usage.PNG)
-
-## Side effects of throttling
-
-Throttling was done by using the standard Windows `SuspendThread()` method in kernel32.dll. One of the side effects of throttling the process was that occasionally the application would become completely unresponsive.
-
-To overcome this, a built in health monitor within the application would attempt to send several calls to `ResumeThread()` to try bring it online. To keep the user informed of the changes to the state of the CRM system, Thermostat would notify the user via a Balloon Tip.
-
-**Recovered CRM process:**
-
-![CRM Recovered](/images/2017/01/Warning.PNG)
-
-**Dead CRM Process:**
-
-![CRM Flatlined](/images/2017/01/flatline.PNG)</content><author><name>Xan Manning</name></author><summary type="html">I’ve decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.</summary></entry></feed>
+![Highstate](/images/2017/01/HighState.png)</content><author><name>Xan Manning</name></author><summary type="html">Today I have published a really simplistic SaltStack lab for Vagrant to GitHub:</summary></entry></feed>
