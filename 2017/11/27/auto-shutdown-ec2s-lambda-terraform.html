@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="/" class="image avatar"><img  src="/images/avatar.jpg" alt="Xan Manning"></a>
+    <h1><a href="/">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Auto Shutdown AWS EC2s with Lambda, CloudWatch (and Terraform)</h1>
+      <p class="post-meta">Nov 27, 2017</p>
+    </header>
+
+    <section>
+      <p>Today we are looking at how to automatically shut down EC2 instances at the
+end of the day automatically using a combination of Lambda and CloudWatch.</p>
+
+<p><img src="/images/2017/11/lambda_ec2_shutdown.png" alt="Lambda Function" /></p>
+
+<p><em>TL;DR I’ve written a ‘stop EC2’ Lambda function that is deployable with
+Terraform to get you started, I’ve not made a ‘start EC2’ Lambda function yet.
+Future improvements, I’d like to programmatically schedule instances using tags.
+Clone from: <a href="https://github.com/xanmanning/terraform-autostop">github.com/xanmanning/terraform-autostop</a></em></p>
+
+<p>What we will end up with is a simple Lambda function that will search all of
+our regions and automatically send the <code class="highlighter-rouge">stop-instances</code> command to anything
+that is still running after 8:00pm.</p>
+
+<p>To do this I will also be using <a href="https://www.terraform.io/">Terraform</a> as the
+process is then repeatable and can be versioned in git. I am fairly new to
+Terraform but I honestly cannot understand how I ever survived without it.</p>
+
+<p><img src="/images/2017/11/doyoueventerraform.jpg" alt="Do you even Terraform?" /></p>
+
+<p>I’ve been asked on numerous occasions, at different employers “How do I stop
+(and start) Amazon EC2 instances at regular intervals?”, and I stumbled upon an
+article written by AWS that uses
+<a href="https://aws.amazon.com/premiumsupport/knowledge-center/start-stop-lambda-cloudwatch/">Lambda</a>.</p>
+
+<p>Now this knowledge base article is quite basic, you effectively write two Lambda
+functions:</p>
+
+<ol>
+  <li>Shut down a specific instance</li>
+  <li>Start a specific instance</li>
+</ol>
+
+<p>You then use the time based event in CloudWatch to trigger this Lambda function.
+It’s kind of like writing a Python script on your VM and triggering it in cron -
+although you obviously cannot power on that machine with cron. I started looking
+at other solutions and came across this guide December 2016 when exploring
+turning development EC2 instances of an API platform off and on to a schedule:</p>
+
+<p><a href="https://s3.amazonaws.com/solutions-reference/ec2-scheduler/latest/ec2-scheduler.pdf">EC2 Scheduler Implementation Guide</a></p>
+
+<p>That’s great, but with a need to use a DynamoDB table it felt over engineered
+for what we needed at the time. What I wanted was something in the middle of
+these two solutions - scheduling tagged instances without a database.</p>
+
+<p>Sadly, I was not able to build a solution due to a need to change employment.</p>
+
+<p>Fast forward to November 2017 and I have been asked again for my thoughts on
+using Lambda functions for scheduling EC2s. For my own proof of concept I wanted
+to programmatically look for EC2 instances in any AWS region that is tagged for
+automatic shutdown. For an EC2 to be automatically shut down at the end of the
+day (8:00pm) the EC2 requires the tag <code class="highlighter-rouge">AutoShutdown: True</code>. Below is the
+Python 2.7 Lambda function:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env python2</span>
+
+<span class="c">#</span>
+<span class="c"># Autostop EC2 Lambda POC script.</span>
+<span class="c"># xmanning - 2017</span>
+<span class="c">#</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c"># Poweroff time (24h format)</span>
+<span class="n">poweroff_time</span> <span class="o">=</span> <span class="mi">2000</span>
+
+<span class="c"># Set to false if we aren't debugging on a local machine.</span>
+<span class="n">local_debug</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c"># StopEC2 Object</span>
+<span class="k">class</span> <span class="nc">StopEC2</span><span class="p">:</span>
+    <span class="c"># initialize required EC2 client and configuration</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s">'ec2'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ec2_client</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instance_stop_list</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">H</span><span class="si">%</span><span class="s">M'</span><span class="p">))</span>
+
+    <span class="c"># Return a list of regions</span>
+    <span class="k">def</span> <span class="nf">list_regions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">regions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">region_info</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_client</span><span class="o">.</span><span class="n">describe_regions</span><span class="p">()[</span><span class="s">'Regions'</span><span class="p">]:</span>
+            <span class="n">regions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">region_info</span><span class="p">[</span><span class="s">'RegionName'</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">regions</span>
+
+    <span class="k">def</span> <span class="nf">create_regions_ec2_clients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_regions</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">instance_stop_list</span><span class="p">[</span><span class="n">region</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ec2_client</span><span class="p">[</span><span class="n">region</span><span class="p">]</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s">'ec2'</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">region</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">destroy_regions_ec2_clients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_regions</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ec2_client</span><span class="p">[</span><span class="n">region</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">list_ec2s_per_region</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'================================================'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'  Scanning Regions for stoppable EC2 instances  '</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'================================================'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Key:'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'  +  EC2s with AutoStop Tag'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'  -  EC2s to be ignored'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_regions_ec2_clients</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_regions</span><span class="p">():</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'------------------------------------------------'</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'EC2s running in {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'------------------------------------------------'</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">reservation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ec2_client</span><span class="p">[</span><span class="n">region</span><span class="p">]</span><span class="o">.</span><span class="n">describe_instances</span><span class="p">()[</span><span class="s">'Reservations'</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">reservation</span><span class="p">[</span><span class="s">'Instances'</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">instance</span><span class="p">[</span><span class="s">'State'</span><span class="p">][</span><span class="s">'Name'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'running'</span><span class="p">:</span>
+                        <span class="n">name</span> <span class="o">=</span> <span class="s">"No Name"</span>
+                        <span class="n">autostop</span> <span class="o">=</span> <span class="s">'-'</span>
+                        <span class="k">if</span> <span class="s">'Tags'</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">[</span><span class="s">'Tags'</span><span class="p">]:</span>
+                                <span class="k">if</span> <span class="n">tag</span><span class="p">[</span><span class="s">'Key'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'Name'</span><span class="p">:</span>
+                                    <span class="n">name</span> <span class="o">=</span> <span class="n">tag</span><span class="p">[</span><span class="s">'Value'</span><span class="p">]</span>
+                                <span class="k">if</span> <span class="n">tag</span><span class="p">[</span><span class="s">'Key'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'AutoStop'</span> <span class="ow">and</span> <span class="n">tag</span><span class="p">[</span><span class="s">'Value'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'True'</span><span class="p">:</span>
+                                    <span class="n">autostop</span> <span class="o">=</span> <span class="s">'+'</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">instance_stop_list</span><span class="p">[</span><span class="n">region</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instance</span><span class="p">[</span><span class="s">'InstanceId'</span><span class="p">])</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s">'  {}  {} ({})'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">autostop</span><span class="p">,</span> <span class="n">instance</span><span class="p">[</span><span class="s">'InstanceId'</span><span class="p">],</span> <span class="n">name</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Done'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">stop_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'================================================'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'            Running Stop Proceedure!'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'================================================'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_regions</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance_stop_list</span><span class="p">[</span><span class="n">region</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">'------------------------------------------------'</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">'Stopping: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance_stop_list</span><span class="p">[</span><span class="n">region</span><span class="p">]))</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">'------------------------------------------------'</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ec2_client</span><span class="p">[</span><span class="n">region</span><span class="p">]</span><span class="o">.</span><span class="n">stop_instances</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance_stop_list</span><span class="p">[</span><span class="n">region</span><span class="p">])</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Done'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">destroy_regions_ec2_clients</span><span class="p">()</span>
+
+
+
+<span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">StopEC2</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;=</span> <span class="n">poweroff_time</span><span class="p">:</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">list_ec2s_per_region</span><span class="p">()</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">stop_instances</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'It is not power off time! (&gt;={})'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">poweroff_time</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span> <span class="ow">and</span> <span class="n">local_debug</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">lambda_handler</span><span class="p">([],[])</span>
+</code></pre></div></div>
+
+<p>Now as mentioned, I like to use Terraform for managing my AWS infrastructure.
+It means I can spin up and tear down all my musings at a moments notice. There
+is one thing to note with AWS Lambda and Terraform, loading a function is not
+quite as straight forward as pointing your Terraform config to a .py file. You
+either have to upload the script to an S3 bucket or archive it into a .zip file
+to which you need to work out the sha256 hash of that file. Luckily Terraform
+will work out this hash but creating/updating the .zip file is a bit of a pain.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">resource</span> <span class="s2">"aws_lambda_function"</span> <span class="s2">"stop_ec2_instances"</span> <span class="p">{</span>
+  <span class="n">filename</span>         <span class="o">=</span> <span class="s2">".lambda_stop_ec2_payload.zip"</span>
+  <span class="n">function_name</span>    <span class="o">=</span> <span class="s2">"stop_ec2_instances"</span>
+  <span class="n">description</span>      <span class="o">=</span> <span class="s2">"Shuts down unused EC2 instances."</span>
+  <span class="n">role</span>             <span class="o">=</span> <span class="s2">"${aws_iam_role.lambda_start_stop_ec2.arn}"</span>
+  <span class="n">handler</span>          <span class="o">=</span> <span class="s2">"stop_ec2.lambda_handler"</span>
+  <span class="n">source_code_hash</span> <span class="o">=</span> <span class="s2">"${base64sha256(file("</span><span class="p">.</span><span class="nf">lambda_stop_ec2_payload</span><span class="p">.</span><span class="nf">zip</span><span class="s2">"))}"</span>
+  <span class="n">runtime</span>          <span class="o">=</span> <span class="s2">"python2.7"</span>
+  <span class="n">timeout</span>          <span class="o">=</span> <span class="mi">180</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For this I have created a simple bash script that wraps around the Terraform
+binary. I recommend this as it will speed up your workflow for deploying to
+Lambda. My bash script works by firstly compressing the Python scripts in the
+<code class="highlighter-rouge">payloads/</code> directory and then runs the <code class="highlighter-rouge">terraform plan/apply</code> functions -
+on the fly generating the .zip files and the associated has for upload to
+AWS Lambda.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>build_payloads<span class="o">()</span> <span class="o">{</span>
+    info <span class="s2">"Building payload files."</span>
+    <span class="nb">local </span><span class="nv">__PWD</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+    <span class="nb">cd </span>payloads
+    <span class="k">for </span>file <span class="k">in</span> <span class="k">*</span> <span class="p">;</span> <span class="k">do
+        </span><span class="nb">local </span><span class="nv">script</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">file</span><span class="p">%.*</span><span class="k">}</span><span class="s2">"</span>
+        info <span class="s2">"Adding </span><span class="k">${</span><span class="nv">file</span><span class="k">}</span><span class="s2"> to .lambda_</span><span class="k">${</span><span class="nv">script</span><span class="k">}</span><span class="s2">_payload.zip"</span>
+        zip <span class="nt">-r9</span> <span class="s2">"../.lambda_</span><span class="k">${</span><span class="nv">script</span><span class="k">}</span><span class="s2">_payload.zip"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">file</span><span class="k">}</span><span class="s2">"</span> <span class="o">||</span> <span class="se">\</span>
+            fatal <span class="s2">"Could not build payload files"</span>
+    <span class="k">done
+    </span><span class="nb">cd</span> <span class="s2">"</span><span class="k">${</span><span class="nv">__PWD</span><span class="k">}</span><span class="s2">"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Feel free to clone <a href="https://github.com/xanmanning/terraform-autostop">my repository</a>
+and play with the Lambda function.</p>
+
+<p><a href="https://github.com/xanmanning/terraform-autostop">https://github.com/xanmanning/terraform-autostop</a></p>
+
+<h3 id="future-improvements">Future improvements</h3>
+
+<ol>
+  <li>Change the tag <code class="highlighter-rouge">AutoShutdown: True</code> to be <code class="highlighter-rouge">PowerSchedule: 0800;2000</code>
+(08:00am - 20:00pm)</li>
+  <li>Create a Start function that also reads the <code class="highlighter-rouge">PowerSchedule</code> tag.</li>
+  <li>Have the option for a ‘default’ schedule for untagged instances.</li>
+  <li>Exempt EC2s for Stop/Start with a specific tags, eg. <code class="highlighter-rouge">Production</code></li>
+  <li>Add <a href="http://www.paramiko.org/">Paramiko</a> support for running commands after
+EC2 start or before EC2 stop.</li>
+</ol>
+
+<h3 id="further-reading">Further reading</h3>
+
+<ul>
+  <li><a href="https://aws.amazon.com/premiumsupport/knowledge-center/start-stop-lambda-cloudwatch/">https://aws.amazon.com/premiumsupport/knowledge-center/start-stop-lambda-cloudwatch/</a></li>
+  <li><a href="https://s3.amazonaws.com/solutions-reference/ec2-scheduler/latest/ec2-scheduler.pdf">https://s3.amazonaws.com/solutions-reference/ec2-scheduler/latest/ec2-scheduler.pdf</a></li>
+  <li><a href="https://aws.amazon.com/blogs/compute/scheduling-ssh-jobs-using-aws-lambda/">https://aws.amazon.com/blogs/compute/scheduling-ssh-jobs-using-aws-lambda/</a></li>
+</ul>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2017/11/26/switched-to-jekyll.html">Switched to Jekyll</a></h2>
+          </header>
+          <section>
+            <p>As yoy may have noticed I’ve migrated my blog from Ghost to Jekyll. Please
+do not be alarmed! As I am not able to put significant time into keeping a
+server running nginx and Ghost up to date with security updates.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/11/26/switched-to-jekyll.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>
