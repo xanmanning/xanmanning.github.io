@@ -2209,6 +2209,12 @@ input[type="submit"].disabled, input[type="submit"]:disabled, input[type="reset"
   padding-top: 0;
 }
 
+footer>.row {
+  border-top: solid 2px #efefef;
+  margin: 4em 0 0 0;
+  padding: 4em 0 0 0;
+}
+
 /* Poptrox */
 
 @-moz-keyframes spin {
