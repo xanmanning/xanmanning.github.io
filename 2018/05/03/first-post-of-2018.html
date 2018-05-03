@@ -28,60 +28,82 @@
   </header>
 
   <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">First post of 2018</h1>
+      <p class="post-meta">May 3, 2018</p>
+    </header>
 
-    <!-- nodata -->
+    <section>
+      <p>I am still alive, honest! I’ve just been super busy being a geek. I’m still
+trying to continue my AWS education but this has been put on hold for some Azure
+training. I’m slowly becoming quite cloud agnostic and trying to be smart with
+it.</p>
+
+<p><strong>So here’s a rundown of what I have been doing over the past 6 months…</strong></p>
+
+<ol>
+  <li>Refining my Ansible skills (mainly for work).</li>
+  <li>Playing with Terraform (personally more than professionally).</li>
+  <li>Learning more about Azure through training and <abbr title="Behavior Driven Development">BDD</abbr> (very recent)</li>
+  <li>Provisioning my own services using the infrastructure-as-code tools across
+AWS, Azure and Digital Ocean (GCP to follow). I’ve created my own networks,
+defined my VPNs (Tinc), carved up my subnets and set up some DNS.</li>
+</ol>
+
+<p>So, as I proclaim. I’m doing, but I’m not posting anything particularly
+interesting yet. I don’t have much to really show apart from odd bits of boring
+ansible output.</p>
+
+<p>I may draw the odd network diagram to describe what I have built for my cloud “lab”
+environments. I may release some of the roles I have written, especially anything
+that might be generic and helpful enough.</p>
+
+<p>For now, you’ll have to just settle for some Ansible output:</p>
+
+<p><img src="/images/2018/05/ansible_controller.png" alt="Ansible controller" /></p>
+
+<p><em>Figure1: Ansible Controller login</em></p>
+
+<p><img src="/images/2018/05/ansible_provision_controller.png" alt="Ansible Provisioning Controller" /></p>
+
+<p><em>Figure2: Ansible provision controller playbook</em></p>
+
+<h2 id="oh-yeh-i-got-my-black-belt">Oh yeh! I got my black belt!</h2>
+
+<p>Also, my wife and I got our next grade in karate, December 2017.</p>
+
+<p><img src="/images/2018/05/black_belt.jpg" alt="Black Belts!" /></p>
+
+<p><em>Figure3: Black belt!!! Wife blurred out to protect her identity ;)</em></p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html">Auto Shutdown AWS EC2s with Lambda, CloudWatch (and Terraform)</a></h2>
+          </header>
+          <section>
+            <p>Today we are looking at how to automatically shut down EC2 instances at the
+end of the day automatically using a combination of Lambda and CloudWatch.</p>
 
 
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
 
-<section>
-  <div class="row">
-    
-      <article class="6u 12u(small)">
-        <header>
-          <h2><a href="/2015/12/09/d8-on-lemph.html">Drupal 8 on nginx HHVM and PHP5-FPM fallback.</a></h2>
-        </header>
-        <section>
-          <p>It is, without a doubt, an exciting time for everyone working with Drupal and PHP in general - a great way to round of 2015. We’ve seen two major releases of our favourite open source projects, Drupal 8 and PHP 7. Whilst the performance boost of PHP7 over PHP5.6 is beyond anecdotal - it is proven - the performance of Drupal 8 on PHP7 vs. PHP5.6 isn’t as great when compared to other open source projects (see <a href="https://kinsta.com/blog/the-definitive-php-7-final-version-hhvm-benchmark/">Kinsta.com</a> benchmarking).</p>
-
-
-        </section>
-        <footer>
-          <ul class="actions">
-            <li><a href="/2015/12/09/d8-on-lemph.html" class="button">Read More</a></li>
-          </ul>
-        </footer>
-      </article>
-    
-      <article class="6u$ 12u(small)">
-        <header>
-          <h2><a href="/2015/12/05/creating-guest-network-mikrotik-routeros6.html">Creating a Guest Wireless Network on a MikroTik running RouterOS 6 with Winbox</a></h2>
-        </header>
-        <section>
-          <p>I revived a brand new MikroTik routerboard through the post recently; an RB2011U series router to be specific. My goal for using this router is to better manage my home network, VPN connections and the guests who come into our home. The last point is fairly important to me as I want to create a guest WiFi network to isolate visitors from the rest of the network, BYOD is the acronym for “Bring Your Own Disaster” after all.</p>
-
-
-        </section>
-        <footer>
-          <ul class="actions">
-            <li><a href="/2015/12/05/creating-guest-network-mikrotik-routeros6.html" class="button">Read More</a></li>
-          </ul>
-        </footer>
-      </article>
-    
-  </div>
-</section>
-
-
-  <!-- Pagination links -->
-<div class="pagination">
-  
-    <a href="/page/5/index.html" class="previous">Previous</a>
-  
-  <span class="page_number ">Page: 6 of 6</span>
-  
-    <span class="next ">Next</span>
-  
-</div>
+      
+      </div>
+    </footer>
+  </article>
 </div>
 
 
