@@ -1,4 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-03T19:58:45+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Auto Shutdown AWS EC2s with Lambda, CloudWatch (and Terraform)</title><link href="http://localhost:4000/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html" rel="alternate" type="text/html" title="Auto Shutdown AWS EC2s with Lambda, CloudWatch (and Terraform)" /><published>2017-11-27T18:02:11+00:00</published><updated>2017-11-27T18:02:11+00:00</updated><id>http://localhost:4000/2017/11/27/auto-shutdown-ec2s-lambda-terraform</id><content type="html" xml:base="http://localhost:4000/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html">&lt;p&gt;Today we are looking at how to automatically shut down EC2 instances at the
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-03T20:37:32+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">First post of 2018</title><link href="http://localhost:4000/2018/05/03/first-post-of-2018.html" rel="alternate" type="text/html" title="First post of 2018" /><published>2018-05-03T19:12:59+01:00</published><updated>2018-05-03T19:12:59+01:00</updated><id>http://localhost:4000/2018/05/03/first-post-of-2018</id><content type="html" xml:base="http://localhost:4000/2018/05/03/first-post-of-2018.html">&lt;p&gt;I am still alive, honest! I’ve just been super busy being a geek. I’m still
+trying to continue my AWS education but this has been put on hold for some Azure
+training. I’m slowly becoming quite cloud agnostic and trying to be smart with
+it.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;So here’s a rundown of what I have been doing over the past 6 months…&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Refining my Ansible skills (mainly for work).&lt;/li&gt;
+  &lt;li&gt;Playing with Terraform (personally more than professionally).&lt;/li&gt;
+  &lt;li&gt;Learning more about Azure through training and &lt;abbr title=&quot;Behavior Driven Development&quot;&gt;BDD&lt;/abbr&gt; (very recent)&lt;/li&gt;
+  &lt;li&gt;Provisioning my own services using the infrastructure-as-code tools across
+AWS, Azure and Digital Ocean (GCP to follow). I’ve created my own networks,
+defined my VPNs (Tinc), carved up my subnets and set up some DNS.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;So, as I proclaim. I’m doing, but I’m not posting anything particularly
+interesting yet. I don’t have much to really show apart from odd bits of boring
+ansible output.&lt;/p&gt;
+
+&lt;p&gt;I may draw the odd network diagram to describe what I have built for my cloud “lab”
+environments. I may release some of the roles I have written, especially anything
+that might be generic and helpful enough.&lt;/p&gt;
+
+&lt;p&gt;For now, you’ll have to just settle for some Ansible output:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2018/05/ansible_controller.png&quot; alt=&quot;Ansible controller&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Figure1: Ansible Controller login&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2018/05/ansible_provision_controller.png&quot; alt=&quot;Ansible Provisioning Controller&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Figure2: Ansible provision controller playbook&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;oh-yeh-i-got-my-black-belt&quot;&gt;Oh yeh! I got my black belt!&lt;/h2&gt;
+
+&lt;p&gt;Also, my wife and I got our next grade in karate, December 2017.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2018/05/black_belt.jpg&quot; alt=&quot;Black Belts!&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Figure3: Black belt!!! Wife blurred out to protect her identity ;)&lt;/em&gt;&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">I am still alive, honest! I’ve just been super busy being a geek. I’m still trying to continue my AWS education but this has been put on hold for some Azure training. I’m slowly becoming quite cloud agnostic and trying to be smart with it.</summary></entry><entry><title type="html">Auto Shutdown AWS EC2s with Lambda, CloudWatch (and Terraform)</title><link href="http://localhost:4000/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html" rel="alternate" type="text/html" title="Auto Shutdown AWS EC2s with Lambda, CloudWatch (and Terraform)" /><published>2017-11-27T18:02:11+00:00</published><updated>2017-11-27T18:02:11+00:00</updated><id>http://localhost:4000/2017/11/27/auto-shutdown-ec2s-lambda-terraform</id><content type="html" xml:base="http://localhost:4000/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html">&lt;p&gt;Today we are looking at how to automatically shut down EC2 instances at the
 end of the day automatically using a combination of Lambda and CloudWatch.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/2017/11/lambda_ec2_shutdown.png&quot; alt=&quot;Lambda Function&quot; /&gt;&lt;/p&gt;
@@ -587,24 +627,4 @@ $ vagrant up
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;Master node&lt;/strong&gt;: 10.11.8.2&lt;br /&gt;
-&lt;strong&gt;Slave node&lt;/strong&gt;: 10.11.8.3&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a Vagrantfile for creating a Redis Cluster.</summary></entry><entry><title type="html">Throwback Thursday: Hacktrix*</title><link href="http://localhost:4000/2017/01/26/throwback-thursday-hacktrix.html" rel="alternate" type="text/html" title="Throwback Thursday: Hacktrix*" /><published>2017-01-26T19:51:00+00:00</published><updated>2017-01-26T19:51:00+00:00</updated><id>http://localhost:4000/2017/01/26/throwback-thursday-hacktrix</id><content type="html" xml:base="http://localhost:4000/2017/01/26/throwback-thursday-hacktrix.html">&lt;p&gt;It’s Thursday again, and I’m looking back on another project from days gone by.&lt;/p&gt;
-
-&lt;p&gt;Following on from a decision not to renew our QueueMetrics license to monitor our call volume over Asterisk, we were left in a bit of a pickle. Numerous calls were coming in but managers could not gauge the volume and in times of an outage this was a serious problem when it came to breaks and assigning overtime.&lt;/p&gt;
-
-&lt;p&gt;Luckily, Python comes to the rescue with the py-asterisk library that talks to the Asterisk API.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“Import all the things!” &lt;small&gt;Python&lt;/small&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The design was quite simple, a small Python application that talks to the Asterisk API and returns JSON over HTTP. We then had a small HTML page with jQuery performing AJAX GET to this small server.&lt;/p&gt;
-
-&lt;p&gt;Voilla, Hacktrix*. Tiny call monitor.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/imag0371.jpg&quot; alt=&quot;Hacktrix* Server&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/imag0370.jpg&quot; alt=&quot;Hacktrix* Client&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Then for a sneaky added bonus (running on my desktop)… Caller ID! Basically looking up the number in a dictionary and returning the company name.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2017/01/image001_censored.png&quot; alt=&quot;Hacktix* CallerID&quot; /&gt;&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">It’s Thursday again, and I’m looking back on another project from days gone by.</summary></entry></feed>
+&lt;strong&gt;Slave node&lt;/strong&gt;: 10.11.8.3&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a Vagrantfile for creating a Redis Cluster.</summary></entry></feed>
