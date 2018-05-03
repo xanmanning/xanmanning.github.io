@@ -115,6 +115,12 @@ div.pagination {
   border-top: solid 2px #efefef;
 }
 
+div.coffee {
+  text-align: right;
+  padding: 1em 0 1em 0;
+}
+
+
 @media screen and (max-width: 1800px) {
   .container.\31 25\25 {
     width: 100%;
@@ -173,6 +179,11 @@ div.pagination {
   .container {
     width: 960px;
   }
+
+  div.coffee {
+    text-align: center;
+    padding: 1em 0 1em 0;
+  }
 }
 
 @media screen and (max-width: 736px) {
@@ -192,6 +203,11 @@ div.pagination {
   }
   .container {
     width: 960px;
+  }
+
+  div.coffee {
+    text-align: center;
+    padding: 1em 0 1em 0;
   }
 }
 
@@ -213,6 +229,12 @@ div.pagination {
   .container {
     width: 960px;
   }
+
+  div.coffee {
+    text-align: center;
+    padding: 1em 0 1em 0;
+  }
+
 }
 
 /* Grid */
