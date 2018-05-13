@@ -1,4 +1,117 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-03T21:33:13+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">First post of 2018</title><link href="http://localhost:4000/2018/05/03/first-post-of-2018.html" rel="alternate" type="text/html" title="First post of 2018" /><published>2018-05-03T19:12:59+01:00</published><updated>2018-05-03T19:12:59+01:00</updated><id>http://localhost:4000/2018/05/03/first-post-of-2018</id><content type="html" xml:base="http://localhost:4000/2018/05/03/first-post-of-2018.html">&lt;p&gt;I am still alive, honest! I’ve just been super busy being a geek. I’m still
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-13T16:20:07+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Git for Non-Developers</title><link href="http://localhost:4000/2018/05/06/git-for-non-developers.html" rel="alternate" type="text/html" title="Git for Non-Developers" /><published>2018-05-06T15:49:22+01:00</published><updated>2018-05-06T15:49:22+01:00</updated><id>http://localhost:4000/2018/05/06/git-for-non-developers</id><content type="html" xml:base="http://localhost:4000/2018/05/06/git-for-non-developers.html">&lt;p&gt;I have been thinking about this for quite a while, particularly as I am in the
+middle of contributing to a project at work to combine our multiple knowledgebases
+into a single repository of runbooks.&lt;/p&gt;
+
+&lt;p&gt;We’ve chosen to resolve our fractured information repositories into a central
+git repository. Each runbook is written in Markdown.&lt;/p&gt;
+
+&lt;h2 id=&quot;so-why-use-git-on-github-and-markdown&quot;&gt;&lt;em&gt;So why use Git (on GitHub) and Markdown?&lt;/em&gt;&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Runbooks live close to the code, eventually commonly used runbooks can
+become Ansible playbooks.&lt;/li&gt;
+  &lt;li&gt;Markdown is fairly easy to learn, you don’t need to know how to code to
+contribute.&lt;/li&gt;
+  &lt;li&gt;Markdown is still ledgible when not rendered.&lt;/li&gt;
+  &lt;li&gt;Every contributor and consumer has a full copy of the repository offline
+so should be able to read their content in a datacenter where there is no
+internet connectivity available.&lt;/li&gt;
+  &lt;li&gt;Contributors have to follow a workflow that means the content is peer
+reviewed before being able to merge into the master branch.&lt;/li&gt;
+  &lt;li&gt;Every document is versioned and changes audited with &lt;code class=&quot;highlighter-rouge&quot;&gt;git log&lt;/code&gt; and
+&lt;code class=&quot;highlighter-rouge&quot;&gt;git blame&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Multiple people can contribute to a single runbook prior to publication
+and the merging of their work is handled well.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;what-challenges-have-been-faced&quot;&gt;&lt;em&gt;What challenges have been faced?&lt;/em&gt;&lt;/h2&gt;
+
+&lt;p&gt;Needless to say there is a period of adjustment required. With our knowledge and
+experiences “documented” loosly in Google Sites pages, wikis, support tickets,
+notes on people’s desks and in our heads - every person has their own workflow
+for “documentation”.&lt;/p&gt;
+
+&lt;p&gt;What we need to consider is that the content of this documentation is very
+technical in nature and written by some very skilled individuals, but written
+by individuals who don’t write a lot of code day-to-day and may not have used
+git before. What problems does this cause?&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Git has a steep learning curve when starting off, understanding the workflow
+takes a significant commitment of time. This time commitment is not easy
+to fulfil when working in Operations or Consultancy.&lt;/li&gt;
+  &lt;li&gt;Git has its roots in development, after all Linus Torvalds wrote it to
+fulfil an SCM role in Linux Kernel Development. The workflows have to be
+explained and adapted slightly differently for writting documentation.&lt;/li&gt;
+  &lt;li&gt;Tooling is tricky, GUIs can be a bit hit and miss with the level of control
+over your project. CLI isn’t as easy to set up on Windows as on Linux/MacOS.&lt;/li&gt;
+  &lt;li&gt;Rendering of Markdown locally can differ from the rendering on GitHub.&lt;/li&gt;
+  &lt;li&gt;There are a lot of steps in the process to publish a document.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;what-can-we-do-to-make-things-easier&quot;&gt;&lt;em&gt;What can we do to make things easier?&lt;/em&gt;&lt;/h2&gt;
+
+&lt;p&gt;William Chia, GitLab, presented “Empowering non-developers to use Git” at
+Git Merge 2018. Chia reduced the problem down into 3 requirements:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Something to version&lt;/li&gt;
+  &lt;li&gt;Somewhere to publish&lt;/li&gt;
+  &lt;li&gt;Some way to stop explosions&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We’ve already established points 1. and 2. - We are versioning runbooks and then
+we are publishing to GitHub. What we have started looking at but not perfected
+is point 3.&lt;/p&gt;
+
+&lt;p&gt;Point 3. is currenlty being managed by manual steps, which is fine, but it takes
+a lot of engineer time and commitment. Mistakes can also be made and a non-consistent,
+“ad-hoc” process is used.&lt;/p&gt;
+
+&lt;p&gt;How can we start delving into stopping explosions? We can reduce the engineer hours
+involved in publishing content by
+&lt;a href=&quot;https://github.com/markdownlint/markdownlint&quot;&gt;linting&lt;/a&gt;, &lt;a href=&quot;http://aspell.net/&quot;&gt;spellchecking&lt;/a&gt;*, ensuring the correct template was used,
+etc.&lt;/p&gt;
+
+&lt;p&gt;This becomes part of our Continuous Integration (CI) strategy, and starts to
+drive the behaviours for writing more consistent runbook entries (in sourcecode
+and content).&lt;/p&gt;
+
+&lt;p&gt;&lt;small&gt;&lt;em&gt;* spellchecking is not always easy in technical documents&lt;/em&gt;.&lt;/small&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;where-do-we-go-once-we-have-implemented-continuous-integration&quot;&gt;&lt;em&gt;Where do we go once we have implemented continuous integration?&lt;/em&gt;&lt;/h2&gt;
+
+&lt;p&gt;As mentioned above with point 3. we are starting to look at continuous integration
+to stop our explosions.&lt;/p&gt;
+
+&lt;p&gt;We can actually re-iterate on the problem by looking back at point 2. and how
+we publish. We are relying on GitHub as a platform to publish on, making use of
+the markdown to HTML conversion that goes on in the background against a GitHub
+repository.&lt;/p&gt;
+
+&lt;p&gt;This is great, but not everyone in the organisation will use GitHub to consume
+content. How might we tackle this?&lt;/p&gt;
+
+&lt;p&gt;GitHub actually supports hosting websites (like this one), written in markdown
+but presented in converted HTML. This is done using a Static Site Generator
+(SSG), such as &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;, &lt;a href=&quot;https://gohugo.io/&quot;&gt;Hugo&lt;/a&gt; or
+&lt;a href=&quot;https://blog.getpelican.com/&quot;&gt;Pelican&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;There are even SSGs that are designed for formatting technical documentation.
+Take a look at &lt;a href=&quot;http://www.sphinx-doc.org/en/master/&quot;&gt;Sphinx&lt;/a&gt; or
+&lt;a href=&quot;http://www.mkdocs.org/&quot;&gt;MkDocs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So there are tools to build our markdown as a site, whilst we are already
+checking the sourcecode with our CI solution, we can then start deploying it
+automatically. So begins our possible new Continuous Delivery (CD) strategy.&lt;/p&gt;
+
+&lt;h2 id=&quot;video-on-youtube&quot;&gt;Video on YouTube&lt;/h2&gt;
+
+&lt;p&gt;Below is the full video of William Chia’s talk, which quite accurately describes
+the issues face when non-technical (or even non-development) users are asked to
+work in git. The video gives a taste of the solutions used at GitLab.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/pY5i0Io86UQ&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;</content><author><name>Xan Manning</name></author><summary type="html">I have been thinking about this for quite a while, particularly as I am in the middle of contributing to a project at work to combine our multiple knowledgebases into a single repository of runbooks.</summary></entry><entry><title type="html">First post of 2018</title><link href="http://localhost:4000/2018/05/03/first-post-of-2018.html" rel="alternate" type="text/html" title="First post of 2018" /><published>2018-05-03T19:12:59+01:00</published><updated>2018-05-03T19:12:59+01:00</updated><id>http://localhost:4000/2018/05/03/first-post-of-2018</id><content type="html" xml:base="http://localhost:4000/2018/05/03/first-post-of-2018.html">&lt;p&gt;I am still alive, honest! I’ve just been super busy being a geek. I’m still
 trying to continue my AWS education but this has been put on hold for some Azure
 training. I’m slowly becoming quite cloud agnostic and trying to be smart with
 it.&lt;/p&gt;
@@ -615,16 +728,4 @@ one less thing to worry about.&lt;/p&gt;</content><author><name>Xan Manning</nam
   &lt;li&gt;Updating my Debian 8 desktop to Debian 9 or moving to Ubuntu once GNOME is mainstream (or just going for UbuntuGNOME 16.04).&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;At a later date (once my configuration is more “stable”) I shall release the source code to GitHub.&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">“Cloud servers are cattle, not pets!”</summary></entry><entry><title type="html">Silence</title><link href="http://localhost:4000/2017/04/03/silence.html" rel="alternate" type="text/html" title="Silence" /><published>2017-04-03T19:10:48+01:00</published><updated>2017-04-03T19:10:48+01:00</updated><id>http://localhost:4000/2017/04/03/silence</id><content type="html" xml:base="http://localhost:4000/2017/04/03/silence.html">&lt;p&gt;Back soon, just escaped a sticky situation…&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">Back soon, just escaped a sticky situation…</summary></entry><entry><title type="html">Two node Redis cluster in Vagrant</title><link href="http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant.html" rel="alternate" type="text/html" title="Two node Redis cluster in Vagrant" /><published>2017-02-12T21:40:53+00:00</published><updated>2017-02-12T21:40:53+00:00</updated><id>http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant</id><content type="html" xml:base="http://localhost:4000/2017/02/12/two-node-redis-cluster-in-vagrant.html">&lt;p&gt;So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a &lt;a href=&quot;https://github.com/xanmanning/vagrant-redis-cluster&quot;&gt;Vagrantfile for creating a Redis Cluster&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;I thought I’d share. Feel free to clone. It’s a fairly simple Vagrantfile that simply creates a Master-Slave replica for Redis.&lt;/p&gt;
-
-&lt;p&gt;To get started:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ git clone https://github.com/xanmanning/vagrant-redis-cluster
-$ cd vagrant-redis-cluster
-$ vagrant up
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Master node&lt;/strong&gt;: 10.11.8.2&lt;br /&gt;
-&lt;strong&gt;Slave node&lt;/strong&gt;: 10.11.8.3&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a Vagrantfile for creating a Redis Cluster.</summary></entry></feed>
+&lt;p&gt;At a later date (once my configuration is more “stable”) I shall release the source code to GitHub.&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">“Cloud servers are cattle, not pets!”</summary></entry><entry><title type="html">Silence</title><link href="http://localhost:4000/2017/04/03/silence.html" rel="alternate" type="text/html" title="Silence" /><published>2017-04-03T19:10:48+01:00</published><updated>2017-04-03T19:10:48+01:00</updated><id>http://localhost:4000/2017/04/03/silence</id><content type="html" xml:base="http://localhost:4000/2017/04/03/silence.html">&lt;p&gt;Back soon, just escaped a sticky situation…&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">Back soon, just escaped a sticky situation…</summary></entry></feed>
