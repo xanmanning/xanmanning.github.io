@@ -1,4 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-20T17:57:29+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Git for Non-Developers</title><link href="http://localhost:4000/2018/05/06/git-for-non-developers.html" rel="alternate" type="text/html" title="Git for Non-Developers" /><published>2018-05-06T15:49:22+01:00</published><updated>2018-05-06T15:49:22+01:00</updated><id>http://localhost:4000/2018/05/06/git-for-non-developers</id><content type="html" xml:base="http://localhost:4000/2018/05/06/git-for-non-developers.html">&lt;p&gt;I have been thinking about this for quite a while, particularly as I am in the
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-23T13:01:17+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Weekend Deployment, Upskilling</title><link href="http://localhost:4000/2018/06/23/weekend-deployment.html" rel="alternate" type="text/html" title="Weekend Deployment, Upskilling" /><published>2018-06-23T12:28:48+01:00</published><updated>2018-06-23T12:28:48+01:00</updated><id>http://localhost:4000/2018/06/23/weekend-deployment</id><content type="html" xml:base="http://localhost:4000/2018/06/23/weekend-deployment.html">&lt;p&gt;I’ve got a weekend to myself, it’s not uncommon, but this weekend the wife has
+gone away to watch Foo Fighters. I’m not jealous, I’m not fond of crowds and I
+don’t like travelling to London (or down South in general). When I win the
+lottery and can afford to have private gigs for my family then all will be cool.&lt;/p&gt;
+
+&lt;p&gt;So yes, on a weekend when I am on my own I can be a bit of a sad nut, especially
+on weekends like this one when I will be starting a week of on-call for work. I
+often find on-call quite traumatic, particularly as I can be a bit of a
+&lt;em&gt;“Sev 1 Magnet”&lt;/em&gt; as my colleagues would describe me. This is another story,
+which I will discuss at some later date.&lt;/p&gt;
+
+&lt;p&gt;To try and keep myself distracted in these times of hightened anxiety,
+maintaining my sanity and avoiding exacerbating an existing health concern I
+like to use the time to upskill.&lt;/p&gt;
+
+&lt;p&gt;Now that I’ve had my early morning walk and exercise, I have decided to learn
+&lt;a href=&quot;https://kubernetes.io/&quot;&gt;Kubernetes&lt;/a&gt; properly. I’ve dabbled with
+&lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; quite a bit now and some of the tooling around
+it but I’ve not had the opportunity to use K8s.&lt;/p&gt;
+
+&lt;p&gt;Being a firm believer of implementing &lt;strong&gt;Infrastructure and Configuration as
+Code&lt;/strong&gt;, I’ve decided I’m going to apply the rigour of everything I do being
+committed to a git repository as either &lt;a href=&quot;https://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;
+or &lt;a href=&quot;https://www.terraform.io/&quot;&gt;Terraform&lt;/a&gt; code, sat beneath the Kubernetes
+deployment YAML.&lt;/p&gt;
+
+&lt;p&gt;Obviously this may take a few weekends for me to progress but I’m that much of
+a sad nut when I’ve got a weekend to myself.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/images/2018/06/dreadfort_large.png&quot;&gt;&lt;img src=&quot;/images/2018/06/dreadfort.png&quot; alt=&quot;The command center, Dreadfort&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;First thing is first, time to test the deployment of
+&lt;a href=&quot;https://github.com/kubernetes/minikube&quot;&gt;Minikube&lt;/a&gt; and
+&lt;a href=&quot;https://github.com/kubernetes/kubectl&quot;&gt;Kubectl&lt;/a&gt; in my
+&lt;a href=&quot;https://www.vagrantup.com/&quot;&gt;Vagrant&lt;/a&gt; environment using Ansible, before
+deploying to my “Production” environment and getting started.&lt;/p&gt;
+
+&lt;p&gt;It sounds like overkill, I know, but without this kind of rigour mistakes might
+be made that costs me more in time. As we all know, operations time is expensive
+and my time is valuable to me.&lt;/p&gt;
+
+&lt;p&gt;I hope to share some of my code as a “playground” repository soon that
+demonstrates the process of going from “code + public cloud provider” to
+“functioning Kubernetes Cluster”.&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">I’ve got a weekend to myself, it’s not uncommon, but this weekend the wife has gone away to watch Foo Fighters. I’m not jealous, I’m not fond of crowds and I don’t like travelling to London (or down South in general). When I win the lottery and can afford to have private gigs for my family then all will be cool.</summary></entry><entry><title type="html">Git for Non-Developers</title><link href="http://localhost:4000/2018/05/06/git-for-non-developers.html" rel="alternate" type="text/html" title="Git for Non-Developers" /><published>2018-05-06T15:49:22+01:00</published><updated>2018-05-06T15:49:22+01:00</updated><id>http://localhost:4000/2018/05/06/git-for-non-developers</id><content type="html" xml:base="http://localhost:4000/2018/05/06/git-for-non-developers.html">&lt;p&gt;I have been thinking about this for quite a while, particularly as I am in the
 middle of contributing to a project at work to combine our multiple knowledgebases
 into a single repository of runbooks.&lt;/p&gt;
 
@@ -728,4 +771,4 @@ one less thing to worry about.&lt;/p&gt;</content><author><name>Xan Manning</nam
   &lt;li&gt;Updating my Debian 8 desktop to Debian 9 or moving to Ubuntu once GNOME is mainstream (or just going for UbuntuGNOME 16.04).&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;At a later date (once my configuration is more “stable”) I shall release the source code to GitHub.&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">“Cloud servers are cattle, not pets!”</summary></entry><entry><title type="html">Silence</title><link href="http://localhost:4000/2017/04/03/silence.html" rel="alternate" type="text/html" title="Silence" /><published>2017-04-03T19:10:48+01:00</published><updated>2017-04-03T19:10:48+01:00</updated><id>http://localhost:4000/2017/04/03/silence</id><content type="html" xml:base="http://localhost:4000/2017/04/03/silence.html">&lt;p&gt;Back soon, just escaped a sticky situation…&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">Back soon, just escaped a sticky situation…</summary></entry></feed>
+&lt;p&gt;At a later date (once my configuration is more “stable”) I shall release the source code to GitHub.&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">“Cloud servers are cattle, not pets!”</summary></entry></feed>
