@@ -28,124 +28,86 @@
   </header>
 
   <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Weekend Deployment, Upskilling</h1>
+      <p class="post-meta">Jun 23, 2018</p>
+    </header>
 
-    <!-- nodata -->
+    <section>
+      <p>I’ve got a weekend to myself, it’s not uncommon, but this weekend the wife has
+gone away to watch Foo Fighters. I’m not jealous, I’m not fond of crowds and I
+don’t like travelling to London (or down South in general). When I win the
+lottery and can afford to have private gigs for my family then all will be cool.</p>
 
+<p>So yes, on a weekend when I am on my own I can be a bit of a sad nut, especially
+on weekends like this one when I will be starting a week of on-call for work. I
+often find on-call quite traumatic, particularly as I can be a bit of a
+<em>“Sev 1 Magnet”</em> as my colleagues would describe me. This is another story,
+which I will discuss at some later date.</p>
 
+<p>To try and keep myself distracted in these times of hightened anxiety,
+maintaining my sanity and avoiding exacerbating an existing health concern I
+like to use the time to upskill.</p>
 
-<section>
-  <div class="row">
-    
-      <article class="6u 12u(small)">
-        <header>
-          <h2><a href="/2017/01/26/throwback-thursday-hacktrix.html">Throwback Thursday: Hacktrix*</a></h2>
-        </header>
-        <section>
-          <p>It’s Thursday again, and I’m looking back on another project from days gone by.</p>
+<p>Now that I’ve had my early morning walk and exercise, I have decided to learn
+<a href="https://kubernetes.io/">Kubernetes</a> properly. I’ve dabbled with
+<a href="https://www.docker.com/">Docker</a> quite a bit now and some of the tooling around
+it but I’ve not had the opportunity to use K8s.</p>
 
+<p>Being a firm believer of implementing <strong>Infrastructure and Configuration as
+Code</strong>, I’ve decided I’m going to apply the rigour of everything I do being
+committed to a git repository as either <a href="https://www.ansible.com/">Ansible</a>
+or <a href="https://www.terraform.io/">Terraform</a> code, sat beneath the Kubernetes
+deployment YAML.</p>
 
-        </section>
-        <footer>
-          <ul class="actions">
-            <li><a href="/2017/01/26/throwback-thursday-hacktrix.html" class="button">Read More</a></li>
-          </ul>
-        </footer>
-      </article>
-    
-      <article class="6u$ 12u(small)">
-        <header>
-          <h2><a href="/2017/01/19/saltstack-lab-in-vagrant.html">SaltStack Lab in Vagrant</a></h2>
-        </header>
-        <section>
-          <p>Today I have published a really simplistic <a href="https://saltstack.com/">SaltStack</a> lab for Vagrant to GitHub:</p>
+<p>Obviously this may take a few weekends for me to progress but I’m that much of
+a sad nut when I’ve got a weekend to myself.</p>
 
+<p><a href="/images/2018/06/dreadfort_large.png"><img src="/images/2018/06/dreadfort.png" alt="The command center, Dreadfort" /></a></p>
 
-        </section>
-        <footer>
-          <ul class="actions">
-            <li><a href="/2017/01/19/saltstack-lab-in-vagrant.html" class="button">Read More</a></li>
-          </ul>
-        </footer>
-      </article>
-    
-      <article class="6u 12u(small)">
-        <header>
-          <h2><a href="/2017/01/12/throwback-thursday-thermostat.html">Throwback Thursday: Thermostat</a></h2>
-        </header>
-        <section>
-          <p>I’ve decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.</p>
+<p>First thing is first, time to test the deployment of
+<a href="https://github.com/kubernetes/minikube">Minikube</a> and
+<a href="https://github.com/kubernetes/kubectl">Kubectl</a> in my
+<a href="https://www.vagrantup.com/">Vagrant</a> environment using Ansible, before
+deploying to my “Production” environment and getting started.</p>
 
+<p>It sounds like overkill, I know, but without this kind of rigour mistakes might
+be made that costs me more in time. As we all know, operations time is expensive
+and my time is valuable to me.</p>
 
-        </section>
-        <footer>
-          <ul class="actions">
-            <li><a href="/2017/01/12/throwback-thursday-thermostat.html" class="button">Read More</a></li>
-          </ul>
-        </footer>
-      </article>
-    
-      <article class="6u$ 12u(small)">
-        <header>
-          <h2><a href="/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html">Chmod 0777; when permissions go bad and using the Sticky bit!</a></h2>
-        </header>
-        <section>
-          <p>I recently got tested on an important piece of Linux file permissions trivia and must admit I fumbled the answer a bit.</p>
+<p>I hope to share some of my code as a “playground” repository soon that
+demonstrates the process of going from “code + public cloud provider” to
+“functioning Kubernetes Cluster”.</p>
 
+    </section>
 
-        </section>
-        <footer>
-          <ul class="actions">
-            <li><a href="/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html" class="button">Read More</a></li>
-          </ul>
-        </footer>
-      </article>
-    
-      <article class="6u 12u(small)">
-        <header>
-          <h2><a href="/2016/12/23/openbsd-6-0-simple-nat-with-pf.html">OpenBSD 6.0: Simple NAT with pf</a></h2>
-        </header>
-        <section>
-          <p>This post is more of a “note to self”, but this is a summary of a simple NAT setup between an “Internal” interface and an “External” interface on our OpenBSD server or router.</p>
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2018/05/06/git-for-non-developers.html">Git for Non-Developers</a></h2>
+          </header>
+          <section>
+            <p>I have been thinking about this for quite a while, particularly as I am in the
+middle of contributing to a project at work to combine our multiple knowledgebases
+into a single repository of runbooks.</p>
 
 
-        </section>
-        <footer>
-          <ul class="actions">
-            <li><a href="/2016/12/23/openbsd-6-0-simple-nat-with-pf.html" class="button">Read More</a></li>
-          </ul>
-        </footer>
-      </article>
-    
-      <article class="6u$ 12u(small)">
-        <header>
-          <h2><a href="/2016/11/21/salt-master-on-openbsd-6-0.html">Salt Master on OpenBSD 6.0</a></h2>
-        </header>
-        <section>
-          <p>Let’s get started with <a href="https://saltstack.com/">SaltStack</a>, but let’s put a twist on it and install our Salt Master on OpenBSD 6.0.</p>
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2018/05/06/git-for-non-developers.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
 
-
-        </section>
-        <footer>
-          <ul class="actions">
-            <li><a href="/2016/11/21/salt-master-on-openbsd-6-0.html" class="button">Read More</a></li>
-          </ul>
-        </footer>
-      </article>
-    
-  </div>
-</section>
-
-
-  <!-- Pagination links -->
-<div class="pagination">
-  
-    <a href="/page/2/index.html" class="previous">Previous</a>
-  
-  <span class="page_number ">Page: 3 of 6</span>
-  
-    <a href="/page/4/index.html" class="next">Next</a>
-  
-</div>
+      
+      </div>
+    </footer>
+  </article>
 </div>
 
 
