@@ -28,29 +28,50 @@
   </header>
 
   <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Code to Kubernetes in 15 Minutes</h1>
+      <p class="post-meta">Aug 19, 2018</p>
+    </header>
 
-  <section>
-    
-      <header>
-        <h1><a href="/2018/08/19/code-to-kubernetes-in-15-minutes.html">Code to Kubernetes in 15 Minutes</a></h1>
-        <p class="post-meta">Aug 19, 2018</p>
-      </header>
-      <section>
-        <p>As you may recall, <a href="/2018/06/23/weekend-deployment.html">a couple of on-call’s ago</a>
+    <section>
+      <p>As you may recall, <a href="/2018/06/23/weekend-deployment.html">a couple of on-call’s ago</a>
 I started crafting a Kubernetes cluster using Vagrant and Ansible. Well I have
 decided to upload my code to GitHub!</p>
 
+<h2 id="download">Download</h2>
 
-      </section>
-    
-  </section>
+<p>You can get the code from here:
+<a href="https://github.com/xanmanning/vagrant-kubernetes-cluster">https://github.com/xanmanning/vagrant-kubernetes-cluster</a></p>
+
+<h2 id="heres-what-gets-deployed">Here’s what gets deployed!</h2>
+
+<ol>
+  <li>An NFS server for Persistent Volumes</li>
+  <li>3 Kubernetes Nodes (1 master, 2 workers). This can be increased in Vagrant.</li>
+</ol>
+
+<p><img src="/images/2018/08/cluster-diagram.png" alt="K8s Cluster Diagram" /></p>
+
+<h2 id="demonstration">Demonstration</h2>
+
+<p>In the below demo I go from sourcecode, to a 3 node cluster + storage in 15
+minutes. I then deploy a MySQL Stateful Set which takes us up to 22 minutes.</p>
+
+<p>I’m always amazed how I can go from 650Kb of code to 4 virtual machines running
+a test Kubernetes Cluster.</p>
+
+<p>It’s long and there’s a lot of pauses.</p>
+
+<script src="https://asciinema.org/a/197075.js" id="asciicast-197075" async=""></script>
 
 
+    </section>
 
-  <section>
-    <div class="row">
+    <footer>
+      <div class="row">
       
-        <article class="6u 12u(small)">
+        <article class="6u 12u(small) excerpt">
           <header>
             <h2><a href="/2018/06/23/weekend-deployment.html">Weekend Deployment, Upskilling</a></h2>
           </header>
@@ -69,92 +90,11 @@ lottery and can afford to have private gigs for my family then all will be cool.
           </footer>
         </article>
       
-        <article class="6u$ 12u(small)">
-          <header>
-            <h2><a href="/2018/05/06/git-for-non-developers.html">Git for Non-Developers</a></h2>
-          </header>
-          <section>
-            <p>I have been thinking about this for quite a while, particularly as I am in the
-middle of contributing to a project at work to combine our multiple knowledgebases
-into a single repository of runbooks.</p>
 
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2018/05/06/git-for-non-developers.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
       
-        <article class="6u 12u(small)">
-          <header>
-            <h2><a href="/2018/05/03/first-post-of-2018.html">First post of 2018</a></h2>
-          </header>
-          <section>
-            <p>I am still alive, honest! I’ve just been super busy being a geek. I’m still
-trying to continue my AWS education but this has been put on hold for some Azure
-training. I’m slowly becoming quite cloud agnostic and trying to be smart with
-it.</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2018/05/03/first-post-of-2018.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-        <article class="6u$ 12u(small)">
-          <header>
-            <h2><a href="/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html">Auto Shutdown AWS EC2s with Lambda, CloudWatch (and Terraform)</a></h2>
-          </header>
-          <section>
-            <p>Today we are looking at how to automatically shut down EC2 instances at the
-end of the day automatically using a combination of Lambda and CloudWatch.</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-        <article class="6u 12u(small)">
-          <header>
-            <h2><a href="/2017/11/26/switched-to-jekyll.html">Switched to Jekyll</a></h2>
-          </header>
-          <section>
-            <p>As yoy may have noticed I’ve migrated my blog from Ghost to Jekyll. Please
-do not be alarmed! As I am not able to put significant time into keeping a
-server running nginx and Ghost up to date with security updates.</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2017/11/26/switched-to-jekyll.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-    </div>
-  </section>
-
-
-  <!-- Pagination links -->
-<div class="pagination">
-  
-    <span class="previous">Previous</span>
-  
-  <span class="page_number ">Page: 1 of 6</span>
-  
-    <a href="/page/2/index.html" class="next">Next</a>
-  
-</div>
+      </div>
+    </footer>
+  </article>
 </div>
 
 
