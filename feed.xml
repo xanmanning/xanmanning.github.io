@@ -1,4 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-02T13:09:25+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Dropping the Hyphen!</title><link href="http://localhost:4000/2018/08/31/dropping-the-hyphen.html" rel="alternate" type="text/html" title="Dropping the Hyphen!" /><published>2018-08-31T19:12:55+01:00</published><updated>2018-08-31T19:12:55+01:00</updated><id>http://localhost:4000/2018/08/31/dropping-the-hyphen</id><content type="html" xml:base="http://localhost:4000/2018/08/31/dropping-the-hyphen.html">&lt;p&gt;You may think I’m mad, but I am going to drop the hyphen in my domain, so very
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-24T20:43:18+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Remembering HTTPS Authentication in git</title><link href="http://localhost:4000/2018/09/24/https-auth-in-git.html" rel="alternate" type="text/html" title="Remembering HTTPS Authentication in git" /><published>2018-09-24T20:37:48+01:00</published><updated>2018-09-24T20:37:48+01:00</updated><id>http://localhost:4000/2018/09/24/https-auth-in-git</id><content type="html" xml:base="http://localhost:4000/2018/09/24/https-auth-in-git.html">&lt;p&gt;Quick tip for anyone who is wanting git to remember their username/password
+when issuing push/pulls to a git repository over HTTPS, run the following:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config credential.helper store
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This will remember your username and password by storing in a plaintext file
+in &lt;code class=&quot;highlighter-rouge&quot;&gt;${HOME}/.git-credentials&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: Only do this if you know your home directory is secure from
+other users!&lt;/p&gt;
+
+&lt;h2 id=&quot;source&quot;&gt;Source&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;git: &lt;a href=&quot;https://git-scm.com/docs/git-credential-store&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;credential-store&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Xan Manning</name></author><summary type="html">Quick tip for anyone who is wanting git to remember their username/password when issuing push/pulls to a git repository over HTTPS, run the following:</summary></entry><entry><title type="html">Dropping the Hyphen!</title><link href="http://localhost:4000/2018/08/31/dropping-the-hyphen.html" rel="alternate" type="text/html" title="Dropping the Hyphen!" /><published>2018-08-31T19:12:55+01:00</published><updated>2018-08-31T19:12:55+01:00</updated><id>http://localhost:4000/2018/08/31/dropping-the-hyphen</id><content type="html" xml:base="http://localhost:4000/2018/08/31/dropping-the-hyphen.html">&lt;p&gt;You may think I’m mad, but I am going to drop the hyphen in my domain, so very
 shortly you will see that instead of visiting
 &lt;a href=&quot;https://xan-manning.co.uk&quot;&gt;https://xan-manning.co.uk&lt;/a&gt;, you will be visiting
 &lt;a href=&quot;https://xanmanning.co.uk&quot;&gt;https://xanmanning.co.uk&lt;/a&gt;.&lt;/p&gt;
@@ -523,95 +539,4 @@ one less thing to worry about.&lt;/p&gt;</content><author><name>Xan Manning</nam
 &lt;ol&gt;
   &lt;li&gt;https://docs.docker.com/engine/reference/commandline/system_prune/&lt;/li&gt;
   &lt;li&gt;https://docs.docker.com/engine/admin/pruning/#prune-everything&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Xan Manning</name></author><summary type="html">Sorry for not posting in a while, I have been a bit busy. Here’s a quick tip.</summary></entry><entry><title type="html">Best Practice for Mounting an LVM Logical Volume with /etc/fstab</title><link href="http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html" rel="alternate" type="text/html" title="Best Practice for Mounting an LVM Logical Volume with /etc/fstab" /><published>2017-05-29T17:43:39+01:00</published><updated>2017-05-29T17:43:39+01:00</updated><id>http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab</id><content type="html" xml:base="http://localhost:4000/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html">&lt;p&gt;If you’ve been using Linux for a bit you will be familiar with the file systems table (&lt;a href=&quot;http://man7.org/linux/man-pages/man5/fstab.5.html&quot;&gt;fstab(5)&lt;/a&gt;: &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/fstab&lt;/code&gt;). You will also be fairly familiar with the contents of this file and it’s structure:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;device&amp;gt; &amp;lt;mount-point&amp;gt; &amp;lt;filesystem-type&amp;gt; &amp;lt;options&amp;gt; &amp;lt;dump&amp;gt; &amp;lt;pass&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;So a typical entry may possibly look like the following:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/dev/sda1  /  ext4  defaults  0 0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This would mount &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/sda1&lt;/code&gt;, the device file for the first partition on the first disk as the root (&lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt;) on your Linux system.&lt;/p&gt;
-
-&lt;p&gt;Now you have possibly seen a problem… this device might change names and no longer be &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/sda1&lt;/code&gt; next boot. Imagine performing an install from a live CD, the mappings of devices might change between booting the live CD and booting from the hard disk.&lt;/p&gt;
-
-&lt;p&gt;If you looked at your &lt;em&gt;actual&lt;/em&gt; fstab, you will notice that instead of devices being identified by &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/sdx&lt;/code&gt;, you will see the use of UUIDs. This method is considered the safest and most reliable way of mounting a plain old block device.&lt;/p&gt;
-
-&lt;p&gt;To find a UUID, simply run the &lt;code class=&quot;highlighter-rouge&quot;&gt;blkid&lt;/code&gt; command.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# blkid /dev/sda1
-/dev/sda1 UUID=&quot;15983cac-77bc-46b1-9f79-cb180e438a64&quot; TYPE=&quot;ext4&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Your fstab now looks more like this, using UUID to identify the filesystem we wish to mount:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;UUID=15983cac-77bc-46b1-9f79-cb180e438a64  /  ext4  defaults  0 0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;lvm&quot;&gt;LVM&lt;/h2&gt;
-
-&lt;p&gt;Let’s think about an example logical volume, 10 GB spread across a 16 GB volume group composed of two 8 GB disks:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/blk_and_df.png&quot; alt=&quot;LVM Example&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now there is the temptation to put the UUID entry into your fstab.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# lsblk -f
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/lsblkF.png&quot; alt=&quot;lsblk -f&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Using this UUID in your fstab, you will be able to mount the filesystem consistently, surely? It’s the best practice for mounting any other volume:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;UUID=cefcdc28-ac6b-4a26-a14e-e27724489c52  /backup  ext4  defaults  0 0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Alas, no.&lt;/p&gt;
-
-&lt;p&gt;Why?.. &lt;strong&gt;&lt;em&gt;Snapshots&lt;/em&gt;&lt;/strong&gt;. This problem also applies for filesystems that support snapshots such as zfs.&lt;/p&gt;
-
-&lt;p&gt;I’ll demonstrate now by creating a snapshot of my logical volume and then re-run the command for finding the UUID.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/snapshotsProblem.png&quot; alt=&quot;Snapshot&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;As you may have noticed, the original volume and the snapshot have &lt;em&gt;exactly the same UUID&lt;/em&gt;. If I add this UUID to my fstab now, &lt;code class=&quot;highlighter-rouge&quot;&gt;umount&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;mount&lt;/code&gt;; the snapshot volume will mount to &lt;code class=&quot;highlighter-rouge&quot;&gt;/backup&lt;/code&gt;. This is potentially not the behavior we want.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/snapshotMounted.png&quot; alt=&quot;Snapshot Mounted&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So what do we do? What goes into our fstab? Let’s look at the options available to us on this openSUSE VM. We have:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_test-lv_test&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/vg_test/lv_test&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/dm-#&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;On more modern Linux OS, the top 2 options are the same, a symlink to the device file &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/dm-#&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/dm-1&lt;/code&gt; in my example).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/symlink_devdm.png&quot; alt=&quot;/dev/dm-1 Symlink&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We shouldn’t reference &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/dm-1&lt;/code&gt; in our fstab though as this reference is not persistent on reboot. We cam also have an increase or decrease in the number of device-mapper device files when we make snapshots. Additionally volumes will likely move around when re-discovered by device-mapper on boot.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2017/05/devdms.png&quot; alt=&quot;Multiple /dev/dm-#s&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So what the heck &lt;em&gt;do&lt;/em&gt; we use? Despite going against what was previously said in the introduction, either:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_test-lv_test&lt;/code&gt; or&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/vg_test/lv_test&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Preferably &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_test-lv_test&lt;/code&gt; as this used to be where device-mapper &lt;a href=&quot;https://superuser.com/a/559478&quot;&gt;originally&lt;/a&gt; created the device file, (instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/dm-#&lt;/code&gt;).&lt;/p&gt;
-
-&lt;p&gt;I would also recommend using the &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_test-lv_test&lt;/code&gt; because I have also had experiences of the &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/vg_test/lv_test&lt;/code&gt; symlink going missing during a reboot and requiring emergency console access.&lt;/p&gt;
-
-&lt;p&gt;On older systems, &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_test-lv_test&lt;/code&gt; is more likely to be persistent than &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/vg_test/lv_test&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;When adding a device to fstab, unless you are using LVM or a filesystem that supports snapshots*, use the UUID.&lt;/p&gt;
-
-&lt;p&gt;When using LVM, use the &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/mapper/vg_volgrp-lv_logvol&lt;/code&gt; device file (or symlink for later Linux OS).&lt;/p&gt;
-
-&lt;p&gt;&lt;small&gt;*btrfs users, carry on using UUID but specify the subvolume name.&lt;/small&gt;&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">If you’ve been using Linux for a bit you will be familiar with the file systems table (fstab(5): /etc/fstab). You will also be fairly familiar with the contents of this file and it’s structure:</summary></entry></feed>
+&lt;/ol&gt;</content><author><name>Xan Manning</name></author><summary type="html">Sorry for not posting in a while, I have been a bit busy. Here’s a quick tip.</summary></entry></feed>
