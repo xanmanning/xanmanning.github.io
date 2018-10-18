@@ -1,7 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-25T19:29:47+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Remembering HTTPS Authentication in git</title><link href="http://localhost:4000/2018/09/24/https-auth-in-git.html" rel="alternate" type="text/html" title="Remembering HTTPS Authentication in git" /><published>2018-09-24T20:37:48+01:00</published><updated>2018-09-24T20:37:48+01:00</updated><id>http://localhost:4000/2018/09/24/https-auth-in-git</id><content type="html" xml:base="http://localhost:4000/2018/09/24/https-auth-in-git.html">&lt;p&gt;Quick tip for anyone who is wanting git to remember their username/password
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-18T19:01:07+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Systemd-resolved, Flushing DNS in Ubuntu 18.04 (and other distributions).</title><link href="http://localhost:4000/2018/10/18/systemd-resolved-in-ubuntu.html" rel="alternate" type="text/html" title="Systemd-resolved, Flushing DNS in Ubuntu 18.04 (and other distributions)." /><published>2018-10-18T18:21:01+01:00</published><updated>2018-10-18T18:21:01+01:00</updated><id>http://localhost:4000/2018/10/18/systemd-resolved-in-ubuntu</id><content type="html" xml:base="http://localhost:4000/2018/10/18/systemd-resolved-in-ubuntu.html">&lt;p&gt;Today I’ve been playing with static DNS on my router, sadly Miktotik doesn’t
+support “DNS Doctoring” and it doesn’t look like Ubiquiti Networks equipment
+does either (as of 2018). It’s likely a feature I got spoilt with on a couple
+of Cisco routers I had access to.&lt;/p&gt;
+
+&lt;p&gt;Anyway, back to the point. Using Ubuntu 16.04 for a long time on my work laptop
+and now CentOS 7 I have been used to working with &lt;code class=&quot;highlighter-rouge&quot;&gt;dnsmasq&lt;/code&gt; and how to clear
+the cache.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ xmanning@pc-xmann-01: ~ ] $ grep -E &quot;^PRETTY_NAME&quot; /etc/os-release &amp;amp;&amp;amp; sudo ss -pant | grep -E &quot;^LISTEN&quot; | grep :53
+PRETTY_NAME=&quot;CentOS Linux 7 (Core)&quot;
+LISTEN     0      5      192.168.122.1:53                       *:*                   users:((&quot;dnsmasq&quot;,pid=2462,fd=6))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;On Ubuntu 18.04, and other distributions of course, this has been replaced with
+a systemd service called &lt;code class=&quot;highlighter-rouge&quot;&gt;systemd-resolved&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ xmanning@dreadfort:~ ] $ grep -E &quot;^PRETTY_NAME&quot; /etc/os-release &amp;amp;&amp;amp; sudo ss -pant | grep -E &quot;^LISTEN&quot; | grep :53
+PRETTY_NAME=&quot;Ubuntu 18.04.1 LTS&quot;
+LISTEN      0        128         127.0.0.53%lo:53               0.0.0.0:*        users:((&quot;systemd-resolve&quot;,pid=6977,fd=13))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So, to flush! If you’re finding there’s a need to clear the DNS cache here’s
+how you do it:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Method 1:&lt;/strong&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo systemd-resolve --flush-caches&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Method 2:&lt;/strong&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo systemctl restart systemd-resolved&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;sources&quot;&gt;Sources&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;man &lt;a href=&quot;http://man7.org/linux/man-pages/man1/systemd-resolve.1.html&quot;&gt;systemd-resolve(1)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Xan Manning</name></author><summary type="html">Today I’ve been playing with static DNS on my router, sadly Miktotik doesn’t support “DNS Doctoring” and it doesn’t look like Ubiquiti Networks equipment does either (as of 2018). It’s likely a feature I got spoilt with on a couple of Cisco routers I had access to.</summary></entry><entry><title type="html">Remembering HTTPS Authentication in git</title><link href="http://localhost:4000/2018/09/24/https-auth-in-git.html" rel="alternate" type="text/html" title="Remembering HTTPS Authentication in git" /><published>2018-09-24T20:37:48+01:00</published><updated>2018-09-24T20:37:48+01:00</updated><id>http://localhost:4000/2018/09/24/https-auth-in-git</id><content type="html" xml:base="http://localhost:4000/2018/09/24/https-auth-in-git.html">&lt;p&gt;Quick tip for anyone who is wanting git to remember their username/password
 when issuing push/pulls to a git repository over HTTPS, run the following:&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config &lt;span class=&quot;nt&quot;&gt;--global&lt;/span&gt; credential.helper store
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config credential.helper store
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;This will remember your username and password by storing in a plaintext file
@@ -507,36 +540,4 @@ one less thing to worry about.&lt;/p&gt;</content><author><name>Xan Manning</nam
   &lt;li&gt;Sudoer files&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;There are many more areas covered, I’ve just named a few. If you’re having to switch between different UNIX-like OS, it is definately worth reading and dabbling into unfamiliar technology. You might learn something about your own yard!&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">So my background is mostly in GNU/Linux, I’ve ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I’m not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.</summary></entry><entry><title type="html">Clean up old Docker images</title><link href="http://localhost:4000/2017/09/16/clean-up-docker-hosts.html" rel="alternate" type="text/html" title="Clean up old Docker images" /><published>2017-09-16T13:10:19+01:00</published><updated>2017-09-16T13:10:19+01:00</updated><id>http://localhost:4000/2017/09/16/clean-up-docker-hosts</id><content type="html" xml:base="http://localhost:4000/2017/09/16/clean-up-docker-hosts.html">&lt;p&gt;Sorry for not posting in a while, I have been a bit busy. Here’s a quick tip.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-problem&quot;&gt;The Problem&lt;/h2&gt;
-
-&lt;p&gt;Ideally when running in the cloud we want to be able to ditch our VMs when they misbehave rather than trying to fix them. Reincarnate, don’t resurrect.&lt;/p&gt;
-
-&lt;p&gt;For me, however, I am running a single VM (Digital Ocean Droplet) with Docker. I want to be able to recreate my droplet very quickly should things go wrong, but I don’t care much about 100% uptime on my personal server. The issue with this approach is that my SSD fills up quickly with multiple Docker image layers.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;Despite my droplet being fairly quick to restore, this would be overkill for a simple ‘disk full’ issue. I reclaim my disk space using the &lt;code class=&quot;highlighter-rouge&quot;&gt;prune&lt;/code&gt; functions in Docker.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;The aggressive approach&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;This will clean up everything that is unused, use with caution.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# docker system prune
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;You can be more specific with these commands, pruning individual unused Docker objects&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# docker container prune
-# docker image prune
-# docker network prune
-# docker volume prune
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;sources&quot;&gt;Sources&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;https://docs.docker.com/engine/reference/commandline/system_prune/&lt;/li&gt;
-  &lt;li&gt;https://docs.docker.com/engine/admin/pruning/#prune-everything&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Xan Manning</name></author><summary type="html">Sorry for not posting in a while, I have been a bit busy. Here’s a quick tip.</summary></entry></feed>
+&lt;p&gt;There are many more areas covered, I’ve just named a few. If you’re having to switch between different UNIX-like OS, it is definately worth reading and dabbling into unfamiliar technology. You might learn something about your own yard!&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">So my background is mostly in GNU/Linux, I’ve ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I’m not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.</summary></entry></feed>
