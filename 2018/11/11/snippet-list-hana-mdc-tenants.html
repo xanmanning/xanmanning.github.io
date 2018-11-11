@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="/" class="image avatar"><img  src="/images/avatar.png" alt="Xan Manning"></a>
+    <h1><a href="/">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Snippet - List tenants of an SAP HANA MDC</h1>
+      <p class="post-meta">Nov 11, 2018</p>
+    </header>
+
+    <section>
+      <p>I thought I would share a snippet of code that I have found useful for
+discovering all of the SIDs and Tenants running on an SAP HANA system running
+with Multitenant Database Containers (MDC). If you are running HANA 2.0 this
+is your default operating mode.</p>
+
+<p><strong>Disclaimer</strong>: I do not consider myself a HANA expert, whilst day-to-day I
+work with HANA systems I focus more on OS level operations and automation.</p>
+
+<p>I have found occasion to find out all the instances running on a server, what
+their SIDs are and any tenants that may exist. There’s an assumption that you
+will find your HANA installation in <code class="highlighter-rouge">/usr/sap</code> - it is here you will find
+where instances are installed. You can print all the SIDs from this directory:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+
+<span class="c">#</span>
+<span class="c"># Find:</span>
+<span class="c">#   maxdepth = 1, we only want to find stuff in this directory level.</span>
+<span class="c">#   regextype = sed, we will use `sed` regular expressions to find our SIDs.</span>
+<span class="c">#   regex = '.*/[A-Z0-9]\{3\}', a SID is a 3 uppercase alphanumeric characters.</span>
+<span class="c">#   printf = '%f\n', just print the filename.</span>
+<span class="c">#</span>
+find /usr/sap <span class="se">\</span>
+    <span class="nt">-maxdepth</span> 1 <span class="se">\</span>
+    <span class="nt">-regextype</span> sed <span class="se">\</span>
+    <span class="nt">-regex</span> <span class="s1">'.*/[A-Z0-9]\{3\}'</span> <span class="se">\</span>
+    <span class="nt">-printf</span> <span class="s1">'%f\n'</span>
+</code></pre></div></div>
+
+<p>We should expect output such as below:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>XMD
+XMQ
+XMP
+</code></pre></div></div>
+
+<p>So now we have a list of SIDs with our <code class="highlighter-rouge">find</code> command, we can get the instance
+number from each SID. Conveniently the instance number is found appended to the
+end of a directory prefixed with “HDB”, eg: HDB00 for instance 00.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nv">SIDS</span><span class="o">=</span><span class="k">$(</span>find /usr/sap <span class="se">\</span>
+    <span class="nt">-maxdepth</span> 1 <span class="se">\</span>
+    <span class="nt">-regextype</span> sed <span class="se">\</span>
+    <span class="nt">-regex</span> <span class="s1">'.*/[A-Z0-9]\{3\}'</span> <span class="se">\</span>
+    <span class="nt">-printf</span> <span class="s1">'%f\n'</span>
+<span class="k">)</span>
+
+<span class="k">for </span>sid <span class="k">in</span> <span class="k">${</span><span class="nv">SIDS</span><span class="k">}</span> <span class="p">;</span> <span class="k">do
+    </span><span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">"</span><span class="k">${</span><span class="nv">sid</span><span class="k">}</span><span class="s2"> : "</span>
+    <span class="c">#</span>
+    <span class="c"># Find:</span>
+    <span class="c">#   Same as before, but this time we are using a different regex.</span>
+    <span class="c">#</span>
+    <span class="c">#   regex = '.*/HDB[0-9]\{2\}', find all directories prefixed with HDB</span>
+    <span class="c">#       these should be suffixed with 2 numbers.</span>
+    <span class="c">#</span>
+    find <span class="s2">"/usr/sap/</span><span class="k">${</span><span class="nv">sid</span><span class="k">}</span><span class="s2">"</span> <span class="se">\</span>
+        <span class="nt">-maxdepth</span> 1 <span class="se">\</span>
+        <span class="nt">-regextype</span> sed <span class="se">\</span>
+        <span class="nt">-regex</span> <span class="s1">'.*/HDB[0-9]\{2\}'</span> <span class="se">\</span>
+        <span class="nt">-printf</span> <span class="s1">'%f\n'</span> | sed <span class="s1">'s/HDB//'</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>Our expected output from the above should be a SID and it’s instance number:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>XMD : 10
+XMQ : 05
+XMP : 00
+</code></pre></div></div>
+
+<p>Now we can look to see if it is an MDC and check how many tenants each instance
+has. Conveniently there is a file that holds information about tenant
+containers on the filesystem. You’ll likely find it here:
+<code class="highlighter-rouge">/usr/sap/${sid}/SYS/global/hdb/mdc/databases.lst</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nv">SIDS</span><span class="o">=</span><span class="k">$(</span>find /usr/sap <span class="se">\</span>
+    <span class="nt">-maxdepth</span> 1 <span class="se">\</span>
+    <span class="nt">-regextype</span> sed <span class="se">\</span>
+    <span class="nt">-regex</span> <span class="s1">'.*/[A-Z0-9]\{3\}'</span> <span class="se">\</span>
+    <span class="nt">-printf</span> <span class="s1">'%f\n'</span>
+<span class="k">)</span>
+
+<span class="k">for </span>sid <span class="k">in</span> <span class="k">${</span><span class="nv">SIDS</span><span class="k">}</span> <span class="p">;</span> <span class="k">do
+    </span><span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">"</span><span class="k">${</span><span class="nv">sid</span><span class="k">}</span><span class="s2"> : "</span>
+
+    find <span class="s2">"/usr/sap/</span><span class="k">${</span><span class="nv">sid</span><span class="k">}</span><span class="s2">"</span> <span class="se">\</span>
+        <span class="nt">-maxdepth</span> 1 <span class="se">\</span>
+        <span class="nt">-regextype</span> sed <span class="se">\</span>
+        <span class="nt">-regex</span> <span class="s1">'.*/HDB[0-9]\{2\}'</span> <span class="se">\</span>
+        <span class="nt">-printf</span> <span class="s1">'%f\n'</span> | sed <span class="s1">'s/HDB//'</span>
+
+    <span class="nv">DBLIST</span><span class="o">=</span><span class="s2">"/usr/sap/</span><span class="k">${</span><span class="nv">sid</span><span class="k">}</span><span class="s2">/SYS/global/hdb/mdc/databases.lst"</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nt">-f</span> <span class="s2">"</span><span class="k">${</span><span class="nv">DBLIST</span><span class="k">}</span><span class="s2">"</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+        <span class="c">#</span>
+        <span class="c"># Grep 1:</span>
+        <span class="c">#   Remove all comments out of the file</span>
+        <span class="c"># Grep 2:</span>
+        <span class="c">#   Look for a line beginning with a SID style string, it should end</span>
+        <span class="c">#   with a 'yes' to signify it is active. Fields are delimited with</span>
+        <span class="c">#   colons (:)</span>
+        <span class="c"># Awk:</span>
+        <span class="c">#   Use the colon delimeter (:) to select and print the first field.</span>
+        <span class="c"># Sed 1:</span>
+        <span class="c">#   Prefix each line with indentation and a hyphen</span>
+        <span class="c"># Sed 2:</span>
+        <span class="c">#   Suffix each tenant with the SID.</span>
+        <span class="c">#</span>
+        <span class="nb">grep</span> <span class="nt">-v</span> <span class="s1">'#'</span> <span class="s2">"</span><span class="k">${</span><span class="nv">DBLIST</span><span class="k">}</span><span class="s2">"</span> | <span class="se">\</span>
+        <span class="nb">grep</span> <span class="nt">-Ei</span> <span class="s1">'^[A-Z0-9]{3}:.*:yes$'</span> | <span class="se">\</span>
+        awk <span class="nt">-F</span>: <span class="s1">'{ print $1 }'</span> | <span class="se">\</span>
+        sed <span class="s1">'s/^/  - /'</span> | <span class="se">\</span>
+        sed <span class="s2">"s/</span><span class="nv">$/</span><span class="s2">@</span><span class="k">${</span><span class="nv">sid</span><span class="k">}</span><span class="s2">/"</span>
+    <span class="k">fi
+done</span>
+</code></pre></div></div>
+
+<p>So now we look for tenants for our database. The expected output should be
+something like the below:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>XMD : 10
+  - TD0@XMD
+  - TD1@XMD
+XMQ : 05
+  - TD0@XMQ
+XMP : 00
+</code></pre></div></div>
+
+<p>It’s not the most elegant output but you can get some basic information this
+way. You may also find it useful for gathering information on a system that
+you do not have SYSTEM user access to.</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2018/10/18/systemd-resolved-in-ubuntu.html">Systemd-resolved, Flushing DNS in Ubuntu 18.04 (and other distributions).</a></h2>
+          </header>
+          <section>
+            <p>Today I’ve been playing with static DNS on my router, sadly Miktotik doesn’t
+support “DNS Doctoring” and it doesn’t look like Ubiquiti Networks equipment
+does either (as of 2018). It’s likely a feature I got spoilt with on a couple
+of Cisco routers I had access to.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2018/10/18/systemd-resolved-in-ubuntu.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://plus.google.com/u/0/+XanManning" class="icon fa-google-plus" >
+              <span class="label">Google Plus</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+    <div class="coffee"><style>.bmc-button img{width: 27px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{line-height: 36px !important;height:37px !important;text-decoration: none !important;display:inline-flex !important;color:#ffffff !important;background-color:#000000 !important;border-radius: 3px !important;border: 1px solid transparent !important;padding: 0px 9px !important;font-size: 17px !important;letter-spacing:-0.08px !important;;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Lato', sans-serif !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;-o-transition: 0.3s all linear !important;-webkit-transition: 0.3s all linear !important;-moz-transition: 0.3s all linear !important;-ms-transition: 0.3s all linear !important;transition: 0.3s all linear !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#ffffff !important;}</style><link href="https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/xanmanning"><img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px">Buy me a coffee</span></a></div>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>
