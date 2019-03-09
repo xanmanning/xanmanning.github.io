@@ -28,30 +28,49 @@
   </header>
 
   <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">k3s - My first public Ansible Role</h1>
+      <p class="post-meta">Mar 9, 2019</p>
+    </header>
 
-  <section>
-    
-      <header>
-        <h1><a href="/2019/03/09/k3s-my-first-public-ansible-role.html">k3s - My first public Ansible Role</a></h1>
-        <p class="post-meta">Mar 9, 2019</p>
-      </header>
-      <section>
-        <p>Today marks the first time I have dared to release an Ansible role to Ansible
+    <section>
+      <p>Today marks the first time I have dared to release an Ansible role to Ansible
 Galaxy. It’s not my first role and it certainly isn’t my best, unfortunately
 my best role to date - a role for configuring Tinc - has (kind of) been donated
 to the company I work for.</p>
 
+<p>So without further ado, please may I introduce…</p>
 
-      </section>
-    
-  </section>
+<h2 id="k3s">k3s</h2>
 
+<p>For anyone who has been following the news recently, Rancher Labs released K3s -
+also known as “Lightweight Kubernetes” and you can download it from
+<a href="https://k3s.io/">https://k3s.io/</a>.</p>
 
+<p>Even better, if you like to use Ansible, you can download and use my role to
+build your own k3s cluster.</p>
 
-  <section>
-    <div class="row">
+<p>Ansible Galaxy: <a href="https://galaxy.ansible.com/xanmanning/k3s">xanmanning.k3s</a></p>
+
+<p>Install: <code class="highlighter-rouge">ansible-galaxy install xanmanning.k3s</code></p>
+
+<p>It’s nothing special but it will probably get you started with k3s.</p>
+
+<h3 id="disclaimer">Disclaimer</h3>
+
+<p>I’m not going to have a lot of time to maintain the role, though I will try
+my best. K3s is also not yet a v1.0 release and will likely change a lot so the
+role will probably break in the near future.</p>
+
+<p><strong>Happy Hacking!</strong></p>
+
+    </section>
+
+    <footer>
+      <div class="row">
       
-        <article class="6u 12u(small)">
+        <article class="6u 12u(small) excerpt">
           <header>
             <h2><a href="/2018/11/11/snippet-list-hana-mdc-tenants.html">Snippet - List tenants of an SAP HANA MDC</a></h2>
           </header>
@@ -70,93 +89,11 @@ is your default operating mode.</p>
           </footer>
         </article>
       
-        <article class="6u$ 12u(small)">
-          <header>
-            <h2><a href="/2018/10/18/systemd-resolved-in-ubuntu.html">Systemd-resolved, Flushing DNS in Ubuntu 18.04 (and other distributions).</a></h2>
-          </header>
-          <section>
-            <p>Today I’ve been playing with static DNS on my router, sadly Miktotik doesn’t
-support “DNS Doctoring” and it doesn’t look like Ubiquiti Networks equipment
-does either (as of 2018). It’s likely a feature I got spoilt with on a couple
-of Cisco routers I had access to.</p>
 
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2018/10/18/systemd-resolved-in-ubuntu.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
       
-        <article class="6u 12u(small)">
-          <header>
-            <h2><a href="/2018/09/24/https-auth-in-git.html">Remembering HTTPS Authentication in git</a></h2>
-          </header>
-          <section>
-            <p>Quick tip for anyone who is wanting git to remember their username/password
-when issuing push/pulls to a git repository over HTTPS, run the following:</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2018/09/24/https-auth-in-git.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-        <article class="6u$ 12u(small)">
-          <header>
-            <h2><a href="/2018/08/31/dropping-the-hyphen.html">Dropping the Hyphen!</a></h2>
-          </header>
-          <section>
-            <p>You may think I’m mad, but I am going to drop the hyphen in my domain, so very
-shortly you will see that instead of visiting
-<a href="https://xan-manning.co.uk">https://xan-manning.co.uk</a>, you will be visiting
-<a href="https://xanmanning.co.uk">https://xanmanning.co.uk</a>.</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2018/08/31/dropping-the-hyphen.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-        <article class="6u 12u(small)">
-          <header>
-            <h2><a href="/2018/08/19/code-to-kubernetes-in-15-minutes.html">Code to Kubernetes in 15 Minutes</a></h2>
-          </header>
-          <section>
-            <p>As you may recall, <a href="/2018/06/23/weekend-deployment.html">a couple of on-call’s ago</a>
-I started crafting a Kubernetes cluster using Vagrant and Ansible. Well I have
-decided to upload my code to GitHub!</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2018/08/19/code-to-kubernetes-in-15-minutes.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-    </div>
-  </section>
-
-
-  <!-- Pagination links -->
-<div class="pagination">
-  
-    <span class="previous">Previous</span>
-  
-  <span class="page_number ">Page: 1 of 7</span>
-  
-    <a href="/page/2/index.html" class="next">Next</a>
-  
-</div>
+      </div>
+    </footer>
+  </article>
 </div>
 
 

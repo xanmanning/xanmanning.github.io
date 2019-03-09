@@ -1,4 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-11-11T13:39:31+00:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Snippet - List tenants of an SAP HANA MDC</title><link href="http://localhost:4000/2018/11/11/snippet-list-hana-mdc-tenants.html" rel="alternate" type="text/html" title="Snippet - List tenants of an SAP HANA MDC" /><published>2018-11-11T12:31:42+00:00</published><updated>2018-11-11T12:31:42+00:00</updated><id>http://localhost:4000/2018/11/11/snippet-list-hana-mdc-tenants</id><content type="html" xml:base="http://localhost:4000/2018/11/11/snippet-list-hana-mdc-tenants.html">&lt;p&gt;I thought I would share a snippet of code that I have found useful for
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-09T21:24:37+00:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">k3s - My first public Ansible Role</title><link href="http://localhost:4000/2019/03/09/k3s-my-first-public-ansible-role.html" rel="alternate" type="text/html" title="k3s - My first public Ansible Role" /><published>2019-03-09T21:02:42+00:00</published><updated>2019-03-09T21:02:42+00:00</updated><id>http://localhost:4000/2019/03/09/k3s-my-first-public-ansible-role</id><content type="html" xml:base="http://localhost:4000/2019/03/09/k3s-my-first-public-ansible-role.html">&lt;p&gt;Today marks the first time I have dared to release an Ansible role to Ansible
+Galaxy. It’s not my first role and it certainly isn’t my best, unfortunately
+my best role to date - a role for configuring Tinc - has (kind of) been donated
+to the company I work for.&lt;/p&gt;
+
+&lt;p&gt;So without further ado, please may I introduce…&lt;/p&gt;
+
+&lt;h2 id=&quot;k3s&quot;&gt;k3s&lt;/h2&gt;
+
+&lt;p&gt;For anyone who has been following the news recently, Rancher Labs released K3s -
+also known as “Lightweight Kubernetes” and you can download it from
+&lt;a href=&quot;https://k3s.io/&quot;&gt;https://k3s.io/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Even better, if you like to use Ansible, you can download and use my role to
+build your own k3s cluster.&lt;/p&gt;
+
+&lt;p&gt;Ansible Galaxy: &lt;a href=&quot;https://galaxy.ansible.com/xanmanning/k3s&quot;&gt;xanmanning.k3s&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Install: &lt;code class=&quot;highlighter-rouge&quot;&gt;ansible-galaxy install xanmanning.k3s&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;It’s nothing special but it will probably get you started with k3s.&lt;/p&gt;
+
+&lt;h3 id=&quot;disclaimer&quot;&gt;Disclaimer&lt;/h3&gt;
+
+&lt;p&gt;I’m not going to have a lot of time to maintain the role, though I will try
+my best. K3s is also not yet a v1.0 release and will likely change a lot so the
+role will probably break in the near future.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Happy Hacking!&lt;/strong&gt;&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">Today marks the first time I have dared to release an Ansible role to Ansible Galaxy. It’s not my first role and it certainly isn’t my best, unfortunately my best role to date - a role for configuring Tinc - has (kind of) been donated to the company I work for.</summary></entry><entry><title type="html">Snippet - List tenants of an SAP HANA MDC</title><link href="http://localhost:4000/2018/11/11/snippet-list-hana-mdc-tenants.html" rel="alternate" type="text/html" title="Snippet - List tenants of an SAP HANA MDC" /><published>2018-11-11T12:31:42+00:00</published><updated>2018-11-11T12:31:42+00:00</updated><id>http://localhost:4000/2018/11/11/snippet-list-hana-mdc-tenants</id><content type="html" xml:base="http://localhost:4000/2018/11/11/snippet-list-hana-mdc-tenants.html">&lt;p&gt;I thought I would share a snippet of code that I have found useful for
 discovering all of the SIDs and Tenants running on an SAP HANA system running
 with Multitenant Database Containers (MDC). If you are running HANA 2.0 this
 is your default operating mode.&lt;/p&gt;
@@ -640,17 +668,4 @@ EC2 start or before EC2 stop.&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/premiumsupport/knowledge-center/start-stop-lambda-cloudwatch/&quot;&gt;https://aws.amazon.com/premiumsupport/knowledge-center/start-stop-lambda-cloudwatch/&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://s3.amazonaws.com/solutions-reference/ec2-scheduler/latest/ec2-scheduler.pdf&quot;&gt;https://s3.amazonaws.com/solutions-reference/ec2-scheduler/latest/ec2-scheduler.pdf&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/blogs/compute/scheduling-ssh-jobs-using-aws-lambda/&quot;&gt;https://aws.amazon.com/blogs/compute/scheduling-ssh-jobs-using-aws-lambda/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Xan Manning</name></author><summary type="html">Today we are looking at how to automatically shut down EC2 instances at the end of the day automatically using a combination of Lambda and CloudWatch.</summary></entry><entry><title type="html">Switched to Jekyll</title><link href="http://localhost:4000/2017/11/26/switched-to-jekyll.html" rel="alternate" type="text/html" title="Switched to Jekyll" /><published>2017-11-26T12:35:32+00:00</published><updated>2017-11-26T12:35:32+00:00</updated><id>http://localhost:4000/2017/11/26/switched-to-jekyll</id><content type="html" xml:base="http://localhost:4000/2017/11/26/switched-to-jekyll.html">&lt;p&gt;As yoy may have noticed I’ve migrated my blog from Ghost to Jekyll. Please
-do not be alarmed! As I am not able to put significant time into keeping a
-server running nginx and Ghost up to date with security updates.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2017/11/jekyll_logo.png&quot; alt=&quot;Jekyll&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So why choose Jekyll? It’s still markdown, it can be pretty and the output is
-static HTML. I no longer have a node.js application and database to worry about,
-at the moment all I have is the nginx webserver to keep on top of which can be
-automatically updated.&lt;/p&gt;
-
-&lt;p&gt;The more astute individual will notice the updated SSL certificate! I’ve moved
-to Let’s Encrypt following the expiry of my old certificate. All automated,
-one less thing to worry about.&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">As yoy may have noticed I’ve migrated my blog from Ghost to Jekyll. Please do not be alarmed! As I am not able to put significant time into keeping a server running nginx and Ghost up to date with security updates.</summary></entry></feed>
+&lt;/ul&gt;</content><author><name>Xan Manning</name></author><summary type="html">Today we are looking at how to automatically shut down EC2 instances at the end of the day automatically using a combination of Lambda and CloudWatch.</summary></entry></feed>
