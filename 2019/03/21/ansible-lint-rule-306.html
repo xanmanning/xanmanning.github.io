@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Xan Manning</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Xan Manning">
+  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
+  <meta http-equiv="content-language" content="" />
+  <meta name="generator" content="Jekyll v3.6.0">
+
+  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+
+  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+
+</head>
+
+<body id="top">
+  <header id="header">
+    <a href="/" class="image avatar"><img  src="/images/avatar.png" alt="Xan Manning"></a>
+    <h1><a href="/">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
+    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+  </header>
+
+  <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Ansible-lint - Rule 306</h1>
+      <p class="post-meta">Mar 21, 2019</p>
+    </header>
+
+    <section>
+      <p>If you are like me you like to keep your scripting as safe as possible when
+running against a production system. Sometimes my bash scripts can be a bit
+overkill, but it’s better to be safe than sorry.</p>
+
+<p>It is therefore worth mentioning an update to <code class="highlighter-rouge">ansible-lint</code> shipped in 4.1.0
+which has added the following rule:</p>
+
+<blockquote>
+  <p><strong>[306] Shells that use pipes should set the pipefail option</strong></p>
+
+  <p>Without the pipefail option set, a shell command that implements a pipeline
+can fail and still return 0. If any part of the pipeline other than the
+terminal command fails, the whole pipeline will still return 0, which may
+be considered a success by Ansible. Pipefail is available in the bash shell.</p>
+</blockquote>
+
+<p>– Source: <a href="https://docs.ansible.com/ansible-lint/rules/default_rules.html">https://docs.ansible.com/ansible-lint/rules/default_rules.html</a></p>
+
+<p>This is actually a really good idea when automating shell tasks with the use of
+pipes. In Ansible we should try and avoid using shell tasks where possible, but
+it is sometimes unavoidable. So what does that actually mean in real life?</p>
+
+<p>Let’s consider a simple shell script that demonstrates the problem:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nb">false</span> | <span class="nb">echo</span> <span class="s2">"This task should fail..."</span>
+<span class="o">[[</span> <span class="s2">"</span><span class="k">${</span><span class="p">?</span><span class="k">}</span><span class="s2">"</span> <span class="nt">-gt</span> 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Task: FAIL"</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">"Task: PASS"</span>
+
+<span class="nb">true</span> | <span class="nb">echo</span> <span class="s2">"This task should pass..."</span>
+<span class="o">[[</span> <span class="s2">"</span><span class="k">${</span><span class="p">?</span><span class="k">}</span><span class="s2">"</span> <span class="nt">-gt</span> 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Task: FAIL"</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">"Task: PASS"</span>
+</code></pre></div></div>
+
+<p>When we run it, we would expect the <code class="highlighter-rouge">false</code> to cause a “FAIL”, however…</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ xmanning@dreadfort:/tmp ] $ ./pipefail_test.sh
+This task should fail...
+Task: PASS
+This task should pass...
+Task: PASS
+</code></pre></div></div>
+
+<p>We get two “PASS” results! Why you ask? This is because whilst the <code class="highlighter-rouge">false</code>
+command produces a return code of 1, the <code class="highlighter-rouge">echo</code> after the pipe exits with a
+return of 0.</p>
+
+<p>Ansible will see this as a successful shell task, and really it probably is not.</p>
+
+<p>So we use the bash builtin option <code class="highlighter-rouge">set -o pipefail</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+<span class="nb">set</span> <span class="nt">-o</span> pipefail
+
+<span class="nb">false</span> | <span class="nb">echo</span> <span class="s2">"This task should fail..."</span>
+<span class="o">[[</span> <span class="s2">"</span><span class="k">${</span><span class="p">?</span><span class="k">}</span><span class="s2">"</span> <span class="nt">-gt</span> 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Task: FAIL"</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">"Task: PASS"</span>
+
+<span class="nb">true</span> | <span class="nb">echo</span> <span class="s2">"This task should pass..."</span>
+<span class="o">[[</span> <span class="s2">"</span><span class="k">${</span><span class="p">?</span><span class="k">}</span><span class="s2">"</span> <span class="nt">-gt</span> 0 <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Task: FAIL"</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">"Task: PASS"</span>
+</code></pre></div></div>
+
+<p>Now lets test again:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ xmanning@dreadfort:/tmp ] $ ./pipefail_test.sh
+This task should fail...
+Task: FAIL
+This task should pass...
+Task: PASS
+</code></pre></div></div>
+
+<p>Ahhh, that’s better!</p>
+
+<p>So how do we put that into our Ansible? The annoying thing about some of these
+lint rules is that your playbooks and roles will fail but there are no examples
+of how best to fix them.</p>
+
+<p>Here is one of the ways of passing the test and making your shell tasks safer,
+ensure that you add <code class="highlighter-rouge">set -o pipefail</code> to the beginning of all shell tasks that
+use pipes.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Ensure a list of IPs is captured from /etc/hosts</span>
+  <span class="na">shell</span><span class="pi">:</span> <span class="pi">&gt;</span>
+    <span class="no">set -o pipefail &amp;&amp; \</span>
+      <span class="no">grep -E "^[0-9a-f]" /etc/hosts | awk '{ print $1 }'</span>
+  <span class="na">register</span><span class="pi">:</span> <span class="s">etc_hosts_iplist</span>
+  <span class="na">args</span><span class="pi">:</span>
+    <span class="na">executable</span><span class="pi">:</span> <span class="s">/bin/bash</span>
+</code></pre></div></div>
+
+<p>Take note that you need to specify the <code class="highlighter-rouge">executable: /bin/bash</code> as Ansible will
+likely use <code class="highlighter-rouge">/bin/sh</code> which does not support the <code class="highlighter-rouge">pipefail</code> option and the task
+will just fail.</p>
+
+<p>Having used <code class="highlighter-rouge">set -o pipefail &amp;&amp;</code> at the beginning of the command, should there
+be any problem with the <code class="highlighter-rouge">grep</code> or <code class="highlighter-rouge">awk</code> command then the task will now show
+as <code class="highlighter-rouge">Failed</code> whereas previously the task would show as <code class="highlighter-rouge">Changed</code>.</p>
+
+<p>And just like that you have explored safer shell scripting through Ansible.</p>
+
+<p>To read more about safer bash scripts, see
+<a href="https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/">Tom Van Eyck’s article</a></p>
+
+    </section>
+
+    <footer>
+      <div class="row">
+      
+        <article class="6u 12u(small) excerpt">
+          <header>
+            <h2><a href="/2019/03/09/k3s-my-first-public-ansible-role.html">k3s - My first public Ansible Role</a></h2>
+          </header>
+          <section>
+            <p>Today marks the first time I have dared to release an Ansible role to Ansible
+Galaxy. It’s not my first role and it certainly isn’t my best, unfortunately
+my best role to date - a role for configuring Tinc - has (kind of) been donated
+to the company I work for.</p>
+
+
+          </section>
+          <footer>
+            <ul class="actions">
+              <li><a href="/2019/03/09/k3s-my-first-public-ansible-role.html" class="button">Read More</a></li>
+            </ul>
+          </footer>
+        </article>
+      
+
+      
+      </div>
+    </footer>
+  </article>
+</div>
+
+
+  <footer id="footer">
+    <ul class="icons">
+      
+      <li>
+        <a  href="/contact" class="icon fa-envelope" >
+              <span class="label">Email</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://keybase.io/manningx" class="icon fa-key" >
+              <span class="label">Keybase</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
+              <span class="label">Facebook</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
+              <span class="label">Twitter</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
+              <span class="label">GitHub</span>
+                        </a>
+      </li>
+      
+      <li>
+        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
+              <span class="label">RSS</span>
+                        </a>
+      </li>
+       
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Xan Manning</li>
+      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
+    </ul>
+    <div class="coffee"><style>.bmc-button img{width: 27px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{line-height: 36px !important;height:37px !important;text-decoration: none !important;display:inline-flex !important;color:#ffffff !important;background-color:#000000 !important;border-radius: 3px !important;border: 1px solid transparent !important;padding: 0px 9px !important;font-size: 17px !important;letter-spacing:-0.08px !important;;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Lato', sans-serif !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;-o-transition: 0.3s all linear !important;-webkit-transition: 0.3s all linear !important;-moz-transition: 0.3s all linear !important;-ms-transition: 0.3s all linear !important;transition: 0.3s all linear !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#ffffff !important;}</style><link href="https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/xanmanning"><img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px">Buy me a coffee</span></a></div>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.poptrox.min.js"></script>
+  <script src="/js/skel.min.js"></script>
+  <script src="/js/util.js"></script>
+  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>
