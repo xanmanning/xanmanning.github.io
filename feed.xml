@@ -1,4 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-21T19:51:16+00:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Ansible-lint - Rule 306</title><link href="http://localhost:4000/2019/03/21/ansible-lint-rule-306.html" rel="alternate" type="text/html" title="Ansible-lint - Rule 306" /><published>2019-03-21T17:31:11+00:00</published><updated>2019-03-21T17:31:11+00:00</updated><id>http://localhost:4000/2019/03/21/ansible-lint-rule-306</id><content type="html" xml:base="http://localhost:4000/2019/03/21/ansible-lint-rule-306.html">&lt;p&gt;If you are like me you like to keep your scripting as safe as possible when
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-09-14T11:28:43+01:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">2019, not a good year.</title><link href="http://localhost:4000/2019/09/14/not-a-good-year.html" rel="alternate" type="text/html" title="2019, not a good year." /><published>2019-09-14T11:02:24+01:00</published><updated>2019-09-14T11:02:24+01:00</updated><id>http://localhost:4000/2019/09/14/not-a-good-year</id><content type="html" xml:base="http://localhost:4000/2019/09/14/not-a-good-year.html">&lt;p&gt;If you have stumbled upon this site from some articles I have written then tried
+to find new stuff, you may have noticed that I haven’t posted a lot recently.
+There are many reasons for this, but the main one is that I just don’t feel
+like it.&lt;/p&gt;
+
+&lt;p&gt;I’m not going to go into too much detail, there is a lot of private stuff going
+on but it feels that all of the luck we have had this year has been bad luck.&lt;/p&gt;
+
+&lt;p&gt;My wife and I have had a number of health issues, our families have been
+subject to some serious health issues. We have lost a few beloved members.
+In the middle of all of this, we’ve had a car stolen from off of our drive on
+the birthday of one of our lost loved ones.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Sidenote, I will be publishing an RCA for our car theft. I’ll explain why
+wireless security cameras such as smart doorbells are absolutely pointless!&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Needless to say, when I get free time, I don’t really want to ‘automate’, code
+nor write.&lt;/p&gt;
+
+&lt;p&gt;Don’t despair though, I am always doing daft things with computers and the
+cloud. Mostly in Azure at the minute (no, I haven’t sold out to Microsoft).&lt;/p&gt;
+
+&lt;p&gt;Here’s a screenshot of an encrypted RAID5 with a RAID1 bcache, because why
+not.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2019/09/layered-block-devices.png&quot; alt=&quot;Silly Block Device setup&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you are having a hard year and want to feel good by donating to good causes,
+here are two charities worth checking out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.mndassociation.org/&quot;&gt;Motor Neurone Disease Association&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.cancerresearchuk.org/&quot;&gt;Cancer Research UK&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Xan Manning</name></author><summary type="html">If you have stumbled upon this site from some articles I have written then tried to find new stuff, you may have noticed that I haven’t posted a lot recently. There are many reasons for this, but the main one is that I just don’t feel like it.</summary></entry><entry><title type="html">Ansible-lint - Rule 306</title><link href="http://localhost:4000/2019/03/21/ansible-lint-rule-306.html" rel="alternate" type="text/html" title="Ansible-lint - Rule 306" /><published>2019-03-21T17:31:11+00:00</published><updated>2019-03-21T17:31:11+00:00</updated><id>http://localhost:4000/2019/03/21/ansible-lint-rule-306</id><content type="html" xml:base="http://localhost:4000/2019/03/21/ansible-lint-rule-306.html">&lt;p&gt;If you are like me you like to keep your scripting as safe as possible when
 running against a production system. Sometimes my bash scripts can be a bit
 overkill, but it’s better to be safe than sorry.&lt;/p&gt;
 
@@ -508,44 +541,4 @@ automatically. So begins our possible new Continuous Delivery (CD) strategy.&lt;
 the issues face when non-technical (or even non-development) users are asked to
 work in git. The video gives a taste of the solutions used at GitLab.&lt;/p&gt;
 
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/pY5i0Io86UQ&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;</content><author><name>Xan Manning</name></author><summary type="html">I have been thinking about this for quite a while, particularly as I am in the middle of contributing to a project at work to combine our multiple knowledgebases into a single repository of runbooks.</summary></entry><entry><title type="html">First post of 2018</title><link href="http://localhost:4000/2018/05/03/first-post-of-2018.html" rel="alternate" type="text/html" title="First post of 2018" /><published>2018-05-03T19:12:59+01:00</published><updated>2018-05-03T19:12:59+01:00</updated><id>http://localhost:4000/2018/05/03/first-post-of-2018</id><content type="html" xml:base="http://localhost:4000/2018/05/03/first-post-of-2018.html">&lt;p&gt;I am still alive, honest! I’ve just been super busy being a geek. I’m still
-trying to continue my AWS education but this has been put on hold for some Azure
-training. I’m slowly becoming quite cloud agnostic and trying to be smart with
-it.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;So here’s a rundown of what I have been doing over the past 6 months…&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Refining my Ansible skills (mainly for work).&lt;/li&gt;
-  &lt;li&gt;Playing with Terraform (personally more than professionally).&lt;/li&gt;
-  &lt;li&gt;Learning more about Azure through training and &lt;abbr title=&quot;Behavior Driven Development&quot;&gt;BDD&lt;/abbr&gt; (very recent)&lt;/li&gt;
-  &lt;li&gt;Provisioning my own services using the infrastructure-as-code tools across
-AWS, Azure and Digital Ocean (GCP to follow). I’ve created my own networks,
-defined my VPNs (Tinc), carved up my subnets and set up some DNS.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;So, as I proclaim. I’m doing, but I’m not posting anything particularly
-interesting yet. I don’t have much to really show apart from odd bits of boring
-ansible output.&lt;/p&gt;
-
-&lt;p&gt;I may draw the odd network diagram to describe what I have built for my cloud “lab”
-environments. I may release some of the roles I have written, especially anything
-that might be generic and helpful enough.&lt;/p&gt;
-
-&lt;p&gt;For now, you’ll have to just settle for some Ansible output:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2018/05/ansible_controller.png&quot; alt=&quot;Ansible controller&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Figure1: Ansible Controller login&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2018/05/ansible_provision_controller.png&quot; alt=&quot;Ansible Provisioning Controller&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Figure2: Ansible provision controller playbook&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;oh-yeh-i-got-my-black-belt&quot;&gt;Oh yeh! I got my black belt!&lt;/h2&gt;
-
-&lt;p&gt;Also, my wife and I got our next grade in karate, December 2017.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2018/05/black_belt.jpg&quot; alt=&quot;Black Belts!&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Figure3: Black belt!!! Wife blurred out to protect her identity ;)&lt;/em&gt;&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">I am still alive, honest! I’ve just been super busy being a geek. I’m still trying to continue my AWS education but this has been put on hold for some Azure training. I’m slowly becoming quite cloud agnostic and trying to be smart with it.</summary></entry></feed>
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/pY5i0Io86UQ&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;</content><author><name>Xan Manning</name></author><summary type="html">I have been thinking about this for quite a while, particularly as I am in the middle of contributing to a project at work to combine our multiple knowledgebases into a single repository of runbooks.</summary></entry></feed>
