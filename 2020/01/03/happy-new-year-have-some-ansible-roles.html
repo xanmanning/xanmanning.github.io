@@ -28,36 +28,112 @@
   </header>
 
   <div id="main">
+  <article>
+    <header>
+      <h1 class="post-title">Happy New Year, Have some Ansible Roles!</h1>
+      <p class="post-meta">Jan 3, 2020</p>
+    </header>
 
-  <section>
-    
-      <header>
-        <h1><a href="/2020/01/03/happy-new-year-have-some-ansible-roles.html">Happy New Year, Have some Ansible Roles!</a></h1>
-        <p class="post-meta">Jan 3, 2020</p>
-      </header>
-      <section>
-        <p>It’s 2020, and I have decided to release some more Ansible Roles to the public.
+    <section>
+      <p>It’s 2020, and I have decided to release some more Ansible Roles to the public.
 These roles are extracts from a “master” role I had for configuring my (home)
 workstation just the way I like it. I’ve tidied them up and tried to make them
 a bit more reusable, and I’m trying to support other Linux Distros than just
 Ubuntu 18.04 LTS.</p>
 
+<p>Hopefully I will implement these on my work laptop as well.</p>
 
-      </section>
-        <footer>
-          <ul class="actions">
-            <li><a href="/2020/01/03/happy-new-year-have-some-ansible-roles.html" class="button">Read More</a></li>
-          </ul>
-        </footer>
-    
-  </section>
+<p>Start the New Year right, standardise your laptop build!</p>
 
+<h2 id="ansible-roles">Ansible Roles</h2>
 
+<p>The below do not require for you to become root, <code class="highlighter-rouge">controller</code>, <code class="highlighter-rouge">awscli</code> and
+<code class="highlighter-rouge">azurecli</code> will install into a Python3 virtualenv:</p>
 
-  <section>
-    <div class="row">
+<h3 id="controllers">Controllers</h3>
+
+<ul>
+  <li><a href="https://galaxy.ansible.com/xanmanning/controller">xanmanning.controller</a>
+- <em>Ansible Role to configure a system to be an Ansible Controller</em></li>
+  <li><a href="https://galaxy.ansible.com/xanmanning/terraform">xanmanning.terraform</a>
+- <em>Ansible Role to configure system to be a Hashicorp Terraform controller</em></li>
+  <li><a href="https://galaxy.ansible.com/xanmanning/awscli">xanmanning.awscli</a>
+- <em>Ansible Role to install AWS CLI (<code class="highlighter-rouge">awscli</code>)</em></li>
+  <li><a href="https://galaxy.ansible.com/xanmanning/azurecli">xanmanning.azurecli</a>
+- <em>Ansible Role to install Azure CLI (<code class="highlighter-rouge">azure-cli</code>)</em></li>
+  <li><a href="https://galaxy.ansible.com/xanmanning/kubectl">xanmanning.kubectl</a>
+- <em>Ansible Role to install kubectl on a system</em></li>
+  <li><a href="https://galaxy.ansible.com/xanmanning/helm">xanmanning.helm</a>
+- <em>Ansible Role to install Helm on a system</em></li>
+</ul>
+
+<h3 id="development-utilities">Development Utilities</h3>
+
+<ul>
+  <li><a href="https://galaxy.ansible.com/xanmanning/minikube">xanmanning.minikube</a>
+- <em>Ansible Role to install minikube on a system</em></li>
+</ul>
+
+<p>The below require you to become root:</p>
+
+<h3 id="ides">IDEs</h3>
+
+<ul>
+  <li><a href="https://galaxy.ansible.com/xanmanning/atom">xanmanning.atom</a>
+- <em>Ansible Role to install Atom text editor on a system</em></li>
+  <li><a href="https://galaxy.ansible.com/xanmanning/sublime">xanmanning.sublime</a>
+- <em>Ansible Role to install Sublime text editor on a system</em></li>
+  <li><a href="https://galaxy.ansible.com/xanmanning/vscode">xanmanning.vscode</a>
+- <em>Ansible Role to install VS Code on a system</em></li>
+  <li><a href="https://galaxy.ansible.com/xanmanning/vscode">xanmanning.vscode</a>
+- <em>Ansible Role to install VS Code on a system</em></li>
+</ul>
+
+<h3 id="virtualisation">Virtualisation</h3>
+
+<ul>
+  <li><a href="https://galaxy.ansible.com/xanmanning/virtualbox">xanmanning.virtualbox</a>
+- <em>Ansible Role to install Oracle Virtualbox on a system</em></li>
+  <li><a href="https://galaxy.ansible.com/xanmanning/vagrant">xanmanning.vagrant</a>
+- <em>Ansible Role to install Hashicorp Vagrant on a system</em></li>
+</ul>
+
+<h2 id="faqs">FAQs</h2>
+
+<h4 id="why-do-you-write-ansible-roles-just-for-linux">“<em>Why do you write Ansible Roles just for Linux?!</em>”</h4>
+
+<p>I have no need, nor desire to own or run a Windows Laptop. The same is true for
+a Mac. Most of the work I do (that I am paid for) and the stuff I do in my
+spare time has no requirement to use Microsoft Windows. In fact you’ll see that
+most people who dabble in the technologies that I do will often use a Macintosh.</p>
+
+<p>Not wanting to get locked into a vendor, nor be subject to adverts in an
+operating system that I purchased (<strong>cough</strong> Microsoft), I opted for a
+ThinkPad running Ubuntu Linux.</p>
+
+<h4 id="why-install-everything-into-a-python-3-virtualenv">“<em>Why install everything into a Python 3 virtualenv?!</em>”</h4>
+
+<ol>
+  <li><a href="https://www.python.org/doc/sunset-python-2/">Python 2 is dead</a>, stop using it!</li>
+  <li>If you have ever used <code class="highlighter-rouge">pip</code> before and installed, or upgraded a particular
+tool, you’ll have noticed running into dependency hell. I’ve had it a number
+of times already where I have updated azure-cli and broken something else
+like Ansible. If you don’t run in a virtualenv you run the risk of breaking
+stuff!</li>
+</ol>
+
+<h4 id="what-support-can-i-get-for-these-roles">“<em>What support can I get for these roles?</em>”</h4>
+
+<p>I will donate time to support these roles, but I cannot offer an SLA on it as
+I work on these in my spare time. Between other things in life. If you have a
+problem then raise an Issue on the relevant GitHub project.</p>
+
+    </section>
+
+    <footer>
+      <div class="row">
       
-        <article class="6u 12u(small)">
+        <article class="6u 12u(small) excerpt">
           <header>
             <h2><a href="/2019/11/20/i-did-an-azure-thing.html">I did an Azure thing.</a></h2>
           </header>
@@ -74,108 +150,11 @@ Ubuntu 18.04 LTS.</p>
           </footer>
         </article>
       
-        <article class="6u$ 12u(small)">
-          <header>
-            <h2><a href="/2019/09/14/not-a-good-year.html">2019, not a good year.</a></h2>
-          </header>
-          <section>
-            <p>If you have stumbled upon this site from some articles I have written then tried
-to find new stuff, you may have noticed that I haven’t posted a lot recently.
-There are many reasons for this, but the main one is that I just don’t feel
-like it.</p>
 
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2019/09/14/not-a-good-year.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
       
-        <article class="6u 12u(small)">
-          <header>
-            <h2><a href="/2019/03/21/ansible-lint-rule-306.html">Ansible-lint - Rule 306</a></h2>
-          </header>
-          <section>
-            <p>If you are like me you like to keep your scripting as safe as possible when
-running against a production system. Sometimes my bash scripts can be a bit
-overkill, but it’s better to be safe than sorry.</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2019/03/21/ansible-lint-rule-306.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-        <article class="6u$ 12u(small)">
-          <header>
-            <h2><a href="/2019/03/09/k3s-my-first-public-ansible-role.html">k3s - My first public Ansible Role</a></h2>
-          </header>
-          <section>
-            <p>Today marks the first time I have dared to release an Ansible role to Ansible
-Galaxy. It’s not my first role and it certainly isn’t my best, unfortunately
-my best role to date - a role for configuring Tinc - has (kind of) been donated
-to the company I work for.</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2019/03/09/k3s-my-first-public-ansible-role.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-        <article class="6u 12u(small)">
-          <header>
-            <h2><a href="/2018/11/11/snippet-list-hana-mdc-tenants.html">Snippet - List tenants of an SAP HANA MDC</a></h2>
-          </header>
-          <section>
-            <p>I thought I would share a snippet of code that I have found useful for
-discovering all of the SIDs and Tenants running on an SAP HANA system running
-with Multitenant Database Containers (MDC). If you are running HANA 2.0 this
-is your default operating mode.</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2018/11/11/snippet-list-hana-mdc-tenants.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-        <article class="6u$ 12u(small)">
-          <header>
-            <h2>This is just the first page!</h2>
-          </header>
-          <section>
-            There's more content on the next page, so click away!<br /><br />
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/page/2/index.html" class="button">Next Page</a></li>
-            </ul>
-          </footer>
-        </article>
-    </div>
-  </section>
-
-
-  <!-- Pagination links -->
-<div class="pagination">
-  
-    <span class="previous">Previous</span>
-  
-  <span class="page_number ">Page: 1 of 8</span>
-  
-    <a href="/page/2/index.html" class="next">Next</a>
-  
-</div>
+      </div>
+    </footer>
+  </article>
 </div>
 
 

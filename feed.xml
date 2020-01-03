@@ -1,4 +1,95 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-09T17:40:43+00:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">I did an Azure thing.</title><link href="http://localhost:4000/2019/11/20/i-did-an-azure-thing.html" rel="alternate" type="text/html" title="I did an Azure thing." /><published>2019-11-20T13:37:02+00:00</published><updated>2019-11-20T13:37:02+00:00</updated><id>http://localhost:4000/2019/11/20/i-did-an-azure-thing</id><content type="html" xml:base="http://localhost:4000/2019/11/20/i-did-an-azure-thing.html">&lt;div data-iframe-width=&quot;150&quot; data-iframe-height=&quot;270&quot; data-share-badge-id=&quot;482a4469-eab2-43f1-a987-0fe843cb68b7&quot;&gt;&lt;/div&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-03T17:57:41+00:00</updated><id>http://localhost:4000/</id><title type="html">Xan Manning</title><subtitle>Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</subtitle><author><name>Xan Manning</name></author><entry><title type="html">Happy New Year, Have some Ansible Roles!</title><link href="http://localhost:4000/2020/01/03/happy-new-year-have-some-ansible-roles.html" rel="alternate" type="text/html" title="Happy New Year, Have some Ansible Roles!" /><published>2020-01-03T17:25:37+00:00</published><updated>2020-01-03T17:25:37+00:00</updated><id>http://localhost:4000/2020/01/03/happy-new-year-have-some-ansible-roles</id><content type="html" xml:base="http://localhost:4000/2020/01/03/happy-new-year-have-some-ansible-roles.html">&lt;p&gt;It’s 2020, and I have decided to release some more Ansible Roles to the public.
+These roles are extracts from a “master” role I had for configuring my (home)
+workstation just the way I like it. I’ve tidied them up and tried to make them
+a bit more reusable, and I’m trying to support other Linux Distros than just
+Ubuntu 18.04 LTS.&lt;/p&gt;
+
+&lt;p&gt;Hopefully I will implement these on my work laptop as well.&lt;/p&gt;
+
+&lt;p&gt;Start the New Year right, standardise your laptop build!&lt;/p&gt;
+
+&lt;h2 id=&quot;ansible-roles&quot;&gt;Ansible Roles&lt;/h2&gt;
+
+&lt;p&gt;The below do not require for you to become root, &lt;code class=&quot;highlighter-rouge&quot;&gt;controller&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;awscli&lt;/code&gt; and
+&lt;code class=&quot;highlighter-rouge&quot;&gt;azurecli&lt;/code&gt; will install into a Python3 virtualenv:&lt;/p&gt;
+
+&lt;h3 id=&quot;controllers&quot;&gt;Controllers&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/controller&quot;&gt;xanmanning.controller&lt;/a&gt;
+- &lt;em&gt;Ansible Role to configure a system to be an Ansible Controller&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/terraform&quot;&gt;xanmanning.terraform&lt;/a&gt;
+- &lt;em&gt;Ansible Role to configure system to be a Hashicorp Terraform controller&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/awscli&quot;&gt;xanmanning.awscli&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install AWS CLI (&lt;code class=&quot;highlighter-rouge&quot;&gt;awscli&lt;/code&gt;)&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/azurecli&quot;&gt;xanmanning.azurecli&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install Azure CLI (&lt;code class=&quot;highlighter-rouge&quot;&gt;azure-cli&lt;/code&gt;)&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/kubectl&quot;&gt;xanmanning.kubectl&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install kubectl on a system&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/helm&quot;&gt;xanmanning.helm&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install Helm on a system&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;development-utilities&quot;&gt;Development Utilities&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/minikube&quot;&gt;xanmanning.minikube&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install minikube on a system&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The below require you to become root:&lt;/p&gt;
+
+&lt;h3 id=&quot;ides&quot;&gt;IDEs&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/atom&quot;&gt;xanmanning.atom&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install Atom text editor on a system&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/sublime&quot;&gt;xanmanning.sublime&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install Sublime text editor on a system&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/vscode&quot;&gt;xanmanning.vscode&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install VS Code on a system&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/vscode&quot;&gt;xanmanning.vscode&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install VS Code on a system&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;virtualisation&quot;&gt;Virtualisation&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/virtualbox&quot;&gt;xanmanning.virtualbox&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install Oracle Virtualbox on a system&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://galaxy.ansible.com/xanmanning/vagrant&quot;&gt;xanmanning.vagrant&lt;/a&gt;
+- &lt;em&gt;Ansible Role to install Hashicorp Vagrant on a system&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;faqs&quot;&gt;FAQs&lt;/h2&gt;
+
+&lt;h4 id=&quot;why-do-you-write-ansible-roles-just-for-linux&quot;&gt;“&lt;em&gt;Why do you write Ansible Roles just for Linux?!&lt;/em&gt;”&lt;/h4&gt;
+
+&lt;p&gt;I have no need, nor desire to own or run a Windows Laptop. The same is true for
+a Mac. Most of the work I do (that I am paid for) and the stuff I do in my
+spare time has no requirement to use Microsoft Windows. In fact you’ll see that
+most people who dabble in the technologies that I do will often use a Macintosh.&lt;/p&gt;
+
+&lt;p&gt;Not wanting to get locked into a vendor, nor be subject to adverts in an
+operating system that I purchased (&lt;strong&gt;cough&lt;/strong&gt; Microsoft), I opted for a
+ThinkPad running Ubuntu Linux.&lt;/p&gt;
+
+&lt;h4 id=&quot;why-install-everything-into-a-python-3-virtualenv&quot;&gt;“&lt;em&gt;Why install everything into a Python 3 virtualenv?!&lt;/em&gt;”&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.python.org/doc/sunset-python-2/&quot;&gt;Python 2 is dead&lt;/a&gt;, stop using it!&lt;/li&gt;
+  &lt;li&gt;If you have ever used &lt;code class=&quot;highlighter-rouge&quot;&gt;pip&lt;/code&gt; before and installed, or upgraded a particular
+tool, you’ll have noticed running into dependency hell. I’ve had it a number
+of times already where I have updated azure-cli and broken something else
+like Ansible. If you don’t run in a virtualenv you run the risk of breaking
+stuff!&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;what-support-can-i-get-for-these-roles&quot;&gt;“&lt;em&gt;What support can I get for these roles?&lt;/em&gt;”&lt;/h4&gt;
+
+&lt;p&gt;I will donate time to support these roles, but I cannot offer an SLA on it as
+I work on these in my spare time. Between other things in life. If you have a
+problem then raise an Issue on the relevant GitHub project.&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">It’s 2020, and I have decided to release some more Ansible Roles to the public. These roles are extracts from a “master” role I had for configuring my (home) workstation just the way I like it. I’ve tidied them up and tried to make them a bit more reusable, and I’m trying to support other Linux Distros than just Ubuntu 18.04 LTS.</summary></entry><entry><title type="html">I did an Azure thing.</title><link href="http://localhost:4000/2019/11/20/i-did-an-azure-thing.html" rel="alternate" type="text/html" title="I did an Azure thing." /><published>2019-11-20T13:37:02+00:00</published><updated>2019-11-20T13:37:02+00:00</updated><id>http://localhost:4000/2019/11/20/i-did-an-azure-thing</id><content type="html" xml:base="http://localhost:4000/2019/11/20/i-did-an-azure-thing.html">&lt;div data-iframe-width=&quot;150&quot; data-iframe-height=&quot;270&quot; data-share-badge-id=&quot;482a4469-eab2-43f1-a987-0fe843cb68b7&quot;&gt;&lt;/div&gt;
 &lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;//cdn.youracclaim.com/assets/utilities/embed.js&quot;&gt;&lt;/script&gt;
 
 &lt;p&gt;Yes, I know, I’m the last person you’d think would get a Microsoft
@@ -389,47 +480,4 @@ a test Kubernetes Cluster.&lt;/p&gt;
 
 &lt;p&gt;It’s long and there’s a lot of pauses.&lt;/p&gt;
 
-&lt;script src=&quot;https://asciinema.org/a/197075.js&quot; id=&quot;asciicast-197075&quot; async=&quot;&quot;&gt;&lt;/script&gt;</content><author><name>Xan Manning</name></author><summary type="html">As you may recall, a couple of on-call’s ago I started crafting a Kubernetes cluster using Vagrant and Ansible. Well I have decided to upload my code to GitHub!</summary></entry><entry><title type="html">Weekend Deployment, Upskilling</title><link href="http://localhost:4000/2018/06/23/weekend-deployment.html" rel="alternate" type="text/html" title="Weekend Deployment, Upskilling" /><published>2018-06-23T12:28:48+01:00</published><updated>2018-06-23T12:28:48+01:00</updated><id>http://localhost:4000/2018/06/23/weekend-deployment</id><content type="html" xml:base="http://localhost:4000/2018/06/23/weekend-deployment.html">&lt;p&gt;I’ve got a weekend to myself, it’s not uncommon, but this weekend the wife has
-gone away to watch Foo Fighters. I’m not jealous, I’m not fond of crowds and I
-don’t like travelling to London (or down South in general). When I win the
-lottery and can afford to have private gigs for my family then all will be cool.&lt;/p&gt;
-
-&lt;p&gt;So yes, on a weekend when I am on my own I can be a bit of a sad nut, especially
-on weekends like this one when I will be starting a week of on-call for work. I
-often find on-call quite traumatic, particularly as I can be a bit of a
-&lt;em&gt;“Sev 1 Magnet”&lt;/em&gt; as my colleagues would describe me. This is another story,
-which I will discuss at some later date.&lt;/p&gt;
-
-&lt;p&gt;To try and keep myself distracted in these times of heightened anxiety,
-maintaining my sanity and avoiding exacerbating an existing health concern I
-like to use the time to upskill.&lt;/p&gt;
-
-&lt;p&gt;Now that I’ve had my early morning walk and exercise, I have decided to learn
-&lt;a href=&quot;https://kubernetes.io/&quot;&gt;Kubernetes&lt;/a&gt; properly. I’ve dabbled with
-&lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; quite a bit now and some of the tooling around
-it but I’ve not had the opportunity to use K8s.&lt;/p&gt;
-
-&lt;p&gt;Being a firm believer of implementing &lt;strong&gt;Infrastructure and Configuration as
-Code&lt;/strong&gt;, I’ve decided I’m going to apply the rigour of everything I do being
-committed to a git repository as either &lt;a href=&quot;https://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;
-or &lt;a href=&quot;https://www.terraform.io/&quot;&gt;Terraform&lt;/a&gt; code, sat beneath the Kubernetes
-deployment YAML.&lt;/p&gt;
-
-&lt;p&gt;Obviously this may take a few weekends for me to progress but I’m that much of
-a sad nut when I’ve got a weekend to myself.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;/images/2018/06/dreadfort_large.png&quot;&gt;&lt;img src=&quot;/images/2018/06/dreadfort.png&quot; alt=&quot;The command center, Dreadfort&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;First thing is first, time to test the deployment of
-&lt;a href=&quot;https://github.com/kubernetes/minikube&quot;&gt;Minikube&lt;/a&gt; and
-&lt;a href=&quot;https://github.com/kubernetes/kubectl&quot;&gt;Kubectl&lt;/a&gt; in my
-&lt;a href=&quot;https://www.vagrantup.com/&quot;&gt;Vagrant&lt;/a&gt; environment using Ansible, before
-deploying to my “Production” environment and getting started.&lt;/p&gt;
-
-&lt;p&gt;It sounds like overkill, I know, but without this kind of rigour mistakes might
-be made that costs me more in time. As we all know, operations time is expensive
-and my time is valuable to me.&lt;/p&gt;
-
-&lt;p&gt;I hope to share some of my code as a “playground” repository soon that
-demonstrates the process of going from “code + public cloud provider” to
-“functioning Kubernetes Cluster”.&lt;/p&gt;</content><author><name>Xan Manning</name></author><summary type="html">I’ve got a weekend to myself, it’s not uncommon, but this weekend the wife has gone away to watch Foo Fighters. I’m not jealous, I’m not fond of crowds and I don’t like travelling to London (or down South in general). When I win the lottery and can afford to have private gigs for my family then all will be cool.</summary></entry></feed>
+&lt;script src=&quot;https://asciinema.org/a/197075.js&quot; id=&quot;asciicast-197075&quot; async=&quot;&quot;&gt;&lt;/script&gt;</content><author><name>Xan Manning</name></author><summary type="html">As you may recall, a couple of on-call’s ago I started crafting a Kubernetes cluster using Vagrant and Ansible. Well I have decided to upload my code to GitHub!</summary></entry></feed>
