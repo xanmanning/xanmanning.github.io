@@ -1,0 +1,13 @@
+.sidebar {
+    background-color: #202020;
+    background-image: url(/images/overlay.png), url(/images/bg.jpg);
+    background-size: cover;
+}
+
+.site__title {
+    font-size: 38px;
+}
+
+.sidebar .author-image {
+    margin-top: 18px;
+}

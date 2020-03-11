@@ -1,253 +1,299 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-gb">
+    
+    
 
-<head>
-  <title>Xan Manning</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Xan Manning">
-  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
-  <meta http-equiv="content-language" content="" />
-  <meta name="generator" content="Jekyll v3.6.0">
 
-  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/syntax.css">
-  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Cache-Control" content="public" />
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.66.0" />
 
-  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+    
+    
+    
+
+<title>Getting started with RacherOS using Docker-Machine • Xan Manning</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Getting started with RacherOS using Docker-Machine"/>
+<meta name="twitter:description" content="Sadly, RancherOS is no longer available on Vagrant so dipping your toes in Rancher is a bit less easy. Or is it? The folks are Rancher are suggesting you use Docker-machine, a really nice command line tool for provisioning and managing Docker hosts! If you are used to Vagrant you already have a bit of a head start on getting to grips with Docker Machine.
+What&rsquo;s best is that we are going to do this in the comfort of our own VirtualBox installation."/>
+
+<meta property="og:title" content="Getting started with RacherOS using Docker-Machine" />
+<meta property="og:description" content="Sadly, RancherOS is no longer available on Vagrant so dipping your toes in Rancher is a bit less easy. Or is it? The folks are Rancher are suggesting you use Docker-machine, a really nice command line tool for provisioning and managing Docker hosts! If you are used to Vagrant you already have a bit of a head start on getting to grips with Docker Machine.
+What&rsquo;s best is that we are going to do this in the comfort of our own VirtualBox installation." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xan.manning.io/2016/10/10/getting-started-with-racheros-using-docker-machine.html" />
+<meta property="article:published_time" content="2016-10-10T20:42:36+00:00" />
+<meta property="article:modified_time" content="2016-10-10T20:42:36+00:00" /><meta property="og:site_name" content="Xan Manning" />
+
+
+    
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+
+
+<link rel="stylesheet" href="/css/custom-highlights.css">
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+<link rel="stylesheet" href="/css/custom.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
 
-<body id="top">
-  <header id="header">
-    <a href="/" class="image avatar"><img  src="/images/avatar.png" alt="Xan Manning"></a>
-    <h1><a href="/">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
-    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
-  </header>
 
-  <div id="main">
-  <article>
-    <header>
-      <h1 class="post-title">Getting started with RacherOS using Docker-Machine</h1>
-      <p class="post-meta">Oct 10, 2016</p>
-    </header>
-
-    <section>
-      <p>Sadly, RancherOS is no longer available on <a href="https://www.vagrantup.com/">Vagrant</a> so dipping your toes in Rancher is a bit less easy. Or is it? The folks are Rancher are suggesting you use <a href="https://docs.docker.com/machine/overview/">Docker-machine</a>, a really nice command line tool for provisioning and managing Docker hosts! If you are used to Vagrant you already have a bit of a head start on getting to grips with Docker Machine.</p>
-
-<p>What’s best is that we are going to do this in the comfort of our own VirtualBox installation.</p>
-
-<p><img src="/images/2016/10/RancherMachines.png" alt="VirtualBox" /></p>
-
-<p>This is a simple walk-through of using Rancher, getting ourselves familiar with Docker-machine and deploying catalogue stacks on Docker hosts.</p>
-
-<h2 id="creating-our-rancher-server">Creating our Rancher Server</h2>
-
-<p>We’ll start by making or brand new Rancher Server - this will be our go to place for container Orchestration and Scheduling, with <code class="highlighter-rouge">docker-machine</code> this is fairly straightforward.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-machine create -d virtualbox --virtualbox-boot2docker-url https://releases.rancher.com/os/latest/rancheros.iso RancherOS
-</code></pre></div></div>
-<p>Now that we have a machine to run our server on, we can install Rancher server with two simple steps:</p>
-
-<p>First, set the host to be target of your <code class="highlighter-rouge">docker</code> commands:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eval $(docker-machine env RancherOS)
-</code></pre></div></div>
-
-<p>Next, install Rancher/Server on to this machine:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --restart=unless-stopped -p 8080:8080 rancher/server
-</code></pre></div></div>
-
-<p>This might take a while but the standard output will be shown:</p>
-
-<p><img src="/images/2016/10/RancherServerPull.png" alt="Rancher Server Pull" /></p>
-
-<p>Now, let’s log in to our machine. To find out the IP address of the machine run the following:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-machine ip RancherOS
-</code></pre></div></div>
-
-<p>If this is the first and only machine you have run with Docker-Machine then it will likely be 192.168.99.100.</p>
-
-<p><img src="/images/2016/10/RancherDockerMachineIp.png" alt="Docker Machine IP" /></p>
-
-<p>Let’s check out our machine http://192.168.99.100:8080</p>
-
-<p><img src="/images/2016/10/RancherAddFirstHost.png" alt="Rancher Web Interface" /></p>
-
-<p>You will notice the first thing we are asked to do is to add our first host, OK, so let’s proceed to create 2 more hosts!</p>
-
-<h2 id="adding-rancher-hosts">Adding Rancher Hosts</h2>
-
-<p>Here we’re going to add a couple more hosts to run our applications so that we can visualize just how easy it is using Docker-Machine:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-machine create -d virtualbox --virtualbox-boot2docker-url https://releases.rancher.com/os/latest/rancheros.iso RancherHost001 &amp;&amp; \
-docker-machine create -d virtualbox --virtualbox-boot2docker-url https://releases.rancher.com/os/latest/rancheros.iso RancherHost002
-</code></pre></div></div>
-<p>The above will provide you with two new, blank, RancherOS machines that we can add to our Rancher Server.</p>
-
-<p><img src="/images/2016/10/RancherHost001002.png" alt="Rancher Hosts" /></p>
-
-<p>Let’s go back to the web interface and click “Add Host”.</p>
-
-<p>You will be asked what the API URL will be - for the purpose of us playing about with RancherOS on Docker-Machine we will just keep it the default (over HTTP)</p>
-
-<p><img src="/images/2016/10/RancherAPIURL.png" alt="API Endpoint" /></p>
-
-<p>Again, we are going to run with the defaults for adding a host. Copy the command at the bottom of the list to paste into our Rancher Hosts to register the host.</p>
-
-<p><img src="/images/2016/10/RancherAddHostDefault.png" alt="Rancher Add CMD" /></p>
-
-<p>Now we can paste this into our Rancher Hosts. To SSH into the machines simply run:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-machine ssh RancherHost001
-</code></pre></div></div>
-
-<p>… and paste the command from Rancher. Repeat all the above steps for RancherHost002.</p>
-
-<p>Once Rancher Agent has been installed you should see your new machine being initialized in Rancher’s Web Interface by going to Infrastructure &gt; Hosts.</p>
-
-<p><img src="/images/2016/10/RancherAgent.png" alt="Installing Agent" /></p>
-
-<p><img src="/images/2016/10/RancherInfrastructureHosts.png" alt="Infrastructure Hosts" /></p>
-
-<h2 id="running-a-stack">Running a Stack</h2>
-
-<p>Let’s try out our first stack to make sure it’s all working. In this exercise we will just pull MongoDB from the catalog and see it running on our hosts.</p>
-
-<p>Click “Catalog” then click “View Details” on the MongoDB stack.</p>
-
-<p><img src="/images/2016/10/MongoDB.png" alt="MongoDB" /></p>
-
-<p>Let’s keep the defaults and hit “Launch”, this is just a test.</p>
-
-<p>Once all the containers in the stack have launched you shall receive a notification to say the stack is active.</p>
-
-<p><img src="/images/2016/10/MongoDBStack.png" alt="Active MongoDB Stack" /></p>
-
-<h2 id="monitoring-your-stack">Monitoring your stack</h2>
-
-<p>Go to “Stacks &gt; All”.</p>
-
-<p>Clicking on the “mongo-cluster” link will show you in-depth information about the networking and resources used for your MongoDB Cluster containers on your hosts.</p>
-
-<p><small>Just as a note, a MongoDB cluster would ideally have Docker hosts minimum (1 container per host), we are using 2 hosts because of our limited resources.</small></p>
-
-<p><img src="/images/2016/10/MongoDBContainers.png" alt="MongoDB Cluster Information" /></p>
-
-<p>Another useful view is the host view, (Infrastructure &gt; Hosts) - this will show you the distribution of your containers among your Docker Hosts.</p>
-
-<p><img src="/images/2016/10/RancherHosts.png" alt="Host View" /></p>
-
-<p>Clicking on the host will show you the consumption of resources:</p>
-
-<p><img src="/images/2016/10/RancherHostDetail.png" alt="Host Details" /></p>
-
-<p><strong>Sources</strong>: <a href="http://docs.rancher.com/rancher/v1.2">http://docs.rancher.com/rancher/v1.2</a></p>
-
-    </section>
-
-    <footer>
-      <div class="row">
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://xan.manning.io/">Xan Manning</a>
+      </span>
       
-        <article class="6u 12u(small) excerpt">
-          <header>
-            <h2><a href="/2016/09/08/mounting-efs-outside-of-aws.html">Mounting EFS outside of AWS</a></h2>
-          </header>
-          <section>
-            <p>Why EFS? Well, despite being 3x more expensive than Elastic Block Volumes, EFS is sharable between EC2 instances and it is literally Pay As You Go (PAYG), no over-provisioning in sight.</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2016/09/08/mounting-efs-outside-of-aws.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
+        
+        
+        
+        <div class="author-image">
+          <img src="https://xan.manning.io/images/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
       
-
       
-        <article class="6u$ 12u(small) excerpt f-right">
-          <header>
-            <h2><a href="/2016/10/17/new-keyboard.html">New Keyboard</a></h2>
-          </header>
-          <section>
-            <p>Today I have finally unboxed my brand new WASD keyboard with Cherry MX Blue switches.</p>
+      <p class="site__description">
+         Ramblings of a Linux geek and cloud fanatic dabbling in DevOps! 
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Xan Manning</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/">
+						<span>Blog</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
 
+        <section class="social">
+	
+	<a href="https://twitter.com/xanmanning" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://github.com/xanmanning" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/xanmanning" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:xan%20at%20manning%20dot%20io" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+</section>
 
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2016/10/17/new-keyboard.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
       </div>
-    </footer>
-  </article>
+    </div>
+    
+<div class="copyright">
+  &copy; 2020 Xan Manning
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
 </div>
 
 
-  <footer id="footer">
-    <ul class="icons">
-      
-      <li>
-        <a  href="/contact" class="icon fa-envelope" >
-              <span class="label">Email</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://keybase.io/manningx" class="icon fa-key" >
-              <span class="label">Keybase</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
-              <span class="label">Facebook</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
-              <span class="label">Twitter</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
-              <span class="label">GitHub</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
-              <span class="label">RSS</span>
-                        </a>
-      </li>
-       
-    </ul>
-    <ul class="copyright">
-      <li>&copy; Xan Manning</li>
-      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
-    </ul>
-    <div class="coffee"><style>.bmc-button img{width: 27px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{line-height: 36px !important;height:37px !important;text-decoration: none !important;display:inline-flex !important;color:#ffffff !important;background-color:#000000 !important;border-radius: 3px !important;border: 1px solid transparent !important;padding: 0px 9px !important;font-size: 17px !important;letter-spacing:-0.08px !important;;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Lato', sans-serif !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;-o-transition: 0.3s all linear !important;-webkit-transition: 0.3s all linear !important;-moz-transition: 0.3s all linear !important;-ms-transition: 0.3s all linear !important;transition: 0.3s all linear !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#ffffff !important;}</style><link href="https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/xanmanning"><img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px">Buy me a coffee</span></a></div>
-  </footer>
 
-  <script src="/js/jquery.min.js"></script>
-  <script src="/js/jquery.poptrox.min.js"></script>
-  <script src="/js/skel.min.js"></script>
-  <script src="/js/util.js"></script>
-  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
-  <script src="/js/main.js"></script>
+  </div>
+</div>
 
-</body>
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Getting started with RacherOS using Docker-Machine</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Oct 10, 2016
+    
+    
+    
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 4 min read
+</div>
 
+
+  </header>
+  
+  
+  <div class="post">
+    <p>Sadly, RancherOS is no longer available on <a href="https://www.vagrantup.com/">Vagrant</a> so dipping your toes in Rancher is a bit less easy. Or is it? The folks are Rancher are suggesting you use <a href="https://docs.docker.com/machine/overview/">Docker-machine</a>, a really nice command line tool for provisioning and managing Docker hosts! If you are used to Vagrant you already have a bit of a head start on getting to grips with Docker Machine.</p>
+<p>What&rsquo;s best is that we are going to do this in the comfort of our own VirtualBox installation.</p>
+<p><img src="/images/2016/10/RancherMachines.png" alt="VirtualBox" /></p>
+<p>This is a simple walk-through of using Rancher, getting ourselves familiar with Docker-machine and deploying catalogue stacks on Docker hosts.</p>
+<h2 id="creating-our-rancher-server">Creating our Rancher Server</h2>
+<p>We&rsquo;ll start by making or brand new Rancher Server - this will be our go to place for container Orchestration and Scheduling, with <code>docker-machine</code> this is fairly straightforward.</p>
+<pre><code>docker-machine create -d virtualbox --virtualbox-boot2docker-url https://releases.rancher.com/os/latest/rancheros.iso RancherOS
+</code></pre><p>Now that we have a machine to run our server on, we can install Rancher server with two simple steps:</p>
+<p>First, set the host to be target of your <code>docker</code> commands:</p>
+<pre><code>eval $(docker-machine env RancherOS)
+</code></pre><p>Next, install Rancher/Server on to this machine:</p>
+<pre><code>docker run -d --restart=unless-stopped -p 8080:8080 rancher/server
+</code></pre><p>This might take a while but the standard output will be shown:</p>
+<p><img src="/images/2016/10/RancherServerPull.png" alt="Rancher Server Pull" /></p>
+<p>Now, let&rsquo;s log in to our machine. To find out the IP address of the machine run the following:</p>
+<pre><code>docker-machine ip RancherOS
+</code></pre><p>If this is the first and only machine you have run with Docker-Machine then it will likely be 192.168.99.100.</p>
+<p><img src="/images/2016/10/RancherDockerMachineIp.png" alt="Docker Machine IP" /></p>
+<p>Let&rsquo;s check out our machine http://192.168.99.100:8080</p>
+<p><img src="/images/2016/10/RancherAddFirstHost.png" alt="Rancher Web Interface" /></p>
+<p>You will notice the first thing we are asked to do is to add our first host, OK, so let&rsquo;s proceed to create 2 more hosts!</p>
+<h2 id="adding-rancher-hosts">Adding Rancher Hosts</h2>
+<p>Here we&rsquo;re going to add a couple more hosts to run our applications so that we can visualize just how easy it is using Docker-Machine:</p>
+<pre><code>docker-machine create -d virtualbox --virtualbox-boot2docker-url https://releases.rancher.com/os/latest/rancheros.iso RancherHost001 &amp;&amp; \
+docker-machine create -d virtualbox --virtualbox-boot2docker-url https://releases.rancher.com/os/latest/rancheros.iso RancherHost002
+</code></pre><p>The above will provide you with two new, blank, RancherOS machines that we can add to our Rancher Server.</p>
+<p><img src="/images/2016/10/RancherHost001002.png" alt="Rancher Hosts" /></p>
+<p>Let&rsquo;s go back to the web interface and click &ldquo;Add Host&rdquo;.</p>
+<p>You will be asked what the API URL will be - for the purpose of us playing about with RancherOS on Docker-Machine we will just keep it the default (over HTTP)</p>
+<p><img src="/images/2016/10/RancherAPIURL.png" alt="API Endpoint" /></p>
+<p>Again, we are going to run with the defaults for adding a host. Copy the command at the bottom of the list to paste into our Rancher Hosts to register the host.</p>
+<p><img src="/images/2016/10/RancherAddHostDefault.png" alt="Rancher Add CMD" /></p>
+<p>Now we can paste this into our Rancher Hosts. To SSH into the machines simply run:</p>
+<pre><code>docker-machine ssh RancherHost001
+</code></pre><p>&hellip; and paste the command from Rancher. Repeat all the above steps for RancherHost002.</p>
+<p>Once Rancher Agent has been installed you should see your new machine being initialized in Rancher&rsquo;s Web Interface by going to Infrastructure &gt; Hosts.</p>
+<p><img src="/images/2016/10/RancherAgent.png" alt="Installing Agent" /></p>
+<p><img src="/images/2016/10/RancherInfrastructureHosts.png" alt="Infrastructure Hosts" /></p>
+<h2 id="running-a-stack">Running a Stack</h2>
+<p>Let&rsquo;s try out our first stack to make sure it&rsquo;s all working. In this exercise we will just pull MongoDB from the catalog and see it running on our hosts.</p>
+<p>Click &ldquo;Catalog&rdquo; then click &ldquo;View Details&rdquo; on the MongoDB stack.</p>
+<p><img src="/images/2016/10/MongoDB.png" alt="MongoDB" /></p>
+<p>Let&rsquo;s keep the defaults and hit &ldquo;Launch&rdquo;, this is just a test.</p>
+<p>Once all the containers in the stack have launched you shall receive a notification to say the stack is active.</p>
+<p><img src="/images/2016/10/MongoDBStack.png" alt="Active MongoDB Stack" /></p>
+<h2 id="monitoring-your-stack">Monitoring your stack</h2>
+<p>Go to &ldquo;Stacks &gt; All&rdquo;.</p>
+<p>Clicking on the &ldquo;mongo-cluster&rdquo; link will show you in-depth information about the networking and resources used for your MongoDB Cluster containers on your hosts.</p>
+<p><small>Just as a note, a MongoDB cluster would ideally have Docker hosts minimum (1 container per host), we are using 2 hosts because of our limited resources.</small></p>
+<p><img src="/images/2016/10/MongoDBContainers.png" alt="MongoDB Cluster Information" /></p>
+<p>Another useful view is the host view, (Infrastructure &gt; Hosts) - this will show you the distribution of your containers among your Docker Hosts.</p>
+<p><img src="/images/2016/10/RancherHosts.png" alt="Host View" /></p>
+<p>Clicking on the host will show you the consumption of resources:</p>
+<p><img src="/images/2016/10/RancherHostDetail.png" alt="Host Details" /></p>
+<p><strong>Sources</strong>: <a href="http://docs.rancher.com/rancher/v1.2">http://docs.rancher.com/rancher/v1.2</a></p>
+
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="/2016/09/08/mounting-efs-outside-of-aws.html" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Mounting EFS outside of AWS</span>
+    </a>
+    
+    
+    <a href="/2016/10/17/new-keyboard.html" class="navigation-next">
+      <span class="navigation-tittle">New Keyboard</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
+
+
+    
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+    
+    <script type="text/javascript">
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+
+    
+
+
+
+    </body>
 </html>
