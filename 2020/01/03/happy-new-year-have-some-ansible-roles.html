@@ -1,218 +1,315 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-gb">
+    
+    
 
-<head>
-  <title>Xan Manning</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Xan Manning">
-  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
-  <meta http-equiv="content-language" content="" />
-  <meta name="generator" content="Jekyll v3.6.0">
 
-  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/syntax.css">
-  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Cache-Control" content="public" />
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.66.0" />
 
-  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+    
+    
+    
+
+<title>Happy New Year, Have some Ansible Roles! • Xan Manning</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Happy New Year, Have some Ansible Roles!"/>
+<meta name="twitter:description" content="It&rsquo;s 2020, and I have decided to release some more Ansible Roles to the public. These roles are extracts from a &ldquo;master&rdquo; role I had for configuring my (home) workstation just the way I like it. I&rsquo;ve tidied them up and tried to make them a bit more reusable, and I&rsquo;m trying to support other Linux Distros than just Ubuntu 18.04 LTS.
+Hopefully I will implement these on my work laptop as well."/>
+
+<meta property="og:title" content="Happy New Year, Have some Ansible Roles!" />
+<meta property="og:description" content="It&rsquo;s 2020, and I have decided to release some more Ansible Roles to the public. These roles are extracts from a &ldquo;master&rdquo; role I had for configuring my (home) workstation just the way I like it. I&rsquo;ve tidied them up and tried to make them a bit more reusable, and I&rsquo;m trying to support other Linux Distros than just Ubuntu 18.04 LTS.
+Hopefully I will implement these on my work laptop as well." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xan.manning.io/2020/01/03/happy-new-year-have-some-ansible-roles.html" />
+<meta property="article:published_time" content="2020-01-03T17:25:37+00:00" />
+<meta property="article:modified_time" content="2020-01-03T17:25:37+00:00" /><meta property="og:site_name" content="Xan Manning" />
+
+
+    
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+
+
+<link rel="stylesheet" href="/css/custom-highlights.css">
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+<link rel="stylesheet" href="/css/custom.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
 
-<body id="top">
-  <header id="header">
-    <a href="/" class="image avatar"><img  src="/images/avatar.png" alt="Xan Manning"></a>
-    <h1><a href="/">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
-    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://xan.manning.io/">Xan Manning</a>
+      </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://xan.manning.io/images/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+         Ramblings of a Linux geek and cloud fanatic dabbling in DevOps! 
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Xan Manning</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/">
+						<span>Blog</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/xanmanning" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://github.com/xanmanning" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/xanmanning" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:xan%20at%20manning%20dot%20io" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+</section>
+
+      </div>
+    </div>
+    
+<div class="copyright">
+  &copy; 2020 Xan Manning
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Happy New Year, Have some Ansible Roles!</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Jan 03, 2020
+    
+    
+    
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 3 min read
+</div>
+
+
   </header>
-
-  <div id="main">
-  <article>
-    <header>
-      <h1 class="post-title">Happy New Year, Have some Ansible Roles!</h1>
-      <p class="post-meta">Jan 3, 2020</p>
-    </header>
-
-    <section>
-      <p>It’s 2020, and I have decided to release some more Ansible Roles to the public.
-These roles are extracts from a “master” role I had for configuring my (home)
-workstation just the way I like it. I’ve tidied them up and tried to make them
-a bit more reusable, and I’m trying to support other Linux Distros than just
+  
+  
+  <div class="post">
+    <p>It&rsquo;s 2020, and I have decided to release some more Ansible Roles to the public.
+These roles are extracts from a &ldquo;master&rdquo; role I had for configuring my (home)
+workstation just the way I like it. I&rsquo;ve tidied them up and tried to make them
+a bit more reusable, and I&rsquo;m trying to support other Linux Distros than just
 Ubuntu 18.04 LTS.</p>
-
 <p>Hopefully I will implement these on my work laptop as well.</p>
-
 <p>Start the New Year right, standardise your laptop build!</p>
-
 <h2 id="ansible-roles">Ansible Roles</h2>
-
-<p>The below do not require for you to become root, <code class="highlighter-rouge">controller</code>, <code class="highlighter-rouge">awscli</code> and
-<code class="highlighter-rouge">azurecli</code> will install into a Python3 virtualenv:</p>
-
+<p>The below do not require for you to become root, <code>controller</code>, <code>awscli</code> and
+<code>azurecli</code> will install into a Python3 virtualenv:</p>
 <h3 id="controllers">Controllers</h3>
-
 <ul>
-  <li><a href="https://galaxy.ansible.com/xanmanning/controller">xanmanning.controller</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/controller">xanmanning.controller</a>
 - <em>Ansible Role to configure a system to be an Ansible Controller</em></li>
-  <li><a href="https://galaxy.ansible.com/xanmanning/terraform">xanmanning.terraform</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/terraform">xanmanning.terraform</a>
 - <em>Ansible Role to configure system to be a Hashicorp Terraform controller</em></li>
-  <li><a href="https://galaxy.ansible.com/xanmanning/awscli">xanmanning.awscli</a>
-- <em>Ansible Role to install AWS CLI (<code class="highlighter-rouge">awscli</code>)</em></li>
-  <li><a href="https://galaxy.ansible.com/xanmanning/azurecli">xanmanning.azurecli</a>
-- <em>Ansible Role to install Azure CLI (<code class="highlighter-rouge">azure-cli</code>)</em></li>
-  <li><a href="https://galaxy.ansible.com/xanmanning/kubectl">xanmanning.kubectl</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/awscli">xanmanning.awscli</a>
+- <em>Ansible Role to install AWS CLI (<code>awscli</code>)</em></li>
+<li><a href="https://galaxy.ansible.com/xanmanning/azurecli">xanmanning.azurecli</a>
+- <em>Ansible Role to install Azure CLI (<code>azure-cli</code>)</em></li>
+<li><a href="https://galaxy.ansible.com/xanmanning/kubectl">xanmanning.kubectl</a>
 - <em>Ansible Role to install kubectl on a system</em></li>
-  <li><a href="https://galaxy.ansible.com/xanmanning/helm">xanmanning.helm</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/helm">xanmanning.helm</a>
 - <em>Ansible Role to install Helm on a system</em></li>
 </ul>
-
 <h3 id="development-utilities">Development Utilities</h3>
-
 <ul>
-  <li><a href="https://galaxy.ansible.com/xanmanning/minikube">xanmanning.minikube</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/minikube">xanmanning.minikube</a>
 - <em>Ansible Role to install minikube on a system</em></li>
 </ul>
-
 <p>The below require you to become root:</p>
-
 <h3 id="ides">IDEs</h3>
-
 <ul>
-  <li><a href="https://galaxy.ansible.com/xanmanning/atom">xanmanning.atom</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/atom">xanmanning.atom</a>
 - <em>Ansible Role to install Atom text editor on a system</em></li>
-  <li><a href="https://galaxy.ansible.com/xanmanning/sublime">xanmanning.sublime</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/sublime">xanmanning.sublime</a>
 - <em>Ansible Role to install Sublime text editor on a system</em></li>
-  <li><a href="https://galaxy.ansible.com/xanmanning/vscode">xanmanning.vscode</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/vscode">xanmanning.vscode</a>
 - <em>Ansible Role to install VS Code on a system</em></li>
-  <li><a href="https://galaxy.ansible.com/xanmanning/vscode">xanmanning.vscode</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/vscode">xanmanning.vscode</a>
 - <em>Ansible Role to install VS Code on a system</em></li>
 </ul>
-
 <h3 id="virtualisation">Virtualisation</h3>
-
 <ul>
-  <li><a href="https://galaxy.ansible.com/xanmanning/virtualbox">xanmanning.virtualbox</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/virtualbox">xanmanning.virtualbox</a>
 - <em>Ansible Role to install Oracle Virtualbox on a system</em></li>
-  <li><a href="https://galaxy.ansible.com/xanmanning/vagrant">xanmanning.vagrant</a>
+<li><a href="https://galaxy.ansible.com/xanmanning/vagrant">xanmanning.vagrant</a>
 - <em>Ansible Role to install Hashicorp Vagrant on a system</em></li>
 </ul>
-
 <h2 id="faqs">FAQs</h2>
-
-<h4 id="why-do-you-write-ansible-roles-just-for-linux">“<em>Why do you write Ansible Roles just for Linux?!</em>”</h4>
-
+<h4 id="_why-do-you-write-ansible-roles-just-for-linux_">&ldquo;<em>Why do you write Ansible Roles just for Linux?!</em>&rdquo;</h4>
 <p>I have no need, nor desire to own or run a Windows Laptop. The same is true for
 a Mac. Most of the work I do (that I am paid for) and the stuff I do in my
-spare time has no requirement to use Microsoft Windows. In fact you’ll see that
+spare time has no requirement to use Microsoft Windows. In fact you&rsquo;ll see that
 most people who dabble in the technologies that I do will often use a Macintosh.</p>
-
 <p>Not wanting to get locked into a vendor, nor be subject to adverts in an
 operating system that I purchased (<strong>cough</strong> Microsoft), I opted for a
 ThinkPad running Ubuntu Linux.</p>
-
-<h4 id="why-install-everything-into-a-python-3-virtualenv">“<em>Why install everything into a Python 3 virtualenv?!</em>”</h4>
-
+<h4 id="_why-install-everything-into-a-python-3-virtualenv_">&ldquo;<em>Why install everything into a Python 3 virtualenv?!</em>&rdquo;</h4>
 <ol>
-  <li><a href="https://www.python.org/doc/sunset-python-2/">Python 2 is dead</a>, stop using it!</li>
-  <li>If you have ever used <code class="highlighter-rouge">pip</code> before and installed, or upgraded a particular
-tool, you’ll have noticed running into dependency hell. I’ve had it a number
+<li><a href="https://www.python.org/doc/sunset-python-2/">Python 2 is dead</a>, stop using it!</li>
+<li>If you have ever used <code>pip</code> before and installed, or upgraded a particular
+tool, you&rsquo;ll have noticed running into dependency hell. I&rsquo;ve had it a number
 of times already where I have updated azure-cli and broken something else
-like Ansible. If you don’t run in a virtualenv you run the risk of breaking
+like Ansible. If you don&rsquo;t run in a virtualenv you run the risk of breaking
 stuff!</li>
 </ol>
-
-<h4 id="what-support-can-i-get-for-these-roles">“<em>What support can I get for these roles?</em>”</h4>
-
+<h4 id="_what-support-can-i-get-for-these-roles_">&ldquo;<em>What support can I get for these roles?</em>&rdquo;</h4>
 <p>I will donate time to support these roles, but I cannot offer an SLA on it as
 I work on these in my spare time. Between other things in life. If you have a
 problem then raise an Issue on the relevant GitHub project.</p>
 
-    </section>
+  </div>
+  
 
-    <footer>
-      <div class="row">
-      
-        <article class="6u 12u(small) excerpt">
-          <header>
-            <h2><a href="/2019/11/20/i-did-an-azure-thing.html">I did an Azure thing.</a></h2>
-          </header>
-          <section>
-            <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="482a4469-eab2-43f1-a987-0fe843cb68b7"></div>
-<script type="text/javascript" async="" src="//cdn.youracclaim.com/assets/utilities/embed.js"></script>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2019/11/20/i-did-an-azure-thing.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-
-      
-      </div>
-    </footer>
-  </article>
+<div class="navigation navigation-single">
+    
+    <a href="/2019/11/20/i-did-an-azure-thing.html" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">I did an Azure thing.</span>
+    </a>
+    
+    
+    <a href="/2020/03/11/migrated-to-hugo.html" class="navigation-next">
+      <span class="navigation-tittle">Migrated to Hugo</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
 </div>
 
 
-  <footer id="footer">
-    <ul class="icons">
-      
-      <li>
-        <a  href="/contact" class="icon fa-envelope" >
-              <span class="label">Email</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://keybase.io/manningx" class="icon fa-key" >
-              <span class="label">Keybase</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
-              <span class="label">Facebook</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
-              <span class="label">Twitter</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
-              <span class="label">GitHub</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
-              <span class="label">RSS</span>
-                        </a>
-      </li>
-       
-    </ul>
-    <ul class="copyright">
-      <li>&copy; Xan Manning</li>
-      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
-    </ul>
-    <div class="coffee"><style>.bmc-button img{width: 27px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{line-height: 36px !important;height:37px !important;text-decoration: none !important;display:inline-flex !important;color:#ffffff !important;background-color:#000000 !important;border-radius: 3px !important;border: 1px solid transparent !important;padding: 0px 9px !important;font-size: 17px !important;letter-spacing:-0.08px !important;;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Lato', sans-serif !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;-o-transition: 0.3s all linear !important;-webkit-transition: 0.3s all linear !important;-moz-transition: 0.3s all linear !important;-ms-transition: 0.3s all linear !important;transition: 0.3s all linear !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#ffffff !important;}</style><link href="https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/xanmanning"><img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px">Buy me a coffee</span></a></div>
-  </footer>
+  
 
-  <script src="/js/jquery.min.js"></script>
-  <script src="/js/jquery.poptrox.min.js"></script>
-  <script src="/js/skel.min.js"></script>
-  <script src="/js/util.js"></script>
-  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
-  <script src="/js/main.js"></script>
+  
+    
 
-</body>
 
+</article>
+
+
+        </div>
+        
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
+
+
+    
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+    
+    <script type="text/javascript">
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+
+    
+
+
+
+    </body>
 </html>

@@ -1,179 +1,267 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-gb">
+    
+    
 
-<head>
-  <title>Xan Manning</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Xan Manning">
-  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
-  <meta http-equiv="content-language" content="" />
-  <meta name="generator" content="Jekyll v3.6.0">
 
-  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/syntax.css">
-  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Cache-Control" content="public" />
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.66.0" />
 
-  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+    
+    
+    
+
+<title>Systemd-resolved, Flushing DNS in Ubuntu 18.04 (and other distributions). • Xan Manning</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Systemd-resolved, Flushing DNS in Ubuntu 18.04 (and other distributions)."/>
+<meta name="twitter:description" content="Today I&rsquo;ve been playing with static DNS on my router, sadly Miktotik doesn&rsquo;t support &ldquo;DNS Doctoring&rdquo; and it doesn&rsquo;t look like Ubiquiti Networks equipment does either (as of 2018). It&rsquo;s likely a feature I got spoilt with on a couple of Cisco routers I had access to.
+Anyway, back to the point. Using Ubuntu 16.04 for a long time on my work laptop and now CentOS 7 I have been used to working with dnsmasq and how to clear the cache."/>
+
+<meta property="og:title" content="Systemd-resolved, Flushing DNS in Ubuntu 18.04 (and other distributions)." />
+<meta property="og:description" content="Today I&rsquo;ve been playing with static DNS on my router, sadly Miktotik doesn&rsquo;t support &ldquo;DNS Doctoring&rdquo; and it doesn&rsquo;t look like Ubiquiti Networks equipment does either (as of 2018). It&rsquo;s likely a feature I got spoilt with on a couple of Cisco routers I had access to.
+Anyway, back to the point. Using Ubuntu 16.04 for a long time on my work laptop and now CentOS 7 I have been used to working with dnsmasq and how to clear the cache." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xan.manning.io/2018/10/18/systemd-resolved-in-ubuntu.html" />
+<meta property="article:published_time" content="2018-10-18T18:21:01+00:00" />
+<meta property="article:modified_time" content="2018-10-18T18:21:01+00:00" /><meta property="og:site_name" content="Xan Manning" />
+
+
+    
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+
+
+<link rel="stylesheet" href="/css/custom-highlights.css">
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+<link rel="stylesheet" href="/css/custom.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
 
-<body id="top">
-  <header id="header">
-    <a href="/" class="image avatar"><img  src="/images/avatar.png" alt="Xan Manning"></a>
-    <h1><a href="/">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
-    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
-  </header>
 
-  <div id="main">
-  <article>
-    <header>
-      <h1 class="post-title">Systemd-resolved, Flushing DNS in Ubuntu 18.04 (and other distributions).</h1>
-      <p class="post-meta">Oct 18, 2018</p>
-    </header>
-
-    <section>
-      <p>Today I’ve been playing with static DNS on my router, sadly Miktotik doesn’t
-support “DNS Doctoring” and it doesn’t look like Ubiquiti Networks equipment
-does either (as of 2018). It’s likely a feature I got spoilt with on a couple
-of Cisco routers I had access to.</p>
-
-<p>Anyway, back to the point. Using Ubuntu 16.04 for a long time on my work laptop
-and now CentOS 7 I have been used to working with <code class="highlighter-rouge">dnsmasq</code> and how to clear
-the cache.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ xmanning@pc-xmann-01: ~ ] $ grep -E "^PRETTY_NAME" /etc/os-release &amp;&amp; sudo ss -pant | grep -E "^LISTEN" | grep :53
-PRETTY_NAME="CentOS Linux 7 (Core)"
-LISTEN     0      5      192.168.122.1:53                       *:*                   users:(("dnsmasq",pid=2462,fd=6))
-</code></pre></div></div>
-
-<p>On Ubuntu 18.04, and other distributions of course, this has been replaced with
-a systemd service called <code class="highlighter-rouge">systemd-resolved</code>.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ xmanning@dreadfort:~ ] $ grep -E "^PRETTY_NAME" /etc/os-release &amp;&amp; sudo ss -pant | grep -E "^LISTEN" | grep :53
-PRETTY_NAME="Ubuntu 18.04.1 LTS"
-LISTEN      0        128         127.0.0.53%lo:53               0.0.0.0:*        users:(("systemd-resolve",pid=6977,fd=13))
-</code></pre></div></div>
-
-<p>So, to flush! If you’re finding there’s a need to clear the DNS cache here’s
-how you do it:</p>
-
-<p><strong>Method 1:</strong> <code class="highlighter-rouge">sudo systemd-resolve --flush-caches</code></p>
-
-<p><strong>Method 2:</strong> <code class="highlighter-rouge">sudo systemctl restart systemd-resolved</code></p>
-
-<h2 id="sources">Sources</h2>
-
-<ul>
-  <li>man <a href="http://man7.org/linux/man-pages/man1/systemd-resolve.1.html">systemd-resolve(1)</a></li>
-</ul>
-
-    </section>
-
-    <footer>
-      <div class="row">
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://xan.manning.io/">Xan Manning</a>
+      </span>
       
-        <article class="6u 12u(small) excerpt">
-          <header>
-            <h2><a href="/2018/09/24/https-auth-in-git.html">Remembering HTTPS Authentication in git</a></h2>
-          </header>
-          <section>
-            <p>Quick tip for anyone who is wanting git to remember their username/password
-when issuing push/pulls to a git repository over HTTPS, run the following:</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2018/09/24/https-auth-in-git.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
+        
+        
+        
+        <div class="author-image">
+          <img src="https://xan.manning.io/images/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
       
-
       
-        <article class="6u$ 12u(small) excerpt f-right">
-          <header>
-            <h2><a href="/2018/11/11/snippet-list-hana-mdc-tenants.html">Snippet - List tenants of an SAP HANA MDC</a></h2>
-          </header>
-          <section>
-            <p>I thought I would share a snippet of code that I have found useful for
-discovering all of the SIDs and Tenants running on an SAP HANA system running
-with Multitenant Database Containers (MDC). If you are running HANA 2.0 this
-is your default operating mode.</p>
+      <p class="site__description">
+         Ramblings of a Linux geek and cloud fanatic dabbling in DevOps! 
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Xan Manning</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/">
+						<span>Blog</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
 
+        <section class="social">
+	
+	<a href="https://twitter.com/xanmanning" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://github.com/xanmanning" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/xanmanning" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:xan%20at%20manning%20dot%20io" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+</section>
 
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2018/11/11/snippet-list-hana-mdc-tenants.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
       </div>
-    </footer>
-  </article>
+    </div>
+    
+<div class="copyright">
+  &copy; 2020 Xan Manning
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
 </div>
 
 
-  <footer id="footer">
-    <ul class="icons">
-      
-      <li>
-        <a  href="/contact" class="icon fa-envelope" >
-              <span class="label">Email</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://keybase.io/manningx" class="icon fa-key" >
-              <span class="label">Keybase</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
-              <span class="label">Facebook</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
-              <span class="label">Twitter</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
-              <span class="label">GitHub</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
-              <span class="label">RSS</span>
-                        </a>
-      </li>
-       
-    </ul>
-    <ul class="copyright">
-      <li>&copy; Xan Manning</li>
-      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
-    </ul>
-    <div class="coffee"><style>.bmc-button img{width: 27px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{line-height: 36px !important;height:37px !important;text-decoration: none !important;display:inline-flex !important;color:#ffffff !important;background-color:#000000 !important;border-radius: 3px !important;border: 1px solid transparent !important;padding: 0px 9px !important;font-size: 17px !important;letter-spacing:-0.08px !important;;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Lato', sans-serif !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;-o-transition: 0.3s all linear !important;-webkit-transition: 0.3s all linear !important;-moz-transition: 0.3s all linear !important;-ms-transition: 0.3s all linear !important;transition: 0.3s all linear !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#ffffff !important;}</style><link href="https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/xanmanning"><img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px">Buy me a coffee</span></a></div>
-  </footer>
 
-  <script src="/js/jquery.min.js"></script>
-  <script src="/js/jquery.poptrox.min.js"></script>
-  <script src="/js/skel.min.js"></script>
-  <script src="/js/util.js"></script>
-  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
-  <script src="/js/main.js"></script>
+  </div>
+</div>
 
-</body>
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Systemd-resolved, Flushing DNS in Ubuntu 18.04 (and other distributions).</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Oct 18, 2018
+    
+    
+    
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 1 min read
+</div>
 
+
+  </header>
+  
+  
+  <div class="post">
+    <p>Today I&rsquo;ve been playing with static DNS on my router, sadly Miktotik doesn&rsquo;t
+support &ldquo;DNS Doctoring&rdquo; and it doesn&rsquo;t look like Ubiquiti Networks equipment
+does either (as of 2018). It&rsquo;s likely a feature I got spoilt with on a couple
+of Cisco routers I had access to.</p>
+<p>Anyway, back to the point. Using Ubuntu 16.04 for a long time on my work laptop
+and now CentOS 7 I have been used to working with <code>dnsmasq</code> and how to clear
+the cache.</p>
+<pre><code>[ xmanning@pc-xmann-01: ~ ] $ grep -E &quot;^PRETTY_NAME&quot; /etc/os-release &amp;&amp; sudo ss -pant | grep -E &quot;^LISTEN&quot; | grep :53
+PRETTY_NAME=&quot;CentOS Linux 7 (Core)&quot;
+LISTEN     0      5      192.168.122.1:53                       *:*                   users:((&quot;dnsmasq&quot;,pid=2462,fd=6))
+</code></pre><p>On Ubuntu 18.04, and other distributions of course, this has been replaced with
+a systemd service called <code>systemd-resolved</code>.</p>
+<pre><code>[ xmanning@dreadfort:~ ] $ grep -E &quot;^PRETTY_NAME&quot; /etc/os-release &amp;&amp; sudo ss -pant | grep -E &quot;^LISTEN&quot; | grep :53
+PRETTY_NAME=&quot;Ubuntu 18.04.1 LTS&quot;
+LISTEN      0        128         127.0.0.53%lo:53               0.0.0.0:*        users:((&quot;systemd-resolve&quot;,pid=6977,fd=13))
+</code></pre><p>So, to flush! If you&rsquo;re finding there&rsquo;s a need to clear the DNS cache here&rsquo;s
+how you do it:</p>
+<p><strong>Method 1:</strong> <code>sudo systemd-resolve --flush-caches</code></p>
+<p><strong>Method 2:</strong> <code>sudo systemctl restart systemd-resolved</code></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>man <a href="http://man7.org/linux/man-pages/man1/systemd-resolve.1.html">systemd-resolve(1)</a></li>
+</ul>
+
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="/2018/09/24/https-auth-in-git.html" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Remembering HTTPS Authentication in git</span>
+    </a>
+    
+    
+    <a href="/2018/11/11/snippet-list-hana-mdc-tenants.html" class="navigation-next">
+      <span class="navigation-tittle">Snippet - List tenants of an SAP HANA MDC</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
+
+
+    
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+    
+    <script type="text/javascript">
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+
+    
+
+
+
+    </body>
 </html>

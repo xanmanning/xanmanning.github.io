@@ -1,277 +1,314 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-gb">
+    
+    
 
-<head>
-  <title>Xan Manning</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Xan Manning">
-  <meta name="description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!">
-  <meta http-equiv="content-language" content="" />
-  <meta name="generator" content="Jekyll v3.6.0">
 
-  <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/syntax.css">
-  <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Cache-Control" content="public" />
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.66.0" />
 
-  <link rel="icon" type="image/png" href="/images/favicon.png"> <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Xan Manning" />
+    
+    
+    
+
+<title>Salt Master on OpenBSD 6.0 • Xan Manning</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Salt Master on OpenBSD 6.0"/>
+<meta name="twitter:description" content="Let&rsquo;s get started with SaltStack, but let&rsquo;s put a twist on it and install our Salt Master on OpenBSD 6.0.
+Why OpenBSD? In the world of &ldquo;Cloud Computing&rdquo;, more and more data is no longer hosted on-site and on a huge scale. Security is, and should be, the biggest concern. Whilst no OS can mitigate poor code, a good secure OS out of the box helps. Our Salt Master must remain secure at all costs as it will touch on all of our infrastructure."/>
+
+<meta property="og:title" content="Salt Master on OpenBSD 6.0" />
+<meta property="og:description" content="Let&rsquo;s get started with SaltStack, but let&rsquo;s put a twist on it and install our Salt Master on OpenBSD 6.0.
+Why OpenBSD? In the world of &ldquo;Cloud Computing&rdquo;, more and more data is no longer hosted on-site and on a huge scale. Security is, and should be, the biggest concern. Whilst no OS can mitigate poor code, a good secure OS out of the box helps. Our Salt Master must remain secure at all costs as it will touch on all of our infrastructure." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xan.manning.io/2016/11/21/salt-master-on-openbsd-6-0.html" />
+<meta property="article:published_time" content="2016-11-21T19:38:34+00:00" />
+<meta property="article:modified_time" content="2016-11-21T19:38:34+00:00" /><meta property="og:site_name" content="Xan Manning" />
+
+
+    
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+
+
+<link rel="stylesheet" href="/css/custom-highlights.css">
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+<link rel="stylesheet" href="/css/custom.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
 
-<body id="top">
-  <header id="header">
-    <a href="/" class="image avatar"><img  src="/images/avatar.png" alt="Xan Manning"></a>
-    <h1><a href="/">Xan Manning</a> &nbsp; &raquo; &nbsp; <a href="/about" class="aboutlink">About</a></h1>
-    <div class="tagline">Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!</div>
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://xan.manning.io/">Xan Manning</a>
+      </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://xan.manning.io/images/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+         Ramblings of a Linux geek and cloud fanatic dabbling in DevOps! 
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Xan Manning</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/">
+						<span>Blog</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/xanmanning" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://github.com/xanmanning" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/xanmanning" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:xan%20at%20manning%20dot%20io" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+</section>
+
+      </div>
+    </div>
+    
+<div class="copyright">
+  &copy; 2020 Xan Manning
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Salt Master on OpenBSD 6.0</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Nov 21, 2016
+    
+    
+    
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 3 min read
+</div>
+
+
   </header>
-
-  <div id="main">
-  <article>
-    <header>
-      <h1 class="post-title">Salt Master on OpenBSD 6.0</h1>
-      <p class="post-meta">Nov 21, 2016</p>
-    </header>
-
-    <section>
-      <p>Let’s get started with <a href="https://saltstack.com/">SaltStack</a>, but let’s put a twist on it and install our Salt Master on OpenBSD 6.0.</p>
-
+  
+  
+  <div class="post">
+    <p>Let&rsquo;s get started with <a href="https://saltstack.com/">SaltStack</a>, but let&rsquo;s put a twist on it and install our Salt Master on OpenBSD 6.0.</p>
 <h2 id="why-openbsd">Why OpenBSD?</h2>
-
-<p>In the world of “Cloud Computing”, more and more data is no longer hosted on-site and on a huge scale. Security is, and should be, the biggest concern. Whilst no OS can mitigate poor code, a good secure OS out of the box helps. Our Salt Master must remain secure at all costs as it will touch on <em>all</em> of our infrastructure. Luckily OpenBSD prides itself on security:</p>
-
+<p>In the world of &ldquo;Cloud Computing&rdquo;, more and more data is no longer hosted on-site and on a huge scale. Security is, and should be, the biggest concern. Whilst no OS can mitigate poor code, a good secure OS out of the box helps. Our Salt Master must remain secure at all costs as it will touch on <em>all</em> of our infrastructure. Luckily OpenBSD prides itself on security:</p>
 <blockquote>
-  <p>Only two remote holes in the default install, in a heck of a long time!</p>
+<p>Only two remote holes in the default install, in a heck of a long time!</p>
 </blockquote>
-
 <h2 id="getting-started">Getting started</h2>
-
 <p>OK, so this is going to be the OpenBSD <a href="https://www.digitalocean.com/community/tutorials/saltstack-infrastructure-installing-the-salt-master">rehash of a Digital Ocean article</a>, but I wanted to illustrate how easy it is to get a master installed ready for configuration.</p>
-
-<p>First off, let’s grab Salt from the repositories, easy enough. As root, use <code class="highlighter-rouge">pkg_add</code> to get the OpenBSD version of Salt.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># pkg_add salt
-</code></pre></div></div>
-
-<p>Now create your directories for Salt base and it’s pillars.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># mkdir -p /var/salt/{base,pillar}
-</code></pre></div></div>
-
-<p>Awesome, so now we are going to configure our Salt master service. The configuration file for our Salt master can be found in <code class="highlighter-rouge">/etc/salt/master</code>.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># vi /etc/salt/master
-</code></pre></div></div>
-
-<p>You will notice quickly that this is a YAML file, if you hadn’t already guessed SaltStack uses YAML pretty much everywhere.</p>
-
-<p>The section you want to uncomment and change is the section for <code class="highlighter-rouge">file_roots</code>, here we want to set out base to be <code class="highlighter-rouge">/var/salt/base</code> as we had created above.</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">file_roots</span><span class="pi">:</span>
-  <span class="na">base</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">/var/salt/base</span>
-</code></pre></div></div>
-
-<p>Now we want to also set out <code class="highlighter-rouge">pillar_roots</code> to point to <code class="highlighter-rouge">/var/salt/pillar</code>.</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">pillar_roots</span><span class="pi">:</span>
-  <span class="na">base</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">/var/salt/pillar</span>
-</code></pre></div></div>
-
-<p>Done. Save and quit.</p>
-
-<p>We need to have our Minion configured on our Master server. Let’s edit our minion configuration located in <code class="highlighter-rouge">/etc/salt/minion</code>.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># vi /etc/salt/minion
-</code></pre></div></div>
-
-<p>We’re only really after one line in particular, naming our master. Easy enough, look for the line with <code class="highlighter-rouge">master:</code> on it and change this to your local IP address.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>master: 127.0.0.1
-</code></pre></div></div>
-
-<p>Time to enable and start our services. First we are going to enable <code class="highlighter-rouge">salt_master</code> and <code class="highlighter-rouge">salt_minion</code> using <code class="highlighter-rouge">rcctl</code>.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># rcctl enable salt_master
+<p>First off, let&rsquo;s grab Salt from the repositories, easy enough. As root, use <code>pkg_add</code> to get the OpenBSD version of Salt.</p>
+<pre><code># pkg_add salt
+</code></pre><p>Now create your directories for Salt base and it&rsquo;s pillars.</p>
+<pre><code># mkdir -p /var/salt/{base,pillar}
+</code></pre><p>Awesome, so now we are going to configure our Salt master service. The configuration file for our Salt master can be found in <code>/etc/salt/master</code>.</p>
+<pre><code># vi /etc/salt/master
+</code></pre><p>You will notice quickly that this is a YAML file, if you hadn&rsquo;t already guessed SaltStack uses YAML pretty much everywhere.</p>
+<p>The section you want to uncomment and change is the section for <code>file_roots</code>, here we want to set out base to be <code>/var/salt/base</code> as we had created above.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">file_roots</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">base</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- /var/salt/base<span style="color:#bbb">
+</span></code></pre></div><p>Now we want to also set out <code>pillar_roots</code> to point to <code>/var/salt/pillar</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">pillar_roots</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">base</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- /var/salt/pillar<span style="color:#bbb">
+</span></code></pre></div><p>Done. Save and quit.</p>
+<p>We need to have our Minion configured on our Master server. Let&rsquo;s edit our minion configuration located in <code>/etc/salt/minion</code>.</p>
+<pre><code># vi /etc/salt/minion
+</code></pre><p>We&rsquo;re only really after one line in particular, naming our master. Easy enough, look for the line with <code>master:</code> on it and change this to your local IP address.</p>
+<pre><code>master: 127.0.0.1
+</code></pre><p>Time to enable and start our services. First we are going to enable <code>salt_master</code> and <code>salt_minion</code> using <code>rcctl</code>.</p>
+<pre><code># rcctl enable salt_master
 # rcctl enable salt_minion
-</code></pre></div></div>
-
-<p>Now we are going to start the services:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># rcctl start salt_master
+</code></pre><p>Now we are going to start the services:</p>
+<pre><code># rcctl start salt_master
 # rcctl start salt_minion
-</code></pre></div></div>
-
-<p>So all’s good right? Well… not quite. Currently our local server’s instance of the Salt Minion cannot talk to the Salt Master. The reason why is because our key has not been accepted.</p>
-
-<p>Let’s see what I mean. On our server:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># salt-key --list all
-</code></pre></div></div>
-
-<p>You will see that our server’s name appears under “Unaccepted Keys:” (here my server is called <code class="highlighter-rouge">master.salt.pyrat.uk</code>, you probably should have a better name for yours).</p>
-
+</code></pre><p>So all&rsquo;s good right? Well&hellip; not quite. Currently our local server&rsquo;s instance of the Salt Minion cannot talk to the Salt Master. The reason why is because our key has not been accepted.</p>
+<p>Let&rsquo;s see what I mean. On our server:</p>
+<pre><code># salt-key --list all
+</code></pre><p>You will see that our server&rsquo;s name appears under &ldquo;Unaccepted Keys:&rdquo; (here my server is called <code>master.salt.pyrat.uk</code>, you probably should have a better name for yours).</p>
 <p>Example output:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Accepted Keys:
+<pre><code>Accepted Keys:
 Denied Keys:
 Unaccepted Keys:
 master.salt.pyrat.uk
 Rejected Keys:
-</code></pre></div></div>
-<p>What we need to do is ‘accept’ our key. This is done by issuing the ‘-a’ flag to salt-key with the hostname:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># salt-key -a master.salt.pyrat.uk
-</code></pre></div></div>
-
-<p>You will be prompted to confirm whether or not you are sure this is what you want to do.</p>
-
+</code></pre><p>What we need to do is &lsquo;accept&rsquo; our key. This is done by issuing the &lsquo;-a&rsquo; flag to salt-key with the hostname:</p>
+<pre><code># salt-key -a master.salt.pyrat.uk
+</code></pre><p>You will be prompted to confirm whether or not you are sure this is what you want to do.</p>
 <p>Example output:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The following keys are going to be accepted
+<pre><code>The following keys are going to be accepted
 Unaccepted Keys:
 master.salt.pyrat.uk
 Proceed? [n/Y]
-</code></pre></div></div>
-
-<p>Enter ‘y’:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Key for minion master.salt.pyrat.uk accepted.
-</code></pre></div></div>
-
-<p>We can now check that our key has been accepted:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># salt-key --list all
-</code></pre></div></div>
-
-<p>It should now appear under “Accepted Keys:”</p>
-
+</code></pre><p>Enter &lsquo;y&rsquo;:</p>
+<pre><code>Key for minion master.salt.pyrat.uk accepted.
+</code></pre><p>We can now check that our key has been accepted:</p>
+<pre><code># salt-key --list all
+</code></pre><p>It should now appear under &ldquo;Accepted Keys:&rdquo;</p>
 <p>Example output:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Accepted Keys:
+<pre><code>Accepted Keys:
 master.lan
 Denied Keys:
 Unaccepted Keys:
 Rejected Keys:
-</code></pre></div></div>
-
-<p>Now we can test to see that our Salt Minion is successfully listening to our Salt Master:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># salt "*" test.ping
-</code></pre></div></div>
-
-<p>Example output:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>master.lan:
+</code></pre><p>Now we can test to see that our Salt Minion is successfully listening to our Salt Master:</p>
+<pre><code># salt &quot;*&quot; test.ping
+</code></pre><p>Example output:</p>
+<pre><code>master.lan:
     True
-</code></pre></div></div>
+</code></pre><p>That&rsquo;s it for now. Simple Ubuntu to OpenBSD translation for Salt Master installation.</p>
+<p><strong>Source</strong> (Adapted for OpenBSD): <a href="https://www.digitalocean.com/community/tutorials/saltstack-infrastructure-installing-the-salt-master">https://www.digitalocean.com/community/tutorials/saltstack-infrastructure-installing-the-salt-master</a></p>
 
-<p>That’s it for now. Simple Ubuntu to OpenBSD translation for Salt Master installation.</p>
+  </div>
+  
 
-<p><strong>Source</strong> (Adapted for OpenBSD): https://www.digitalocean.com/community/tutorials/saltstack-infrastructure-installing-the-salt-master</p>
-
-    </section>
-
-    <footer>
-      <div class="row">
-      
-        <article class="6u 12u(small) excerpt">
-          <header>
-            <h2><a href="/2016/10/17/new-keyboard.html">New Keyboard</a></h2>
-          </header>
-          <section>
-            <p>Today I have finally unboxed my brand new WASD keyboard with Cherry MX Blue switches.</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2016/10/17/new-keyboard.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-
-      
-        <article class="6u$ 12u(small) excerpt f-right">
-          <header>
-            <h2><a href="/2016/12/23/openbsd-6-0-simple-nat-with-pf.html">OpenBSD 6.0: Simple NAT with pf</a></h2>
-          </header>
-          <section>
-            <p>This post is more of a “note to self”, but this is a summary of a simple NAT setup between an “Internal” interface and an “External” interface on our OpenBSD server or router.</p>
-
-
-          </section>
-          <footer>
-            <ul class="actions">
-              <li><a href="/2016/12/23/openbsd-6-0-simple-nat-with-pf.html" class="button">Read More</a></li>
-            </ul>
-          </footer>
-        </article>
-      
-      </div>
-    </footer>
-  </article>
+<div class="navigation navigation-single">
+    
+    <a href="/2016/10/17/new-keyboard.html" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">New Keyboard</span>
+    </a>
+    
+    
+    <a href="/2016/12/23/openbsd-6-0-simple-nat-with-pf.html" class="navigation-next">
+      <span class="navigation-tittle">OpenBSD 6.0: Simple NAT with pf</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
 </div>
 
 
-  <footer id="footer">
-    <ul class="icons">
-      
-      <li>
-        <a  href="/contact" class="icon fa-envelope" >
-              <span class="label">Email</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://keybase.io/manningx" class="icon fa-key" >
-              <span class="label">Keybase</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://www.facebook.com/xan.manning" class="icon fa-facebook" >
-              <span class="label">Facebook</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://twitter.com/xanmanning" class="icon fa-twitter" >
-              <span class="label">Twitter</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="https://github.com/xanmanning" class="icon fa-github" >
-              <span class="label">GitHub</span>
-                        </a>
-      </li>
-      
-      <li>
-        <a target="_blank"  href="/feed.xml" class="icon fa-rss" >
-              <span class="label">RSS</span>
-                        </a>
-      </li>
-       
-    </ul>
-    <ul class="copyright">
-      <li>&copy; Xan Manning</li>
-      <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-      <li>Theme: <a href="http://comfusionllc.com">Comfusion LLC</a></li>
-    </ul>
-    <div class="coffee"><style>.bmc-button img{width: 27px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{line-height: 36px !important;height:37px !important;text-decoration: none !important;display:inline-flex !important;color:#ffffff !important;background-color:#000000 !important;border-radius: 3px !important;border: 1px solid transparent !important;padding: 0px 9px !important;font-size: 17px !important;letter-spacing:-0.08px !important;;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Lato', sans-serif !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;-o-transition: 0.3s all linear !important;-webkit-transition: 0.3s all linear !important;-moz-transition: 0.3s all linear !important;-ms-transition: 0.3s all linear !important;transition: 0.3s all linear !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#ffffff !important;}</style><link href="https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/xanmanning"><img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px">Buy me a coffee</span></a></div>
-  </footer>
+  
 
-  <script src="/js/jquery.min.js"></script>
-  <script src="/js/jquery.poptrox.min.js"></script>
-  <script src="/js/skel.min.js"></script>
-  <script src="/js/util.js"></script>
-  <!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
-  <script src="/js/main.js"></script>
+  
+    
 
-</body>
 
+</article>
+
+
+        </div>
+        
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
+
+
+    
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+    
+    <script type="text/javascript">
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+
+    
+
+
+
+    </body>
 </html>
