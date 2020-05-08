@@ -6,10 +6,22 @@
     <description>Recent content in Posts on Xan Manning</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Wed, 11 Mar 2020 13:01:22 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 08 May 2020 13:05:22 +0000</lastBuildDate>
     
 	<atom:link href="https://xanmanning.co.uk/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>COVID-19, The Future of Flexible Work.</title>
+      <link>https://xanmanning.co.uk/2020/05/08/covid-19-future-of-work.html</link>
+      <pubDate>Fri, 08 May 2020 13:05:22 +0000</pubDate>
+      
+      <guid>https://xanmanning.co.uk/2020/05/08/covid-19-future-of-work.html</guid>
+      <description>Early 2020, mankind stays at home.
+Shout out to the many key workers carrying out their daily duties to keep us alive and safe. If you aren&amp;rsquo;t a key worker, please stay home and keep these people safe and healthy!
+For many this year hasn&amp;rsquo;t been easy; people have fallen sick, lives have been lost, workers made unemployed and we struggle to keep the world&amp;rsquo;s cogs turning.
+What I hope comes out of this crisis is a relaxed view on remote workers and flexible working.</description>
+    </item>
     
     <item>
       <title>Migrated to Hugo</title>
