@@ -2,21 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Xan Manning</title>
-    <link>https://xanmanning.co.uk/posts.html</link>
+    <link>https://xan.manning.io/posts.html</link>
     <description>Recent content in Posts on Xan Manning</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Fri, 08 May 2020 13:05:22 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 May 2020 19:55:23 +0000</lastBuildDate>
     
-	<atom:link href="https://xanmanning.co.uk/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://xan.manning.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>New Domain!</title>
+      <link>https://xan.manning.io/2020/05/18/new-domain.html</link>
+      <pubDate>Mon, 18 May 2020 19:55:23 +0000</pubDate>
+      
+      <guid>https://xan.manning.io/2020/05/18/new-domain.html</guid>
+      <description>I&amp;rsquo;ve got a new domain, so I have decided to move over to use it. Please say hello to https://xan.manning.io/.</description>
+    </item>
+    
+    <item>
       <title>COVID-19, The Future of Flexible Work.</title>
-      <link>https://xanmanning.co.uk/2020/05/08/covid-19-future-of-work.html</link>
+      <link>https://xan.manning.io/2020/05/08/covid-19-future-of-work.html</link>
       <pubDate>Fri, 08 May 2020 13:05:22 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2020/05/08/covid-19-future-of-work.html</guid>
+      <guid>https://xan.manning.io/2020/05/08/covid-19-future-of-work.html</guid>
       <description>Early 2020, mankind stays at home.
 Shout out to the many key workers carrying out their daily duties to keep us alive and safe. If you aren&amp;rsquo;t a key worker, please stay home and keep these people safe and healthy!
 For many this year hasn&amp;rsquo;t been easy; people have fallen sick, lives have been lost, workers made unemployed and we struggle to keep the world&amp;rsquo;s cogs turning.
@@ -25,10 +34,10 @@ What I hope comes out of this crisis is a relaxed view on remote workers and fle
     
     <item>
       <title>Migrated to Hugo</title>
-      <link>https://xanmanning.co.uk/2020/03/11/migrated-to-hugo.html</link>
+      <link>https://xan.manning.io/2020/03/11/migrated-to-hugo.html</link>
       <pubDate>Wed, 11 Mar 2020 13:01:22 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2020/03/11/migrated-to-hugo.html</guid>
+      <guid>https://xan.manning.io/2020/03/11/migrated-to-hugo.html</guid>
       <description>I&amp;rsquo;ve migrated my site from Jekyll to Hugo. Yep, yet another blog migration. This is just for improved workflow on my laptop to create new content. I won&amp;rsquo;t bore you with any more, more posts to follow soon (hopefully).
 By the way, here&amp;rsquo;s a role to install Hugo:
  ansible-role-hugo  By the way, for anyone who is curious, this site has gone through the following migrations:
@@ -37,39 +46,39 @@ By the way, here&amp;rsquo;s a role to install Hugo:
     
     <item>
       <title>Happy New Year, Have some Ansible Roles!</title>
-      <link>https://xanmanning.co.uk/2020/01/03/happy-new-year-have-some-ansible-roles.html</link>
+      <link>https://xan.manning.io/2020/01/03/happy-new-year-have-some-ansible-roles.html</link>
       <pubDate>Fri, 03 Jan 2020 17:25:37 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2020/01/03/happy-new-year-have-some-ansible-roles.html</guid>
+      <guid>https://xan.manning.io/2020/01/03/happy-new-year-have-some-ansible-roles.html</guid>
       <description>It&amp;rsquo;s 2020, and I have decided to release some more Ansible Roles to the public. These roles are extracts from a &amp;ldquo;master&amp;rdquo; role I had for configuring my (home) workstation just the way I like it. I&amp;rsquo;ve tidied them up and tried to make them a bit more reusable, and I&amp;rsquo;m trying to support other Linux Distros than just Ubuntu 18.04 LTS.
 Hopefully I will implement these on my work laptop as well.</description>
     </item>
     
     <item>
       <title>I did an Azure thing.</title>
-      <link>https://xanmanning.co.uk/2019/11/20/i-did-an-azure-thing.html</link>
+      <link>https://xan.manning.io/2019/11/20/i-did-an-azure-thing.html</link>
       <pubDate>Wed, 20 Nov 2019 13:37:02 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2019/11/20/i-did-an-azure-thing.html</guid>
+      <guid>https://xan.manning.io/2019/11/20/i-did-an-azure-thing.html</guid>
       <description>Yes, I know, I&amp;rsquo;m the last person you&amp;rsquo;d think would get a Microsoft Certification&amp;hellip;</description>
     </item>
     
     <item>
       <title>2019, not a good year.</title>
-      <link>https://xanmanning.co.uk/2019/09/14/not-a-good-year.html</link>
+      <link>https://xan.manning.io/2019/09/14/not-a-good-year.html</link>
       <pubDate>Sat, 14 Sep 2019 11:02:24 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2019/09/14/not-a-good-year.html</guid>
+      <guid>https://xan.manning.io/2019/09/14/not-a-good-year.html</guid>
       <description>If you have stumbled upon this site from some articles I have written then tried to find new stuff, you may have noticed that I haven&amp;rsquo;t posted a lot recently. There are many reasons for this, but the main one is that I just don&amp;rsquo;t feel like it.
 I&amp;rsquo;m not going to go into too much detail, there is a lot of private stuff going on but it feels that all of the luck we have had this year has been bad luck.</description>
     </item>
     
     <item>
       <title>Ansible-lint - Rule 306</title>
-      <link>https://xanmanning.co.uk/2019/03/21/ansible-lint-rule-306.html</link>
+      <link>https://xan.manning.io/2019/03/21/ansible-lint-rule-306.html</link>
       <pubDate>Thu, 21 Mar 2019 17:31:11 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2019/03/21/ansible-lint-rule-306.html</guid>
+      <guid>https://xan.manning.io/2019/03/21/ansible-lint-rule-306.html</guid>
       <description>If you are like me you like to keep your scripting as safe as possible when running against a production system. Sometimes my bash scripts can be a bit overkill, but it&amp;rsquo;s better to be safe than sorry.
 It is therefore worth mentioning an update to ansible-lint shipped in 4.1.0 which has added the following rule:
  [306] Shells that use pipes should set the pipefail option
@@ -78,10 +87,10 @@ Without the pipefail option set, a shell command that implements a pipeline can 
     
     <item>
       <title>k3s - My first public Ansible Role</title>
-      <link>https://xanmanning.co.uk/2019/03/09/k3s-my-first-public-ansible-role.html</link>
+      <link>https://xan.manning.io/2019/03/09/k3s-my-first-public-ansible-role.html</link>
       <pubDate>Sat, 09 Mar 2019 21:02:42 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2019/03/09/k3s-my-first-public-ansible-role.html</guid>
+      <guid>https://xan.manning.io/2019/03/09/k3s-my-first-public-ansible-role.html</guid>
       <description>Today marks the first time I have dared to release an Ansible role to Ansible Galaxy. It&amp;rsquo;s not my first role and it certainly isn&amp;rsquo;t my best, unfortunately my best role to date - a role for configuring Tinc - has (kind of) been donated to the company I work for.
 So without further ado, please may I introduce&amp;hellip;
 k3s For anyone who has been following the news recently, Rancher Labs released K3s - also known as &amp;ldquo;Lightweight Kubernetes&amp;rdquo; and you can download it from https://k3s.</description>
@@ -89,30 +98,30 @@ k3s For anyone who has been following the news recently, Rancher Labs released K
     
     <item>
       <title>Snippet - List tenants of an SAP HANA MDC</title>
-      <link>https://xanmanning.co.uk/2018/11/11/snippet-list-hana-mdc-tenants.html</link>
+      <link>https://xan.manning.io/2018/11/11/snippet-list-hana-mdc-tenants.html</link>
       <pubDate>Sun, 11 Nov 2018 12:31:42 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2018/11/11/snippet-list-hana-mdc-tenants.html</guid>
+      <guid>https://xan.manning.io/2018/11/11/snippet-list-hana-mdc-tenants.html</guid>
       <description>I thought I would share a snippet of code that I have found useful for discovering all of the SIDs and Tenants running on an SAP HANA system running with Multitenant Database Containers (MDC). If you are running HANA 2.0 this is your default operating mode.
 Disclaimer: I do not consider myself a HANA expert, whilst day-to-day I work with HANA systems I focus more on OS level operations and automation.</description>
     </item>
     
     <item>
       <title>Systemd-resolved, Flushing DNS in Ubuntu 18.04 (and other distributions).</title>
-      <link>https://xanmanning.co.uk/2018/10/18/systemd-resolved-in-ubuntu.html</link>
+      <link>https://xan.manning.io/2018/10/18/systemd-resolved-in-ubuntu.html</link>
       <pubDate>Thu, 18 Oct 2018 18:21:01 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2018/10/18/systemd-resolved-in-ubuntu.html</guid>
+      <guid>https://xan.manning.io/2018/10/18/systemd-resolved-in-ubuntu.html</guid>
       <description>Today I&amp;rsquo;ve been playing with static DNS on my router, sadly Miktotik doesn&amp;rsquo;t support &amp;ldquo;DNS Doctoring&amp;rdquo; and it doesn&amp;rsquo;t look like Ubiquiti Networks equipment does either (as of 2018). It&amp;rsquo;s likely a feature I got spoilt with on a couple of Cisco routers I had access to.
 Anyway, back to the point. Using Ubuntu 16.04 for a long time on my work laptop and now CentOS 7 I have been used to working with dnsmasq and how to clear the cache.</description>
     </item>
     
     <item>
       <title>Remembering HTTPS Authentication in git</title>
-      <link>https://xanmanning.co.uk/2018/09/24/https-auth-in-git.html</link>
+      <link>https://xan.manning.io/2018/09/24/https-auth-in-git.html</link>
       <pubDate>Mon, 24 Sep 2018 20:37:48 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2018/09/24/https-auth-in-git.html</guid>
+      <guid>https://xan.manning.io/2018/09/24/https-auth-in-git.html</guid>
       <description>Quick tip for anyone who is wanting git to remember their username/password when issuing push/pulls to a git repository over HTTPS, run the following:
 git config credential.helper store This will remember your username and password by storing in a plaintext file in ${HOME}/.git-credentials.
 Disclaimer: Only do this if you know your home directory is secure from other users!
@@ -121,10 +130,10 @@ Source  git: credential-store  </description>
     
     <item>
       <title>Dropping the Hyphen!</title>
-      <link>https://xanmanning.co.uk/2018/08/31/dropping-the-hyphen.html</link>
+      <link>https://xan.manning.io/2018/08/31/dropping-the-hyphen.html</link>
       <pubDate>Fri, 31 Aug 2018 19:12:55 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2018/08/31/dropping-the-hyphen.html</guid>
+      <guid>https://xan.manning.io/2018/08/31/dropping-the-hyphen.html</guid>
       <description>You may think I&amp;rsquo;m mad, but I am going to drop the hyphen in my domain, so very shortly you will see that instead of visiting https://xan-manning.co.uk, you will be visiting https://xanmanning.co.uk.
 Why are you doing this, Xan?
 Well, you have probably noticed that pretty much every other vanity domain on the net is lacking a hyphen between firstname and surname; I&amp;rsquo;m just following that convention.
@@ -133,10 +142,10 @@ I&amp;rsquo;ll keep the ol&amp;rsquo; xan-manning.</description>
     
     <item>
       <title>Code to Kubernetes in 15 Minutes</title>
-      <link>https://xanmanning.co.uk/2018/08/19/code-to-kubernetes-in-15-minutes.html</link>
+      <link>https://xan.manning.io/2018/08/19/code-to-kubernetes-in-15-minutes.html</link>
       <pubDate>Sun, 19 Aug 2018 12:28:48 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2018/08/19/code-to-kubernetes-in-15-minutes.html</guid>
+      <guid>https://xan.manning.io/2018/08/19/code-to-kubernetes-in-15-minutes.html</guid>
       <description>As you may recall, a couple of on-call&amp;rsquo;s ago I started crafting a Kubernetes cluster using Vagrant and Ansible. Well I have decided to upload my code to GitHub!
 Download You can get the code from here: https://github.com/xanmanning/vagrant-kubernetes-cluster
 Here&amp;rsquo;s what gets deployed!  An NFS server for Persistent Volumes 3 Kubernetes Nodes (1 master, 2 workers). This can be increased in Vagrant.  Demonstration In the below demo I go from sourcecode, to a 3 node cluster + storage in 15 minutes.</description>
@@ -144,20 +153,20 @@ Here&amp;rsquo;s what gets deployed!  An NFS server for Persistent Volumes 3 Kub
     
     <item>
       <title>Weekend Deployment, Upskilling</title>
-      <link>https://xanmanning.co.uk/2018/06/23/weekend-deployment.html</link>
+      <link>https://xan.manning.io/2018/06/23/weekend-deployment.html</link>
       <pubDate>Sat, 23 Jun 2018 12:28:48 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2018/06/23/weekend-deployment.html</guid>
+      <guid>https://xan.manning.io/2018/06/23/weekend-deployment.html</guid>
       <description>I&amp;rsquo;ve got a weekend to myself, it&amp;rsquo;s not uncommon, but this weekend the wife has gone away to watch Foo Fighters. I&amp;rsquo;m not jealous, I&amp;rsquo;m not fond of crowds and I don&amp;rsquo;t like travelling to London (or down South in general). When I win the lottery and can afford to have private gigs for my family then all will be cool.
 So yes, on a weekend when I am on my own I can be a bit of a sad nut, especially on weekends like this one when I will be starting a week of on-call for work.</description>
     </item>
     
     <item>
       <title>Git for Non-Developers</title>
-      <link>https://xanmanning.co.uk/2018/05/06/git-for-non-developers.html</link>
+      <link>https://xan.manning.io/2018/05/06/git-for-non-developers.html</link>
       <pubDate>Sun, 06 May 2018 15:49:22 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2018/05/06/git-for-non-developers.html</guid>
+      <guid>https://xan.manning.io/2018/05/06/git-for-non-developers.html</guid>
       <description>I have been thinking about this for quite a while, particularly as I am in the middle of contributing to a project at work to combine our multiple knowledgebases into a single repository of runbooks.
 We&amp;rsquo;ve chosen to resolve our fractured information repositories into a central git repository. Each runbook is written in Markdown.
 So why use Git (on GitHub) and Markdown?  Runbooks live close to the code, eventually commonly used runbooks can become Ansible playbooks.</description>
@@ -165,10 +174,10 @@ So why use Git (on GitHub) and Markdown?  Runbooks live close to the code, event
     
     <item>
       <title>First post of 2018</title>
-      <link>https://xanmanning.co.uk/2018/05/03/first-post-of-2018.html</link>
+      <link>https://xan.manning.io/2018/05/03/first-post-of-2018.html</link>
       <pubDate>Thu, 03 May 2018 19:12:59 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2018/05/03/first-post-of-2018.html</guid>
+      <guid>https://xan.manning.io/2018/05/03/first-post-of-2018.html</guid>
       <description>I am still alive, honest! I&amp;rsquo;ve just been super busy being a geek. I&amp;rsquo;m still trying to continue my AWS education but this has been put on hold for some Azure training. I&amp;rsquo;m slowly becoming quite cloud agnostic and trying to be smart with it.
 So here&amp;rsquo;s a rundown of what I have been doing over the past 6 months&amp;hellip;
  Refining my Ansible skills (mainly for work). Playing with Terraform (personally more than professionally).</description>
@@ -176,10 +185,10 @@ So here&amp;rsquo;s a rundown of what I have been doing over the past 6 months&a
     
     <item>
       <title>Auto Shutdown AWS EC2s with Lambda, CloudWatch (and Terraform)</title>
-      <link>https://xanmanning.co.uk/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html</link>
+      <link>https://xan.manning.io/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html</link>
       <pubDate>Mon, 27 Nov 2017 18:02:11 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html</guid>
+      <guid>https://xan.manning.io/2017/11/27/auto-shutdown-ec2s-lambda-terraform.html</guid>
       <description>Today we are looking at how to automatically shut down EC2 instances at the end of the day automatically using a combination of Lambda and CloudWatch.
 TL;DR I&amp;rsquo;ve written a &amp;lsquo;stop EC2&amp;rsquo; Lambda function that is deployable with Terraform to get you started, I&amp;rsquo;ve not made a &amp;lsquo;start EC2&amp;rsquo; Lambda function yet. Future improvements, I&amp;rsquo;d like to programmatically schedule instances using tags. Clone from: github.com/xanmanning/terraform-autostop
 What we will end up with is a simple Lambda function that will search all of our regions and automatically send the stop-instances command to anything that is still running after 8:00pm.</description>
@@ -187,29 +196,29 @@ What we will end up with is a simple Lambda function that will search all of our
     
     <item>
       <title>Switched to Jekyll</title>
-      <link>https://xanmanning.co.uk/2017/11/26/switched-to-jekyll.html</link>
+      <link>https://xan.manning.io/2017/11/26/switched-to-jekyll.html</link>
       <pubDate>Sun, 26 Nov 2017 12:35:32 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/11/26/switched-to-jekyll.html</guid>
+      <guid>https://xan.manning.io/2017/11/26/switched-to-jekyll.html</guid>
       <description>As yoy may have noticed I&amp;rsquo;ve migrated my blog from Ghost to Jekyll. Please do not be alarmed! As I am not able to put significant time into keeping a server running nginx and Ghost up to date with security updates.
 So why choose Jekyll? It&amp;rsquo;s still markdown, it can be pretty and the output is static HTML. I no longer have a node.js application and database to worry about, at the moment all I have is the nginx webserver to keep on top of which can be automatically updated.</description>
     </item>
     
     <item>
       <title>UNIX-ing as a Linux Geek</title>
-      <link>https://xanmanning.co.uk/2017/09/23/unix-ing-as-a-linux-geek.html</link>
+      <link>https://xan.manning.io/2017/09/23/unix-ing-as-a-linux-geek.html</link>
       <pubDate>Sat, 23 Sep 2017 15:56:30 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/09/23/unix-ing-as-a-linux-geek.html</guid>
+      <guid>https://xan.manning.io/2017/09/23/unix-ing-as-a-linux-geek.html</guid>
       <description>So my background is mostly in GNU/Linux, I&amp;rsquo;ve ditched Windows long ago and I still dabble with Mac OS X (though an older version). Since February I have been doing a bit of work on IBM AIX systems, particularly with PowerHA (HACMP) clusters. I&amp;rsquo;m not going to pretend to be an expert but I have found using UNIX almost like speaking a strange dialect or creole. Everything is so similar and yet so very different.</description>
     </item>
     
     <item>
       <title>Clean up old Docker images</title>
-      <link>https://xanmanning.co.uk/2017/09/16/clean-up-docker-hosts.html</link>
+      <link>https://xan.manning.io/2017/09/16/clean-up-docker-hosts.html</link>
       <pubDate>Sat, 16 Sep 2017 13:10:19 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/09/16/clean-up-docker-hosts.html</guid>
+      <guid>https://xan.manning.io/2017/09/16/clean-up-docker-hosts.html</guid>
       <description>Sorry for not posting in a while, I have been a bit busy. Here&amp;rsquo;s a quick tip.
 The Problem Ideally when running in the cloud we want to be able to ditch our VMs when they misbehave rather than trying to fix them. Reincarnate, don&amp;rsquo;t resurrect.
 For me, however, I am running a single VM (Digital Ocean Droplet) with Docker. I want to be able to recreate my droplet very quickly should things go wrong, but I don&amp;rsquo;t care much about 100% uptime on my personal server.</description>
@@ -217,10 +226,10 @@ For me, however, I am running a single VM (Digital Ocean Droplet) with Docker. I
     
     <item>
       <title>Best Practice for Mounting an LVM Logical Volume with /etc/fstab</title>
-      <link>https://xanmanning.co.uk/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html</link>
+      <link>https://xan.manning.io/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html</link>
       <pubDate>Mon, 29 May 2017 17:43:39 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html</guid>
+      <guid>https://xan.manning.io/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html</guid>
       <description>If you&amp;rsquo;ve been using Linux for a bit you will be familiar with the file systems table (fstab(5): /etc/fstab). You will also be fairly familiar with the contents of this file and it&amp;rsquo;s structure:
 &amp;lt;device&amp;gt; &amp;lt;mount-point&amp;gt; &amp;lt;filesystem-type&amp;gt; &amp;lt;options&amp;gt; &amp;lt;dump&amp;gt; &amp;lt;pass&amp;gt; So a typical entry may possibly look like the following:
 /dev/sda1 / ext4 defaults 0 0 This would mount /dev/sda1, the device file for the first partition on the first disk as the root (/) on your Linux system.</description>
@@ -228,39 +237,39 @@ For me, however, I am running a single VM (Digital Ocean Droplet) with Docker. I
     
     <item>
       <title>Azure, an AWS guy dipping his toes.</title>
-      <link>https://xanmanning.co.uk/2017/05/22/azure-an-aws-guy-dipping-his-toes.html</link>
+      <link>https://xan.manning.io/2017/05/22/azure-an-aws-guy-dipping-his-toes.html</link>
       <pubDate>Mon, 22 May 2017 18:43:00 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/05/22/azure-an-aws-guy-dipping-his-toes.html</guid>
+      <guid>https://xan.manning.io/2017/05/22/azure-an-aws-guy-dipping-his-toes.html</guid>
       <description>I am not going to lie, I am a big fan of AWS. I have been using AWS on and off for nearly 2 years now. I&amp;rsquo;ve done the training for both the AWS Solutions Architect Associate and SysOps Associate (although not got a certification yet). Shout out to acloud.guru.
 Whilst there are no shortage of AWS jobs out there, depending on your industry it potentially pays to become cloud agnostic - having a finger in each of the cloud provider&amp;rsquo;s pies (AWS, Azure, DigitalOcean, Google Cloud).</description>
     </item>
     
     <item>
       <title>SaltStack at Home, Initial Thoughs</title>
-      <link>https://xanmanning.co.uk/2017/05/21/saltstack-at-home-initial-thoughs.html</link>
+      <link>https://xan.manning.io/2017/05/21/saltstack-at-home-initial-thoughs.html</link>
       <pubDate>Sun, 21 May 2017 15:29:02 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/05/21/saltstack-at-home-initial-thoughs.html</guid>
+      <guid>https://xan.manning.io/2017/05/21/saltstack-at-home-initial-thoughs.html</guid>
       <description>&amp;ldquo;Cloud servers are cattle, not pets!&amp;quot;
 So I have been working with configuration management for a while, recently I have been switching between Ansilble and Salt Stack. After creating a Salt Stack for a previous employer in AWS (see below diagram), I have fallen for this configuration management system. As you may have noted, I am using Python based, YAML configured systems because this is where I am comfortable. These systems are easily extendable, the configuration files are easy to read for anyone and they are both awesome.</description>
     </item>
     
     <item>
       <title>Silence</title>
-      <link>https://xanmanning.co.uk/2017/04/03/silence.html</link>
+      <link>https://xan.manning.io/2017/04/03/silence.html</link>
       <pubDate>Mon, 03 Apr 2017 19:10:48 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/04/03/silence.html</guid>
+      <guid>https://xan.manning.io/2017/04/03/silence.html</guid>
       <description>Back soon, just escaped a sticky situation&amp;hellip;</description>
     </item>
     
     <item>
       <title>Two node Redis cluster in Vagrant</title>
-      <link>https://xanmanning.co.uk/2017/02/12/two-node-redis-cluster-in-vagrant.html</link>
+      <link>https://xan.manning.io/2017/02/12/two-node-redis-cluster-in-vagrant.html</link>
       <pubDate>Sun, 12 Feb 2017 21:40:53 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/02/12/two-node-redis-cluster-in-vagrant.html</guid>
+      <guid>https://xan.manning.io/2017/02/12/two-node-redis-cluster-in-vagrant.html</guid>
       <description>So, I am wanting to learn a bit more about Redis. To get me started, and to run Redis as close to how it would run in production, I have created a Vagrantfile for creating a Redis Cluster.
 I thought I&amp;rsquo;d share. Feel free to clone. It&amp;rsquo;s a fairly simple Vagrantfile that simply creates a Master-Slave replica for Redis.
 To get started:
@@ -269,20 +278,20 @@ $ git clone https://github.com/xanmanning/vagrant-redis-cluster $ cd vagrant-red
     
     <item>
       <title>Throwback Thursday: Hacktrix*</title>
-      <link>https://xanmanning.co.uk/2017/01/26/throwback-thursday-hacktrix.html</link>
+      <link>https://xan.manning.io/2017/01/26/throwback-thursday-hacktrix.html</link>
       <pubDate>Thu, 26 Jan 2017 19:51:00 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/01/26/throwback-thursday-hacktrix.html</guid>
+      <guid>https://xan.manning.io/2017/01/26/throwback-thursday-hacktrix.html</guid>
       <description>It&amp;rsquo;s Thursday again, and I&amp;rsquo;m looking back on another project from days gone by.
 Following on from a decision not to renew our QueueMetrics license to monitor our call volume over Asterisk, we were left in a bit of a pickle. Numerous calls were coming in but managers could not gauge the volume and in times of an outage this was a serious problem when it came to breaks and assigning overtime.</description>
     </item>
     
     <item>
       <title>SaltStack Lab in Vagrant</title>
-      <link>https://xanmanning.co.uk/2017/01/19/saltstack-lab-in-vagrant.html</link>
+      <link>https://xan.manning.io/2017/01/19/saltstack-lab-in-vagrant.html</link>
       <pubDate>Thu, 19 Jan 2017 21:58:12 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/01/19/saltstack-lab-in-vagrant.html</guid>
+      <guid>https://xan.manning.io/2017/01/19/saltstack-lab-in-vagrant.html</guid>
       <description>Today I have published a really simplistic SaltStack lab for Vagrant to GitHub:
 https://github.com/xanmanning/vagrant-salt-example
 Since being subjected to CFEngine (shudder), I have been very keen to try out other configuration management offerings. I had previously tried Ansible, that&amp;rsquo;s great and all, however there are advantages to agent based systems, particularly the scalability.
@@ -291,10 +300,10 @@ Salt stands out for me, because like Ansible, configuration is done in YAML - th
     
     <item>
       <title>Throwback Thursday: Thermostat</title>
-      <link>https://xanmanning.co.uk/2017/01/12/throwback-thursday-thermostat.html</link>
+      <link>https://xan.manning.io/2017/01/12/throwback-thursday-thermostat.html</link>
       <pubDate>Thu, 12 Jan 2017 20:32:00 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/01/12/throwback-thursday-thermostat.html</guid>
+      <guid>https://xan.manning.io/2017/01/12/throwback-thursday-thermostat.html</guid>
       <description>I&amp;rsquo;ve decided to occasionally look back on some of the weird and wonderful projects I have had over the last couple of years to remind myself of the journey I have taken.
 Today I am writing about a project I created to fix a problem with a misbehaving version of our CRM software (to remain nameless).
 Backstory So this tale begins when I worked as first line technical support at an internet service provider (ISP).</description>
@@ -302,40 +311,40 @@ Backstory So this tale begins when I worked as first line technical support at a
     
     <item>
       <title>Chmod 0777; when permissions go bad and using the Sticky bit!</title>
-      <link>https://xanmanning.co.uk/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html</link>
+      <link>https://xan.manning.io/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html</link>
       <pubDate>Sun, 08 Jan 2017 16:07:08 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html</guid>
+      <guid>https://xan.manning.io/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html</guid>
       <description>I recently got tested on an important piece of Linux file permissions trivia and must admit I fumbled the answer a bit.
 My main reasons for not instantly getting the question right probably stems from my own personal mantra, &amp;ldquo;DO NOT 0777 ALL THE THINGS!&amp;quot;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my dictatorship employment as a (junior) Linux SysAdmin.</description>
     </item>
     
     <item>
       <title>OpenBSD 6.0: Simple NAT with pf</title>
-      <link>https://xanmanning.co.uk/2016/12/23/openbsd-6-0-simple-nat-with-pf.html</link>
+      <link>https://xan.manning.io/2016/12/23/openbsd-6-0-simple-nat-with-pf.html</link>
       <pubDate>Fri, 23 Dec 2016 16:01:27 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/12/23/openbsd-6-0-simple-nat-with-pf.html</guid>
+      <guid>https://xan.manning.io/2016/12/23/openbsd-6-0-simple-nat-with-pf.html</guid>
       <description>This post is more of a &amp;ldquo;note to self&amp;rdquo;, but this is a summary of a simple NAT setup between an &amp;ldquo;Internal&amp;rdquo; interface and an &amp;ldquo;External&amp;rdquo; interface on our OpenBSD server or router.
 Why would we do this? Well we might have an OpenBSD machine acting as a router and so 1 public IP address on our &amp;ldquo;External&amp;rdquo; interface which is to be shared between our devices on our &amp;ldquo;Internal&amp;rdquo; network.</description>
     </item>
     
     <item>
       <title>Salt Master on OpenBSD 6.0</title>
-      <link>https://xanmanning.co.uk/2016/11/21/salt-master-on-openbsd-6-0.html</link>
+      <link>https://xan.manning.io/2016/11/21/salt-master-on-openbsd-6-0.html</link>
       <pubDate>Mon, 21 Nov 2016 19:38:34 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/11/21/salt-master-on-openbsd-6-0.html</guid>
+      <guid>https://xan.manning.io/2016/11/21/salt-master-on-openbsd-6-0.html</guid>
       <description>Let&amp;rsquo;s get started with SaltStack, but let&amp;rsquo;s put a twist on it and install our Salt Master on OpenBSD 6.0.
 Why OpenBSD? In the world of &amp;ldquo;Cloud Computing&amp;rdquo;, more and more data is no longer hosted on-site and on a huge scale. Security is, and should be, the biggest concern. Whilst no OS can mitigate poor code, a good secure OS out of the box helps. Our Salt Master must remain secure at all costs as it will touch on all of our infrastructure.</description>
     </item>
     
     <item>
       <title>New Keyboard</title>
-      <link>https://xanmanning.co.uk/2016/10/17/new-keyboard.html</link>
+      <link>https://xan.manning.io/2016/10/17/new-keyboard.html</link>
       <pubDate>Mon, 17 Oct 2016 18:10:39 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/10/17/new-keyboard.html</guid>
+      <guid>https://xan.manning.io/2016/10/17/new-keyboard.html</guid>
       <description>Today I have finally unboxed my brand new WASD keyboard with Cherry MX Blue switches.
 This is a custom keyboard that I had partially funded by previous employer as a leaving present (aww, cheers guys).
 Here&amp;rsquo;s the layout I chose:
@@ -344,30 +353,30 @@ Here&amp;rsquo;s the layout I chose:
     
     <item>
       <title>Getting started with RacherOS using Docker-Machine</title>
-      <link>https://xanmanning.co.uk/2016/10/10/getting-started-with-racheros-using-docker-machine.html</link>
+      <link>https://xan.manning.io/2016/10/10/getting-started-with-racheros-using-docker-machine.html</link>
       <pubDate>Mon, 10 Oct 2016 20:42:36 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/10/10/getting-started-with-racheros-using-docker-machine.html</guid>
+      <guid>https://xan.manning.io/2016/10/10/getting-started-with-racheros-using-docker-machine.html</guid>
       <description>Sadly, RancherOS is no longer available on Vagrant so dipping your toes in Rancher is a bit less easy. Or is it? The folks are Rancher are suggesting you use Docker-machine, a really nice command line tool for provisioning and managing Docker hosts! If you are used to Vagrant you already have a bit of a head start on getting to grips with Docker Machine.
 What&amp;rsquo;s best is that we are going to do this in the comfort of our own VirtualBox installation.</description>
     </item>
     
     <item>
       <title>Mounting EFS outside of AWS</title>
-      <link>https://xanmanning.co.uk/2016/09/08/mounting-efs-outside-of-aws.html</link>
+      <link>https://xan.manning.io/2016/09/08/mounting-efs-outside-of-aws.html</link>
       <pubDate>Thu, 08 Sep 2016 20:36:14 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/09/08/mounting-efs-outside-of-aws.html</guid>
+      <guid>https://xan.manning.io/2016/09/08/mounting-efs-outside-of-aws.html</guid>
       <description>Why EFS? Well, despite being 3x more expensive than Elastic Block Volumes, EFS is sharable between EC2 instances and it is literally Pay As You Go (PAYG), no over-provisioning in sight.
 So for that NAS like experience without the need to buy hardware, EFS would sound like a winning solution. Unfortunately at the time of writing this (September 2016) it is not yet possible to directly mount EFS outside of your Amazon VPC.</description>
     </item>
     
     <item>
       <title>Two underrated Bash aliases</title>
-      <link>https://xanmanning.co.uk/2016/09/07/two-underrated-bash-aliases.html</link>
+      <link>https://xan.manning.io/2016/09/07/two-underrated-bash-aliases.html</link>
       <pubDate>Wed, 07 Sep 2016 06:37:52 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/09/07/two-underrated-bash-aliases.html</guid>
+      <guid>https://xan.manning.io/2016/09/07/two-underrated-bash-aliases.html</guid>
       <description>Digital Ocean recently posted an article on must have Bash aliases.
 Here are two unfortunate ones that are becoming part of my requirements to use a system.
 alias dicker=&#39;docker&#39; alias goit=&#39;git&#39; </description>
@@ -375,10 +384,10 @@ alias dicker=&#39;docker&#39; alias goit=&#39;git&#39; </description>
     
     <item>
       <title>Dokuwiki Farm in a (Docker) Container</title>
-      <link>https://xanmanning.co.uk/2016/09/06/dokuwiki-farm-in-a-docker-container.html</link>
+      <link>https://xan.manning.io/2016/09/06/dokuwiki-farm-in-a-docker-container.html</link>
       <pubDate>Tue, 06 Sep 2016 21:22:39 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/09/06/dokuwiki-farm-in-a-docker-container.html</guid>
+      <guid>https://xan.manning.io/2016/09/06/dokuwiki-farm-in-a-docker-container.html</guid>
       <description>Today I released my Dokuwiki Farm container image on Docker Hub.
 It is perhaps a little clunky and experimental, but it is the first image that I have published but it&amp;rsquo;s a fairly simple solution to hosting Dokuwiki.
 It can run in single wiki mode, or it can run as an entire wiki farm with the option of shared logins between farm animals.
@@ -387,19 +396,19 @@ The base image For this we are taking the nginx:mainline-alpine image as it is v
     
     <item>
       <title>So this happened...</title>
-      <link>https://xanmanning.co.uk/2016/09/02/so-this-happened.html</link>
+      <link>https://xan.manning.io/2016/09/02/so-this-happened.html</link>
       <pubDate>Fri, 02 Sep 2016 08:39:00 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/09/02/so-this-happened.html</guid>
+      <guid>https://xan.manning.io/2016/09/02/so-this-happened.html</guid>
       <description>I may have geeked out my car. #tuxftw!</description>
     </item>
     
     <item>
       <title>Setting Up a Ghost Blog with nginx, Certbot and Docker.</title>
-      <link>https://xanmanning.co.uk/2016/08/28/setting-up-a-ghost-blog-with-nginx-certbot-and-docker.html</link>
+      <link>https://xan.manning.io/2016/08/28/setting-up-a-ghost-blog-with-nginx-certbot-and-docker.html</link>
       <pubDate>Sun, 28 Aug 2016 14:57:56 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/08/28/setting-up-a-ghost-blog-with-nginx-certbot-and-docker.html</guid>
+      <guid>https://xan.manning.io/2016/08/28/setting-up-a-ghost-blog-with-nginx-certbot-and-docker.html</guid>
       <description>I thought I would write up my experiences with setting up Ghost served over HTTPS as it&amp;rsquo;s quite a good way of jumping into Docker and using nginx as a reverse proxy to route traffic between Docker applications.
 In this tutorial we will use the following applications:
  Debian (or other Linux) nginx (Web Server, Reverse Proxy and Load Balancer) Certbot (client for Let&amp;rsquo;s Encrypt certificates) Docker (containerization software) Docker-Compose (tool for defining multi-container environments, useful for single containers too!</description>
@@ -407,10 +416,10 @@ In this tutorial we will use the following applications:
     
     <item>
       <title>Re-architecting a Global Data Object store</title>
-      <link>https://xanmanning.co.uk/2016/08/19/re-architecting-a-global-data-object-store.html</link>
+      <link>https://xan.manning.io/2016/08/19/re-architecting-a-global-data-object-store.html</link>
       <pubDate>Fri, 19 Aug 2016 11:24:04 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/08/19/re-architecting-a-global-data-object-store.html</guid>
+      <guid>https://xan.manning.io/2016/08/19/re-architecting-a-global-data-object-store.html</guid>
       <description>In a recent project I have had the opportunity to work with MongoDB, admittedly this is the first real attempt to do so in any real capacity.
 For this project we created a number of Drupal websites with a centralised Data Object Store, referred to simply as the &amp;ldquo;GDO&amp;rdquo; (Global Data Object Store).
 The main concept of the GDO is that data objects (in the form of JSON documents) can be stored centrally and accessed by every site/server within the AWS VPC (Virtual Private Cloud).</description>
@@ -418,10 +427,10 @@ The main concept of the GDO is that data objects (in the form of JSON documents)
     
     <item>
       <title>Quick security tip! Docker containers and ufw.</title>
-      <link>https://xanmanning.co.uk/2016/07/28/quick-security-tip-docker-containers-and-ufw.html</link>
+      <link>https://xan.manning.io/2016/07/28/quick-security-tip-docker-containers-and-ufw.html</link>
       <pubDate>Thu, 28 Jul 2016 19:59:16 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/07/28/quick-security-tip-docker-containers-and-ufw.html</guid>
+      <guid>https://xan.manning.io/2016/07/28/quick-security-tip-docker-containers-and-ufw.html</guid>
       <description>I recently discovered that the Docker daemon &amp;lsquo;out of the box&amp;rsquo; (as it where) will run with the option --iptables=true.
 Why is this important? - Well, for on your own development environment perhaps it isn&amp;rsquo;t so important. You can just get on with running your containers and access them over the network as expected.
 If you are a bit more security conscious, perhaps because you are running on a production server, you will have firewall rules of some sort.</description>
@@ -429,20 +438,20 @@ If you are a bit more security conscious, perhaps because you are running on a p
     
     <item>
       <title>Making .deb packages using Docker</title>
-      <link>https://xanmanning.co.uk/2016/07/27/making-deb-packages-using-docker.html</link>
+      <link>https://xan.manning.io/2016/07/27/making-deb-packages-using-docker.html</link>
       <pubDate>Wed, 27 Jul 2016 12:03:00 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/07/27/making-deb-packages-using-docker.html</guid>
+      <guid>https://xan.manning.io/2016/07/27/making-deb-packages-using-docker.html</guid>
       <description>This is a bit of an odd exercise but I recently found myself needing to compile a program and produce a .deb package. We were looking at making a shared environment for producing these packages to roll out to production environments, however what was needed was a method of just spitting out .deb packages from sourcecode from git.
 Approach Rather than taking up a VM on our KVM server we decided to compile and build our .</description>
     </item>
     
     <item>
       <title>Migrated to Ghost</title>
-      <link>https://xanmanning.co.uk/2016/07/19/migrated-to-ghost.html</link>
+      <link>https://xan.manning.io/2016/07/19/migrated-to-ghost.html</link>
       <pubDate>Tue, 19 Jul 2016 21:52:37 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/07/19/migrated-to-ghost.html</guid>
+      <guid>https://xan.manning.io/2016/07/19/migrated-to-ghost.html</guid>
       <description>You may or may not have noticed that my site has changed a bit. Originally I was using Drupal 8 however I have now migrated to something a bit more suitable for my needs.
 Let me introduce my new Ghost blog!
 Right, for the questions&amp;hellip;
@@ -451,48 +460,48 @@ Questions You work at a Drupal agency, why have you gone for Ghost over Drupal? 
     
     <item>
       <title>Building an Ansible 2 Lab in Vagrant/VirtualBox</title>
-      <link>https://xanmanning.co.uk/2016/01/30/building-an-ansible-2-lab.html</link>
+      <link>https://xan.manning.io/2016/01/30/building-an-ansible-2-lab.html</link>
       <pubDate>Sat, 30 Jan 2016 11:48:00 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2016/01/30/building-an-ansible-2-lab.html</guid>
+      <guid>https://xan.manning.io/2016/01/30/building-an-ansible-2-lab.html</guid>
       <description>This post is all about Ansible. 2016 saw the release of Ansible 2, which comes with a few new features however the bulk of the effort in version 2 looks to have been in refactoring. Regardless, I have found that my job often requires me to be doing lots of dull tasks on multiple servers. Whilst we have some older servers with some quite, ahem, bespoke and quirky setups making them unsuitable for integration into a configuration management system - some tasks can be performed en-masse using Ansible.</description>
     </item>
     
     <item>
       <title>Two Node GlusterFS in Vagrant</title>
-      <link>https://xanmanning.co.uk/2015/12/22/two-node-glusterfs-vagrant.html</link>
+      <link>https://xan.manning.io/2015/12/22/two-node-glusterfs-vagrant.html</link>
       <pubDate>Tue, 22 Dec 2015 14:25:00 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2015/12/22/two-node-glusterfs-vagrant.html</guid>
+      <guid>https://xan.manning.io/2015/12/22/two-node-glusterfs-vagrant.html</guid>
       <description>I&amp;rsquo;ve been experimenting with GlusterFS recently and I have found it fairly useful to be able to roll out a quick Gluster volume to play with. Vagrant here is your friend, you can roll out VMs fairly quickly and dispose of them leaving little to no mess afterwards.
 The following Vagrantfile is for VirtualBox and will create a volume replicated across two nodes. My main aim of creating this Vagrantfile is to experience how Gluster behaves when taking servers offline, adding more servers and what happens when you replace/add bricks to a volume.</description>
     </item>
     
     <item>
       <title>Let&#39;s Encrypt - nginx!</title>
-      <link>https://xanmanning.co.uk/2015/12/17/lets-encrypt-nginx.html</link>
+      <link>https://xan.manning.io/2015/12/17/lets-encrypt-nginx.html</link>
       <pubDate>Thu, 17 Dec 2015 12:34:00 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2015/12/17/lets-encrypt-nginx.html</guid>
+      <guid>https://xan.manning.io/2015/12/17/lets-encrypt-nginx.html</guid>
       <description>So, December 3rd saw the public beta release of &amp;ldquo;Let&amp;rsquo;s Encrypt&amp;rdquo;, a free, automated and open certificate authority from the Internet Security Research Group. I&amp;rsquo;ve tried out their client on Apache2 and all I can say is that it is the easiest and cheapest way of getting your site on SSL.
 When it comes to nginx, things aren&amp;rsquo;t quite as simple. As I write this the nginx plugin isn&amp;rsquo;t yet supported, probably because nginx config comes in all shapes and sizes dependent on version, os and package maintainer.</description>
     </item>
     
     <item>
       <title>Drupal 8 on nginx HHVM and PHP5-FPM fallback.</title>
-      <link>https://xanmanning.co.uk/2015/12/09/d8-on-lemph.html</link>
+      <link>https://xan.manning.io/2015/12/09/d8-on-lemph.html</link>
       <pubDate>Wed, 09 Dec 2015 11:08:00 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2015/12/09/d8-on-lemph.html</guid>
+      <guid>https://xan.manning.io/2015/12/09/d8-on-lemph.html</guid>
       <description>It is, without a doubt, an exciting time for everyone working with Drupal and PHP in general - a great way to round of 2015. We&amp;rsquo;ve seen two major releases of our favourite open source projects, Drupal 8 and PHP 7. Whilst the performance boost of PHP7 over PHP5.6 is beyond anecdotal - it is proven - the performance of Drupal 8 on PHP7 vs. PHP5.6 isn&amp;rsquo;t as great when compared to other open source projects (see Kinsta.</description>
     </item>
     
     <item>
       <title>Creating a Guest Wireless Network on a MikroTik running RouterOS 6 with Winbox</title>
-      <link>https://xanmanning.co.uk/2015/12/05/creating-guest-network-mikrotik-routeros6.html</link>
+      <link>https://xan.manning.io/2015/12/05/creating-guest-network-mikrotik-routeros6.html</link>
       <pubDate>Sat, 05 Dec 2015 22:01:00 +0000</pubDate>
       
-      <guid>https://xanmanning.co.uk/2015/12/05/creating-guest-network-mikrotik-routeros6.html</guid>
+      <guid>https://xan.manning.io/2015/12/05/creating-guest-network-mikrotik-routeros6.html</guid>
       <description>I revived a brand new MikroTik routerboard through the post recently; an RB2011U series router to be specific. My goal for using this router is to better manage my home network, VPN connections and the guests who come into our home. The last point is fairly important to me as I want to create a guest WiFi network to isolate visitors from the rest of the network, BYOD is the acronym for &amp;ldquo;Bring Your Own Disaster&amp;rdquo; after all.</description>
     </item>
     
