@@ -22,8 +22,8 @@
 <meta property="og:title" content="Xan Manning" />
 <meta property="og:description" content="Ramblings of a Linux geek and cloud fanatic dabbling in DevOps!" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://xanmanning.co.uk/" />
-<meta property="og:updated_time" content="2020-05-08T13:05:22+00:00" /><meta property="og:site_name" content="Xan Manning" />
+<meta property="og:url" content="https://xan.manning.io/" />
+<meta property="og:updated_time" content="2020-05-18T19:55:23+00:00" /><meta property="og:site_name" content="Xan Manning" />
 
 
     
@@ -55,7 +55,7 @@
     <!-- Icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
     <link rel="shortcut icon" href="/favicon.png">
-    <link rel="alternate" type="application/rss+xml" href="https://xanmanning.co.uk/index.xml" title="Xan Manning" />
+    <link rel="alternate" type="application/rss+xml" href="https://xan.manning.io/index.xml" title="Xan Manning" />
 
     
 
@@ -69,15 +69,15 @@
   <div class="container ">
     <div class="sidebar-about">
       <span class="site__title">
-        <a href="https://xanmanning.co.uk/">Xan Manning</a>
+        <a href="https://xan.manning.io/">Xan Manning</a>
       </span>
       
         
         
         
         <div class="author-image">
-          <a href="https://xanmanning.co.uk/">
-            <img src="https://xanmanning.co.uk/images/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+          <a href="https://xan.manning.io/">
+            <img src="https://xan.manning.io/images/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
           </a>
         </div>
         
@@ -164,6 +164,28 @@
   <div class="post-list">
     
     
+      
+        
+      
+      <div class="post-list__item">
+        <span class="item__title--big">
+          <a href="/2018/09/24/https-auth-in-git.html" >Remembering HTTPS Authentication in git</a>
+        </span>
+        <span class="item__date">
+          Sep 24, 2018
+        </span>
+        <span >
+        
+        Quick tip for anyone who is wanting git to remember their username/password when issuing push/pulls to a git repository over HTTPS, run the following:
+git config credential.helper store This will remember your username and password by storing in a plaintext file in ${HOME}/.git-credentials.
+Disclaimer: Only do this if you know your home directory is secure from other users!
+Source  git: credential-store  
+        
+        </span>
+        
+        </div>
+        
+     
       
         
       
@@ -364,29 +386,6 @@ For me, however, I am running a single VM (Digital Ocean Droplet) with Docker. I
         </span>
         
           ... <a class="read-more-symbol" href="/2017/09/16/clean-up-docker-hosts.html">➦</a>
-        
-        </div>
-        
-     
-      
-        
-      
-      <div class="post-list__item">
-        <span class="item__title--big">
-          <a href="/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html" >Best Practice for Mounting an LVM Logical Volume with /etc/fstab</a>
-        </span>
-        <span class="item__date">
-          May 29, 2017
-        </span>
-        <span >
-        
-        If you&rsquo;ve been using Linux for a bit you will be familiar with the file systems table (fstab(5): /etc/fstab). You will also be fairly familiar with the contents of this file and it&rsquo;s structure:
-&lt;device&gt; &lt;mount-point&gt; &lt;filesystem-type&gt; &lt;options&gt; &lt;dump&gt; &lt;pass&gt; So a typical entry may possibly look like the following:
-/dev/sda1 / ext4 defaults 0 0 This would mount /dev/sda1, the device file for the first partition on the first disk as the root (/) on your Linux system.
-        
-        </span>
-        
-          ... <a class="read-more-symbol" href="/2017/05/29/best-practice-for-mounting-an-lvm-logical-volume-with-etc-fstab.html">➦</a>
         
         </div>
         
