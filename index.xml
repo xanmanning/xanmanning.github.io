@@ -6,10 +6,20 @@
     <description>Recent content on Xan Manning</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Mon, 18 May 2020 19:55:23 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 31 May 2020 20:15:59 +0000</lastBuildDate>
     
 	<atom:link href="https://xan.manning.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linux Sucks 2020</title>
+      <link>https://xan.manning.io/2020/05/31/linux-sucks-2020.html</link>
+      <pubDate>Sun, 31 May 2020 20:15:59 +0000</pubDate>
+      
+      <guid>https://xan.manning.io/2020/05/31/linux-sucks-2020.html</guid>
+      <description>Bryan Lunduke has published yet another one of his &amp;ldquo;Linux Sucks&amp;rdquo; talk. It&amp;rsquo;s not quite the same format to what we are usually blessed with since it wasn&amp;rsquo;t given at a conference. There&amp;rsquo;s no heckling, and if I were in the room I perhaps would argue against some points, but Lunduke made some great points as to why &amp;ldquo;Linux Sucks&amp;rdquo;. For me it was summed up into one phrase:
+ The Linux Community: A Corporate controlled committee of people who don&amp;rsquo;t use Linux and dislike ideas.</description>
+    </item>
     
     <item>
       <title>New Domain!</title>
