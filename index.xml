@@ -515,5 +515,15 @@ When it comes to nginx, things aren&amp;rsquo;t quite as simple. As I write this
       <description>I revived a brand new MikroTik routerboard through the post recently; an RB2011U series router to be specific. My goal for using this router is to better manage my home network, VPN connections and the guests who come into our home. The last point is fairly important to me as I want to create a guest WiFi network to isolate visitors from the rest of the network, BYOD is the acronym for &amp;ldquo;Bring Your Own Disaster&amp;rdquo; after all.</description>
     </item>
     
+    <item>
+      <title>About</title>
+      <link>https://xan.manning.io/about.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://xan.manning.io/about.html</guid>
+      <description>Profile An eager, self-motivated and multi-disciplined individual; the majority of my professional experience has been providing Operational support, but with a focus on cloud technologies and automation. I strive to work smarter.
+In my current role I am a Technical Support Analyst working within Operations and Engineering. Day-to-day I provide operational support for customers; predominantly on SAP HANA appliances which run Enterprise Linux distributions but also for customers running a multitude of applications on AIX and VMWare.</description>
+    </item>
+    
   </channel>
 </rss>
