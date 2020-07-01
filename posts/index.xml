@@ -326,7 +326,7 @@ Backstory So this tale begins when I worked as first line technical support at a
       
       <guid>https://xan.manning.io/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html</guid>
       <description>I recently got tested on an important piece of Linux file permissions trivia and must admit I fumbled the answer a bit.
-My main reasons for not instantly getting the question right probably stems from my own personal mantra, &amp;ldquo;DO NOT 0777 ALL THE THINGS!&amp;quot;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my dictatorship employment as a (junior) Linux SysAdmin.</description>
+My main reasons for not instantly getting the question right probably stems from my own personal mantra, &amp;ldquo;DO NOT 0777 ALL THE THINGS!&amp;rdquo;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my dictatorship employment as a (junior) Linux SysAdmin.</description>
     </item>
     
     <item>

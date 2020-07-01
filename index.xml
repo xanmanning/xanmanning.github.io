@@ -326,7 +326,7 @@ Backstory So this tale begins when I worked as first line technical support at a
       
       <guid>https://xan.manning.io/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html</guid>
       <description>I recently got tested on an important piece of Linux file permissions trivia and must admit I fumbled the answer a bit.
-My main reasons for not instantly getting the question right probably stems from my own personal mantra, &amp;ldquo;DO NOT 0777 ALL THE THINGS!&amp;quot;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my dictatorship employment as a (junior) Linux SysAdmin.</description>
+My main reasons for not instantly getting the question right probably stems from my own personal mantra, &amp;ldquo;DO NOT 0777 ALL THE THINGS!&amp;rdquo;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my dictatorship employment as a (junior) Linux SysAdmin.</description>
     </item>
     
     <item>
@@ -513,16 +513,6 @@ When it comes to nginx, things aren&amp;rsquo;t quite as simple. As I write this
       
       <guid>https://xan.manning.io/2015/12/05/creating-guest-network-mikrotik-routeros6.html</guid>
       <description>I revived a brand new MikroTik routerboard through the post recently; an RB2011U series router to be specific. My goal for using this router is to better manage my home network, VPN connections and the guests who come into our home. The last point is fairly important to me as I want to create a guest WiFi network to isolate visitors from the rest of the network, BYOD is the acronym for &amp;ldquo;Bring Your Own Disaster&amp;rdquo; after all.</description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>https://xan.manning.io/about.html</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://xan.manning.io/about.html</guid>
-      <description>Profile An eager, self-motivated and multi-disciplined individual; the majority of my professional experience has been providing Operational support, but with a focus on cloud technologies and automation. I strive to work smarter.
-In my current role I am a Technical Support Analyst working within Operations and Engineering. Day-to-day I provide operational support for customers; predominantly on SAP HANA appliances which run Enterprise Linux distributions but also for customers running a multitude of applications on AIX and VMWare.</description>
     </item>
     
   </channel>

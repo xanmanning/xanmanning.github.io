@@ -11,7 +11,7 @@
 <meta http-equiv="Cache-Control" content="public" />
 <!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.67.0" />
+<meta name="generator" content="Hugo 0.72.0" />
 
     
     
@@ -23,11 +23,11 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Chmod 0777; when permissions go bad and using the Sticky bit!"/>
 <meta name="twitter:description" content="I recently got tested on an important piece of Linux file permissions trivia and must admit I fumbled the answer a bit.
-My main reasons for not instantly getting the question right probably stems from my own personal mantra, &ldquo;DO NOT 0777 ALL THE THINGS!&quot;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my dictatorship employment as a (junior) Linux SysAdmin."/>
+My main reasons for not instantly getting the question right probably stems from my own personal mantra, &ldquo;DO NOT 0777 ALL THE THINGS!&rdquo;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my dictatorship employment as a (junior) Linux SysAdmin."/>
 
 <meta property="og:title" content="Chmod 0777; when permissions go bad and using the Sticky bit!" />
 <meta property="og:description" content="I recently got tested on an important piece of Linux file permissions trivia and must admit I fumbled the answer a bit.
-My main reasons for not instantly getting the question right probably stems from my own personal mantra, &ldquo;DO NOT 0777 ALL THE THINGS!&quot;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my dictatorship employment as a (junior) Linux SysAdmin." />
+My main reasons for not instantly getting the question right probably stems from my own personal mantra, &ldquo;DO NOT 0777 ALL THE THINGS!&rdquo;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my dictatorship employment as a (junior) Linux SysAdmin." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://xan.manning.io/2017/01/08/chmod-0777-when-permissions-go-bad-and-using-the-sticky-bit.html" />
 <meta property="article:published_time" content="2017-01-08T16:07:08+00:00" />
@@ -193,7 +193,7 @@ My main reasons for not instantly getting the question right probably stems from
   
   <div class="post">
     <p>I recently got tested on an important piece of Linux file permissions trivia and must admit I fumbled the answer a bit.</p>
-<p>My main reasons for not instantly getting the question right probably stems from my own personal mantra, &ldquo;DO NOT 0777 ALL THE THINGS!&quot;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my <small><del>dictatorship</del></small> employment as a (junior) Linux SysAdmin.</p>
+<p>My main reasons for not instantly getting the question right probably stems from my own personal mantra, &ldquo;DO NOT 0777 ALL THE THINGS!&rdquo;. I like to think that I put some thought into file and directory permissions rather than applying the same permissions to user, group and others. It is something that I have (on occasion) bullied a lot of developers about during my <small><del>dictatorship</del></small> employment as a (junior) Linux SysAdmin.</p>
 <h2 id="lets-stop-chmod-0777">Let&rsquo;s stop chmod 0777!</h2>
 <p>Now, the main reasons why I have been quite cruel about a persons choice of file permissions has been for the following reasons:</p>
 <ul>
@@ -232,7 +232,7 @@ drwxr-xr-x 16 manningx manningx 4.0K Jan  8 15:17 ../
 <p>So here is another great example of <strong>why you should not chmod 0777 all the things!</strong></p>
 <h2 id="what-about-when-everyone-needs-access-to-a-directory">What about when everyone needs access to a directory?</h2>
 <p>OK, so sometimes there are times when you need to have read-write-executable permissions for everyone on the system. A fantastic example is the <code>/tmp</code> directory. How do we work around that?</p>
-<p>You might now be asking, &ldquo;Hang on, how come I can&rsquo;t delete another user&rsquo;s files in <code>/tmp</code>?&quot;. Well, this is what I am alluding too.</p>
+<p>You might now be asking, &ldquo;Hang on, how come I can&rsquo;t delete another user&rsquo;s files in <code>/tmp</code>?&rdquo;. Well, this is what I am alluding too.</p>
 <p>You may have noticed that instead of writing <code>chmod 777</code>, I have been writing <code>chmod 0777</code>, the full octal notation. This is purposely done because there are a series of values that can be set before the 777, called special permissions. Namely, setuid (4), setgid (2), and the <em>Sticky bit</em> (1).</p>
 <p>The special permissions on <code>/tmp</code> are important to consider as these provide other permissions based functions such as stopping you from deleting other user&rsquo;s directories and files.</p>
 <h3 id="what-does-the-sticky-bit-look-like">What does the sticky bit look like?</h3>
@@ -295,20 +295,17 @@ drwxr-xr-x 16 manningx manningx 4.0K Jan  8 15:17 ../
         
     
 
-<script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.11.2/js/all.js" integrity="sha384-b3ua1l97aVGAPEIe48b4TC60WUQbQaGi2jqAWM90y0OZXZeyaTCWtBTKtjW2GXG1" crossorigin="anonymous"></script>
 
 
     
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
         
-    
     <script type="text/javascript">
         
         hljs.initHighlightingOnLoad();
     </script>
     
-
 
 
 
