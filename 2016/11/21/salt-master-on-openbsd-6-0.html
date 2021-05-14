@@ -11,7 +11,7 @@
 <meta http-equiv="Cache-Control" content="public" />
 <!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.72.0" />
+<meta name="generator" content="Hugo 0.82.0" />
 
     
     
@@ -29,9 +29,10 @@ Why OpenBSD? In the world of &ldquo;Cloud Computing&rdquo;, more and more data i
 <meta property="og:description" content="Let&rsquo;s get started with SaltStack, but let&rsquo;s put a twist on it and install our Salt Master on OpenBSD 6.0.
 Why OpenBSD? In the world of &ldquo;Cloud Computing&rdquo;, more and more data is no longer hosted on-site and on a huge scale. Security is, and should be, the biggest concern. Whilst no OS can mitigate poor code, a good secure OS out of the box helps. Our Salt Master must remain secure at all costs as it will touch on all of our infrastructure." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://xan.manning.io/2016/11/21/salt-master-on-openbsd-6-0.html" />
-<meta property="article:published_time" content="2016-11-21T19:38:34+00:00" />
-<meta property="article:modified_time" content="2016-11-21T19:38:34+00:00" /><meta property="og:site_name" content="Xan Manning" />
+<meta property="og:url" content="https://xan.manning.io/2016/11/21/salt-master-on-openbsd-6-0.html" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2016-11-21T19:38:34&#43;00:00" />
+<meta property="article:modified_time" content="2016-11-21T19:38:34&#43;00:00" /><meta property="og:site_name" content="Xan Manning" />
+
 
 
     
@@ -208,12 +209,12 @@ Why OpenBSD? In the world of &ldquo;Cloud Computing&rdquo;, more and more data i
 <pre><code># vi /etc/salt/master
 </code></pre><p>You will notice quickly that this is a YAML file, if you hadn&rsquo;t already guessed SaltStack uses YAML pretty much everywhere.</p>
 <p>The section you want to uncomment and change is the section for <code>file_roots</code>, here we want to set out base to be <code>/var/salt/base</code> as we had created above.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">file_roots</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">base</span>:<span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">file_roots</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#000080">base</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">    </span>- /var/salt/base<span style="color:#bbb">
 </span></code></pre></div><p>Now we want to also set out <code>pillar_roots</code> to point to <code>/var/salt/pillar</code>.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">pillar_roots</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">base</span>:<span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">pillar_roots</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#000080">base</span>:<span style="color:#bbb">
 </span><span style="color:#bbb">    </span>- /var/salt/pillar<span style="color:#bbb">
 </span></code></pre></div><p>Done. Save and quit.</p>
 <p>We need to have our Minion configured on our Master server. Let&rsquo;s edit our minion configuration located in <code>/etc/salt/minion</code>.</p>
