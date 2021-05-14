@@ -11,7 +11,7 @@
 <meta http-equiv="Cache-Control" content="public" />
 <!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.72.0" />
+<meta name="generator" content="Hugo 0.82.0" />
 
     
     
@@ -27,9 +27,10 @@
 <meta property="og:title" content="Building an Ansible 2 Lab in Vagrant/VirtualBox" />
 <meta property="og:description" content="This post is all about Ansible. 2016 saw the release of Ansible 2, which comes with a few new features however the bulk of the effort in version 2 looks to have been in refactoring. Regardless, I have found that my job often requires me to be doing lots of dull tasks on multiple servers. Whilst we have some older servers with some quite, ahem, bespoke and quirky setups making them unsuitable for integration into a configuration management system - some tasks can be performed en-masse using Ansible." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://xan.manning.io/2016/01/30/building-an-ansible-2-lab.html" />
-<meta property="article:published_time" content="2016-01-30T11:48:00+00:00" />
-<meta property="article:modified_time" content="2016-01-30T11:48:00+00:00" /><meta property="og:site_name" content="Xan Manning" />
+<meta property="og:url" content="https://xan.manning.io/2016/01/30/building-an-ansible-2-lab.html" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2016-01-30T11:48:00&#43;00:00" />
+<meta property="article:modified_time" content="2016-01-30T11:48:00&#43;00:00" /><meta property="og:site_name" content="Xan Manning" />
+
 
 
     
@@ -259,20 +260,20 @@
 </ol>
 <p>To do this the playbook looks something like this:</p>
 <p>{% raw %}</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---<span style="color:#bbb">
-</span><span style="color:#bbb"></span>- <span style="color:#000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Provision<span style="color:#bbb"> </span>OS<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">hosts</span>:<span style="color:#bbb"> </span>all<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">vars</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span>- <span style="color:#000;font-weight:bold">ansible_key</span>:<span style="color:#bbb"> </span>assets/ansible_rsa<span style="color:#bbb">
-</span><span style="color:#bbb">    </span>- <span style="color:#000;font-weight:bold">ansible_pub_key</span>:<span style="color:#bbb"> </span>assets/ansible_rsa.pub<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">tasks</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span>- <span style="color:#000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Upgrade<span style="color:#bbb"> </span>OS<span style="color:#bbb">
-</span><span style="color:#bbb">      </span><span style="color:#000;font-weight:bold">become</span>:<span style="color:#bbb"> </span>yes<span style="color:#bbb">
-</span><span style="color:#bbb">      </span><span style="color:#000;font-weight:bold">become_method</span>:<span style="color:#bbb"> </span>sudo<span style="color:#bbb">
-</span><span style="color:#bbb">      </span><span style="color:#000;font-weight:bold">apt</span>:<span style="color:#bbb"> </span>upgrade=dist<span style="color:#bbb"> </span>update_cache=yes<span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#555">---</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#000080">name</span>:<span style="color:#bbb"> </span>Provision OS<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#000080">hosts</span>:<span style="color:#bbb"> </span>all<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#000080">vars</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#000080">ansible_key</span>:<span style="color:#bbb"> </span>assets/ansible_rsa<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#000080">ansible_pub_key</span>:<span style="color:#bbb"> </span>assets/ansible_rsa.pub<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#000080">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#000080">name</span>:<span style="color:#bbb"> </span>Upgrade OS<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#000080">become</span>:<span style="color:#bbb"> </span><span style="color:#000;font-weight:bold">yes</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#000080">become_method</span>:<span style="color:#bbb"> </span>sudo<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#000080">apt</span>:<span style="color:#bbb"> </span>upgrade=dist update_cache=yes<span style="color:#bbb">
 </span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span>- <span style="color:#000;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Insert<span style="color:#bbb"> </span>(bad)<span style="color:#bbb"> </span>Ansible<span style="color:#bbb"> </span>Key<span style="color:#bbb">
-</span><span style="color:#bbb">      </span><span style="color:#000;font-weight:bold">authorized_key</span>:<span style="color:#bbb"> </span>user=<span style="color:#d14">&#34;vagrant&#34;</span><span style="color:#bbb"> </span>key=<span style="color:#d14">&#34;{{ lookup(&#39;file&#39;, ansible_pub_key) }}&#34;</span><span style="color:#bbb"> </span>state=present<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#000080">name</span>:<span style="color:#bbb"> </span>Insert (bad) Ansible Key<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#000080">authorized_key</span>:<span style="color:#bbb"> </span>user=&#34;vagrant&#34; key=&#34;{{ lookup(&#39;file&#39;, ansible_pub_key) }}&#34; state=present<span style="color:#bbb">
 </span></code></pre></div><p>{% endraw %}</p>
 <p>Now we have written our provisioning playbook and our <code>Vagrantfile</code>, let&rsquo;s fire it up.</p>
 <pre><code>vagrant up

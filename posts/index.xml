@@ -6,10 +6,18 @@
     <description>Recent content in Posts on Xan Manning</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Sun, 03 Jan 2021 13:56:55 +0000</lastBuildDate>
-    
-	<atom:link href="https://xan.manning.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Fri, 14 May 2021 16:58:34 +0000</lastBuildDate><atom:link href="https://xan.manning.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ansible Galaxy - WOW!</title>
+      <link>https://xan.manning.io/2021/05/14/ansible-galaxy-wow.html</link>
+      <pubDate>Fri, 14 May 2021 16:58:34 +0000</pubDate>
+      
+      <guid>https://xan.manning.io/2021/05/14/ansible-galaxy-wow.html</guid>
+      <description>That&amp;rsquo;s insane! My weekend project has been downloaded over 20,000 times!
+Thank you for your support :)
+
+Go try it out! ansible-galaxy installxanmanning.k3s</description>
+    </item>
     
     <item>
       <title>2021</title>
@@ -157,7 +165,7 @@ Source  git: credential-store  </description>
       <description>You may think I&amp;rsquo;m mad, but I am going to drop the hyphen in my domain, so very shortly you will see that instead of visiting https://xan-manning.co.uk, you will be visiting https://xanmanning.co.uk.
 Why are you doing this, Xan?
 Well, you have probably noticed that pretty much every other vanity domain on the net is lacking a hyphen between firstname and surname; I&amp;rsquo;m just following that convention.
-I&amp;rsquo;ll keep the ol&amp;rsquo; xan-manning.</description>
+I&amp;rsquo;ll keep the ol&#39; xan-manning.</description>
     </item>
     
     <item>
